@@ -76,6 +76,6 @@
 }
 
 body {
-  @apply text-foreground;
+  /* @apply text-foreground; */
   touch-action: pan-y;
 }
