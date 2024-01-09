@@ -13,6 +13,7 @@
     --foreground-9: 219 40% 11%; /* Text color - Grey 900 */
 
     --primary: 194 100% 42%; /* Sidebrief's primary color - Blue */
+    --primary-8: 194 100% 90%; /* Blue-8 */
     --primary-foreground: 0 0% 100%; /* For primary background's foreground */
 
     --card: 194 100% 90%; /* Cards background color when active */
