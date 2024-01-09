@@ -1,13 +1,12 @@
 "use client";
 
-import { PaymentAnalyticsImg, PaymentAnalyticsImg2 } from "@/assets/svg";
+import { PaymentAnalyticsImg } from "@/assets/svg";
 import AnalyticsCard3 from "@/components/cards/analytics/analyticsCard3";
 import ServiceSummaryCard from "@/components/cards/profileSummaryCard";
 import DoChecks from "@/components/DoChecks";
 import AnalyticsHeader from "@/components/header/analyticsHeader";
 import GeneralTable from "@/components/tables/generalTable";
 import CardWrapper from "@/components/wrappers/cardWrapper";
-import { Button } from "flowbite-react";
 import Image from "next/image";
 import React from "react";
 import { paymentQueryNav, useTableInfo } from "./constants";
