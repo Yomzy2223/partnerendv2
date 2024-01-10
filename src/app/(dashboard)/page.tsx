@@ -6,6 +6,7 @@ import ServiceSummaryCard from "@/components/cards/profileSummaryCard";
 import DoChecks from "@/components/DoChecks";
 import AnalyticsHeader from "@/components/header/analyticsHeader";
 import GeneralTable from "@/components/tables/generalTable";
+import { TaskCard } from "@/components/TaskCard";
 import CardWrapper from "@/components/wrappers/cardWrapper";
 import Image from "next/image";
 import React from "react";
@@ -44,11 +45,19 @@ const Home = () => {
           previous={87}
         />
       </div>
-      <CardWrapper
-        title="Newly added tasks"
-        className="gap-6 justify-between my-2 flex-1 p-0"
-      >
-        hello
+      <CardWrapper title="Newly added tasks" className="my-2 flex-1 p-0">
+        <div className="flex gap-4 flex-wrap px-4 pb-4">
+          {Array(4)
+            .fill("")
+            .map((el, i) => (
+              <TaskCard
+                key={i}
+                businessName="Sayo oil and gas"
+                countryCode="ng"
+                countryName="Nigeria"
+              />
+            ))}
+        </div>
       </CardWrapper>
 
       <CardWrapper className="p-0" title="Ongoing tasks">

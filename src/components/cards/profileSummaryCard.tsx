@@ -13,7 +13,7 @@ const ProfileSummaryCard = ({
   info: string;
 }) => {
   return (
-    <div className="bg-primary-8 rounded-lg min-w-[200px] max-w-[300px]">
+    <div className="bg-primary-8 rounded-lg min-w-[200px] max-w-[300px] h-max">
       <CardWrapper className="flex flex-col justify-between gap-4 bg-primary-8 bg-serviceCardBG rounded-lg w-full h-[158px]">
         <div>
           <p className="sb-text-24 font-semibold mb-2">{title}</p>
