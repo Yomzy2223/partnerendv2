@@ -78,7 +78,7 @@ const SignUp = () => {
         <div className="flex items-center justify-between gap-14">
           <p className="sb-text-16 text-foreground-3">
             Have an account?{" "}
-            <Button color="plain" size="fit" className="text-secondary" href="/auth/signin">
+            <Button color="plain" size="fit" className="text-primary" href="/auth/signin">
               Sign In
             </Button>
           </p>
