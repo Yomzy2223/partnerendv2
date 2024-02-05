@@ -21,7 +21,7 @@ export const useResponse = () => {
     if (typeof error === "string") errorMessage = error;
     console.log(error);
     toast({
-      className: "bg-red-200 border border-destructive-foreground",
+      // className: "bg-red-200 border border-destructive-foreground",
       title,
       description: errorMessage,
       success: hideIcon ? null : false,

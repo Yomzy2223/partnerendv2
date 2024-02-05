@@ -56,7 +56,18 @@ const SignIn = () => {
         defaultValues={defaultValues}
         formSchema={signInSchema}
         onFormSubmit={handleSignIn}
+        formClassName="gap-4"
       >
+        <div className="flex self-end mb-6">
+          <Button
+            color="link"
+            size="fit"
+            className="text-foreground hover:underline"
+            href="/auth/forgot-password"
+          >
+            Forgotten password
+          </Button>
+        </div>
         <div className="flex items-center justify-between gap-10">
           <div className="flex items-center flex-wrap gap-1">
             <p className="sb-text-16 text-foreground-3">Don&#39;t have an account? </p>
