@@ -3,6 +3,7 @@ import { Modal, Button } from "@/components/flowbite";
 import Profile from './profile';
 import  ProfileForm  from "./ProfileForm"; 
 import { ProfileSchema } from "./constants"
+import { Puff } from "react-loading-icons";
 
 export const EditProfileModal = ({
     open,
@@ -13,13 +14,24 @@ export const EditProfileModal = ({
 }) => {
 
     const [currentStep, setCurrentStep] = useState(1);
+    const [loading, setLoading] = useState(false);
 
-    const handleNext = () => {
+    const handleNext = async () => {
+        setLoading(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
         setCurrentStep((prevStep) => prevStep + 1);
+        
     };
 
-    const handleSubmit = (values: any) => {
+    const handleSubmit =  async (values: any) => {
         console.log(values);
+        setLoading(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        setLoading(false);
         handleNext()
     };
 
@@ -47,7 +59,8 @@ export const EditProfileModal = ({
                                         type="submit"
                                         className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white"
                                     >
-                                        Next
+
+                                        <span>Next</span>
                                     </Button>
                                 </div>
                             </ProfileForm>
