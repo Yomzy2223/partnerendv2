@@ -2,6 +2,7 @@
 
 import QueryNav2 from "@/components/navigation/queryNav2";
 import SearchComp from "@/components/search";
+import CardWrapper from "@/components/wrappers/cardWrapper";
 import { cn } from "@/lib/utils";
 import { Table } from "flowbite-react";
 import React, { HTMLAttributes } from "react";
@@ -25,26 +26,31 @@ const GeneralTable = ({
   hideSearch,
 }: propTypes) => {
   return (
-    <div className="max-w-full overflow-auto">
-      <div className="flex justify-between gap-6 sticky left-0">
-        <div>
-          {title && <p className="sb-text-24 font-semibold mb-3">{title}</p>}
-          {serviceTableNav && (
-            <div className="flex flex-col gap-3 text-sm font-normal mb-6 md:gap-4 md:flex-row md:items-center">
-              <span>Show only:</span>
-              <QueryNav2 queryNav={serviceTableNav} />
-            </div>
+    <CardWrapper className="max-w-full overflow-auto p-0 pb-6">
+      {(title || serviceTableNav || !hideSearch) && (
+        <div className="flex justify-between gap-6 sticky left-0 px-4 my-6">
+          <div>
+            {title && <p className="sb-text-24 font-semibold mb-3">{title}</p>}
+            {serviceTableNav && (
+              <div className="flex flex-col gap-3 text-sm font-normal md:gap-4 md:flex-row md:items-center">
+                <span>Show only:</span>
+                <QueryNav2 queryNav={serviceTableNav} />
+              </div>
+            )}
+          </div>
+          {!hideSearch && (
+            <SearchComp onSubmit={() => console.log("searching...")} />
           )}
         </div>
-        {!hideSearch && (
-          <SearchComp onSubmit={() => console.log("searching...")} />
-        )}
-      </div>
+      )}
 
       <Table hoverable striped>
         <Table.Head>
           {tableHeaders.map((el) => (
-            <Table.HeadCell key={el} className="p-4">
+            <Table.HeadCell
+              key={el}
+              className="p-4 border-b border-foreground-2"
+            >
               {el}
             </Table.HeadCell>
           ))}
@@ -73,7 +79,7 @@ const GeneralTable = ({
           ))}
         </Table.Body>
       </Table>
-    </div>
+    </CardWrapper>
   );
 };
 

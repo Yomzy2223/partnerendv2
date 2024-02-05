@@ -1,12 +1,21 @@
+"use client";
+
 import React from "react";
-import Profile from "@/components/profile/profile";
+import GeneralTable from "@/components/tables/generalTable";
+import { serviceTableNav, useTableInfo } from "./constants";
 
 const Payments = () => {
+  const { tableHeaders, tableBody } = useTableInfo();
+
   return (
     <div>
-      <Profile/>
+      <GeneralTable
+        tableHeaders={tableHeaders}
+        tableBody={tableBody}
+        serviceTableNav={serviceTableNav}
+      />
     </div>
-  )
+  );
 };
 
 export default Payments;
