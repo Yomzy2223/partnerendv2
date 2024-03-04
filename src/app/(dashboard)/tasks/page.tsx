@@ -1,6 +1,11 @@
 import { TaskCard } from "@/components/cards/TaskCard";
-
+import useProductApi from "@/hooks/useProductApi";
+import { useParams } from "next/navigation";
 const Tasks = () => {
+  // const { country } = useParams();
+  // const { useGetProductByCountryQuery } = useProductApi;
+  // const { data }  = useGetProductByCountryQuery(country.toString());
+  // console.log("country product data ", )
   return (
     <div className="my-6 p-4 border rounded border-border flex flex-col gap-8">
       <div className="flex flex-col w-full space-y-4">

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, Dispatch, ReactNode, SetStateAction } from "react";
 import { Modal, Button } from "@/components/flowbite";
 import Profile from './profile';
 import  ProfileForm  from "./ProfileForm"; 
@@ -6,11 +6,18 @@ import { ProfileSchema } from "./constants"
 import { Puff } from "react-loading-icons";
 
 export const EditProfileModal = ({
+    title,
+    description,
+    isLoading,
     open,
     close,
 }: {
+    title?: string;
+    description?: string;
+    children?: ReactNode;
     open: boolean;
-    close: () => void
+    close: () => void;
+    isLoading?: boolean;
 }) => {
 
     const [currentStep, setCurrentStep] = useState(1);

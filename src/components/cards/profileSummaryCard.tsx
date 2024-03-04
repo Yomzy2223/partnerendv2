@@ -5,6 +5,7 @@ import { ExternalLink } from "lucide-react";
 import React from "react";
 import CardWrapper from "../wrappers/cardWrapper";
 import { EditProfileModal } from "../profile/EditProfileModal";
+
 const ProfileSummaryCard = ({
   title,
   info,

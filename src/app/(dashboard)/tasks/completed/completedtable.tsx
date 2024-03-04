@@ -3,7 +3,7 @@
 import { Badge, Table } from "flowbite-react";
 import numeral from "numeral";
 
-export const OngoingTable = () => {
+export const CompletedTable = () => {
   return (
     <div>
       <Table striped hoverable className="drop-shadow-none">
@@ -34,7 +34,7 @@ export const OngoingTable = () => {
                 </Badge>
               </Table.Cell>
               <Table.Cell>
-                <Badge  className="w-fit">
+                <Badge className="w-fit">
                   {data.status}
                 </Badge>
               </Table.Cell>
@@ -57,55 +57,55 @@ const mockData = [
     businessName: "Sayo oil and gas",
     serviceType: "Business certification",
     color: "green",
-    status: "Pending"
+    status: "completed"
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "TaxMaxPro registration",
     color: "blue",
-    status: "In progress"
+    status: "completed"
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "Business certification",
     color: "green",
-    status: "Pending"
+    status: "completed"
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "TaxMaxPro registration",
     color: "blue",
-    status: "Pending"
+    status: "completed"
 
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "Business certification",
     color: "green",
-    status: "Pending"
+    status: "completed"
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "TaxMaxPro registration",
     color: "blue",
-    status: "Pending"
+    status: "completed"
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "Business certification",
     color: "green",
-    status: "Pending"
+    status: "completed"
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "TaxMaxPro registration",
     color: "blue",
-    status: "Pending"
+    status: "completed"
   },
   {
     businessName: "Sayo oil and gas",
     serviceType: "Business certification",
     color: "green",
-    status: "Pending"
+    status: "completed"
   },
 ];

@@ -60,7 +60,7 @@ export const useTableInfo = () => {
   const onClick = () => router.push(pathname + "/reg1");
 
   // Services table header
-  const tableHeaders = ["S/N", "BUSINESS NAME", "SERVICE TYPE"];
+  const tableHeaders = ["S/N", "BUSINESS NAME", "SERVICE TYPE", "STATUS"];
 
   // Services table body
   const tableBody = [
