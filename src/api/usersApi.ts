@@ -7,9 +7,13 @@ interface signInType {
 
 interface signUpType extends signInType {
   fullName: string;
+  organization: string;
   referral: string;
   isPartner: boolean;
   isStaff: boolean;
+  address: string;
+
+
 }
 
 interface resetType {
