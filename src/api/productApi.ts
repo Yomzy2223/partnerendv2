@@ -32,5 +32,5 @@ export const removePendingTasks = async (requestId: string) => {
 
 export const getEachRequestById = async (id: string) => {
   const client = await Client()
-  return await client.put(`productRequest/${id}`)
+  return await client.get(`productRequest/${id}`)
 }
