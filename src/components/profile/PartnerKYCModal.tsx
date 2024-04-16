@@ -4,10 +4,12 @@ import Profile from './profile';
 import  ProfileForm  from "./ProfileForm"; 
 import { ProfileSchema } from "./constants"
 import { Puff } from "react-loading-icons";
+import PartnerDocumentUpload from "./PartnerDocumentUpload";
 import { FileInput } from "../file/fileInput";
-import useCountryApi from "@/hooks/useCountryApi";
+import { getDynamicFieldSchema } from "./actions";
 
-export const EditProfileModal = ({
+
+export const PartnerKYCModal = ({
     title,
     description,
     isLoading,
@@ -21,13 +23,12 @@ export const EditProfileModal = ({
     close: () => void;
     isLoading?: boolean;
 }) => {
-
+    const handleFileChange = (file: File) => {
+    setHasSelectedFile(true);
+    setValue("documentTemp", file);
+  };
     const [currentStep, setCurrentStep] = useState(1);
     const [loading, setLoading] = useState(false);
-
-    const { getAllCountriesQuery } = useCountryApi();
-    const { data: countries } = getAllCountriesQuery;
-    console.log("countries", countries?.data.data)
 
     const handleNext = async () => {
         setLoading(true);
@@ -48,12 +49,17 @@ export const EditProfileModal = ({
         handleNext()
     };
 
+    // const formSchema = getDynamicFieldSchema({
+    //     type,
+    //     hasSelectedFile,
+    //   });
+    //   type formType = z.infer<typeof formSchema>;
     const renderModalContent = () => {
         switch (currentStep) {
             case 1:
                 return (
                     <>
-                        <Modal.Header>Edit Profile</Modal.Header>
+                        <Modal.Header>Partner's KYC</Modal.Header>
                         <Modal.Body>
                             <ProfileForm
                                 formInfo={formInfo}
@@ -84,7 +90,7 @@ export const EditProfileModal = ({
             case 2:
                 return (
                     <>
-                        <Modal.Header>Documents</Modal.Header>
+                        <Modal.Header>Documents Submitted</Modal.Header>
                         <Modal.Body>
                             <ProfileForm
                                 formInfo={documentsSubmitted}
@@ -118,7 +124,73 @@ export const EditProfileModal = ({
 
     return (
         <Modal show={open} onClose={close} size={"4xl"} >
-            {renderModalContent()}
+            <Modal.Header>Partner's KYC</Modal.Header>
+                <Modal.Body>
+                    <h2 className="font-bold text-xl py-6">Welcome Simon Olajide 👋</h2>
+                    <p className="font-bold text-md py-0">Please Upload these documents for verifications</p>
+                    <h4 className="text-md">Upload documents as appropriate as appropriate, please note each field</h4>
+                    {/* <ProfileForm
+                        formInfo={formInfo}
+                        defaultValues={defaultValues}
+                        formSchema={ProfileSchema}
+                        onFormSubmit={handleSubmit}
+                    >
+                        <div className="flex items-center justify-end gap-x-6 border-gray-900/10 px-4 py-4 sm:px-8">
+                            
+                            <Button
+                                type="submit"
+                                className="rounded-md bg-magenta px-3 py-2 text-sm font-semibold text-white"
+                            >
+
+                                <span>Done</span>
+                            </Button>
+                        </div>
+                    </ProfileForm> */}
+                    {/* <PartnerDocumentUpload /> */}
+                    {/* <FileInput fileName="National ID" fileType="pdf" fileLink="https://" />
+                    <FileInput fileName="E-Passport" fileType="jpg" fileLink="https://"/>
+                    <FileInput fileName="Proof Oof Address" fileType="jpeg" fileLink="https://"/>
+                    <FileInput fileName="Certificate of funds" fileType="png" fileLink="https://"/> */}
+                    <div className="flex flex-row my-4 gap-4">
+                        
+                       {/* <div className="w-full ">
+                        <h3 className="my-3">National Identification Slip</h3>
+                            <div className="border border-dashed text-center p-4">
+                                <p className="text-gray-500 text-sm leading-normal">
+                                Drag files here to upload
+                                </p>
+                                <p className="underline text-xs leading-normal text-primary">
+                                or browse for files
+                                </p>
+                            </div>
+                       </div> */}
+                       <div className="w-full">
+                            <FileInput name="National Identification"/>
+                        
+                        </div>
+                       
+                    </div>
+                    <div className="flex flex-row my-4 gap-4">
+                        <div className="w-full">
+                            <FileInput name=""/>
+                        
+                        </div>
+                        <div className="w-full">
+                            <FileInput name="" /> 
+                        </div>
+                       
+                    </div>
+                    <div className="flex flex-row my-4 gap-4">
+                        <div className="w-full">
+                            <FileInput name="Proof Of Address" />
+                        
+                        </div>
+                        <div className="w-full">
+                            <FileInput name=""/> 
+                        </div>
+                       
+                    </div>
+                </Modal.Body>
         </Modal>
     )
 }
@@ -185,13 +257,6 @@ const defaultValues = {
         placeholder: "Enter your pay range",
       },
     },
-
-    {
-        name:"certificate",
-        label:"Certificate",
-        type:"file"
-    
-    },
   ]
 
   const documentsSubmitted = [
@@ -204,4 +269,4 @@ const defaultValues = {
 
 
   ]  
-  
+
