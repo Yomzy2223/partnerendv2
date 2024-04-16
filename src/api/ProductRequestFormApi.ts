@@ -1,12 +1,19 @@
 import { Client } from "@/lib/axios";
 
+type FileType = {
+  name: string;
+  size?: string;
+  link: string;
+  type: string;
+};
+
 type FormItem = {
     question: string;
     answer: string[];
     type: string;
     compulsory: boolean;
     isGeneral: boolean;
-    file?: File;
+    file?: FileType;
   };
 
 
