@@ -1,6 +1,6 @@
 "use client";
 
-import { useGlobalFucntions } from "@/hooks/globalFunctions";
+import { useGlobalFunctions } from "@/hooks/globalFunctions";
 import { cn } from "@/lib/utils";
 import { Button } from "flowbite-react";
 import { useSearchParams } from "next/navigation";
@@ -12,7 +12,7 @@ interface propsType {
 }
 
 const QueryNav3 = ({ queryNav, defaultActive = 0 }: propsType) => {
-  const { setQuery } = useGlobalFucntions();
+  const { setQuery } = useGlobalFunctions();
 
   const searchParams = useSearchParams();
 
