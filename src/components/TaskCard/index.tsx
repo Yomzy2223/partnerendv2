@@ -24,15 +24,19 @@ export const TaskCard = ({
             </div>
             <p>{countryName}</p>
           </div>
-          <Badge color={"green"}>Business certification</Badge>
+          <Badge color={"green"}>Business </Badge>
         </div>
         <p>{businessName}</p>
-        <Button color="ghost" size={"fit"}>
+        {/* <Button color="ghost" size={"fit"}>
           <div className="flex space-x-2 items-center">
             <Checkbox />
             <p className="font-normal text-sm leading-normal">Accept task</p>
           </div>
-        </Button>
+        </Button> */}
+         <div className="flex justify-between w-full">
+					<Button color="primary" >Accept Task</Button>
+					<Button color="danger" className="border-gray-200 border-2">Reject </Button>
+				</div>
       </div>
     </div>
   );
