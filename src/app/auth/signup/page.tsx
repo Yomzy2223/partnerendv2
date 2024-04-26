@@ -12,11 +12,24 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Oval } from "react-loading-icons";
 import * as z from "zod";
+import useCountryApi from "@/hooks/useCountryApi";
+import { CountryTypes } from "@/types/type";
 
 const SignUp = () => {
   const [isPending, setIsPending] = useState(false);
   const { push } = useRouter();
   const { handleError, handleSuccess } = useResponse();
+  const { getAllCountriesQuery } = useCountryApi();
+    const { data: countries } = getAllCountriesQuery;
+
+    const countryList = countries?.data.data
+
+    const countryNames: string[] = countryList?.map((country: CountryTypes) => {
+      const name = country.name;
+      return name.charAt(0).toUpperCase() + name.slice(1);
+  }) || [];
+  
+  console.log("countryNames", countryNames);
 
   const handleSignUp = async (values: signUpType) => {
     setIsPending(true);
@@ -49,6 +62,61 @@ const SignUp = () => {
     // console.log(response);
   };
 
+  const formInfo = [
+    {
+      name: "name",
+      label: "Hello, Tell us your name",
+      type: "text",
+      textInputProp: {
+        placeholder: "Enter your name",
+      },
+    },
+    {
+      name: "organization",
+      label: "Registered Organization Name",
+      type: "text",
+      textInputProp: {
+        placeholder: "Enter your organization name",
+      },
+    },
+    {
+      name: "email",
+      label: "Enter Email Address",
+      type: "email",
+      textInputProp: {
+        placeholder: "Enter your email address",
+      },
+    },
+    {
+      name: "password",
+      label: "Enter Password",
+      type: "password",
+      textInputProp: {
+        placeholder: "Enter a password",
+      },
+    },
+    {
+      name: "address",
+      label: "Enter Home Address",
+      type: "text",
+      textInputProp: {
+        placeholder: "Home Address",
+      },
+    },
+    
+    {
+      name: "referral",
+      label: "Select Country",
+      type: "select",
+      selectProp: {
+        placeholder: "Select a referral",
+      },
+      selectOptions: countryNames,
+  
+    },
+  
+  
+  ];
   return (
     <AuthFormWrapper
       title="Create an account for free"
@@ -101,68 +169,7 @@ const SignUp = () => {
 
 export default SignUp;
 
-const formInfo = [
-  {
-    name: "name",
-    label: "Hello, Tell us your name",
-    type: "text",
-    textInputProp: {
-      placeholder: "Enter your name",
-    },
-  },
-  {
-    name: "organization",
-    label: "Registered Organization Name",
-    type: "text",
-    textInputProp: {
-      placeholder: "Enter your organization name",
-    },
-  },
-  {
-    name: "email",
-    label: "Enter Email Address",
-    type: "email",
-    textInputProp: {
-      placeholder: "Enter your email address",
-    },
-  },
-  {
-    name: "password",
-    label: "Enter Password",
-    type: "password",
-    textInputProp: {
-      placeholder: "Enter a password",
-    },
-  },
-  {
-    name: "address",
-    label: "Enter Home Address",
-    type: "text",
-    textInputProp: {
-      placeholder: "Home Address",
-    },
-  },
-  // {
-  //   name: "referral",
-  //   label: "How did you hear about us",
-  //   type: "select",
-  //   selectProp: {
-  //     placeholder: "Select a referral",
-  //   },
-  //   selectOptions: ["Facebook", "Twitter", "Google", "Instagram", "WhatsApp", "Recommendation"],
-  // },
-  {
-    name: "referral",
-    label: "Select Country",
-    type: "select",
-    selectProp: {
-      placeholder: "Select a referral",
-    },
-    selectOptions: ["Nigeria", "South Africa", "Senegal", "Uganda", "Kenya", "Delaware"],
-  },
 
-
-];
 
 const signUpSchema = z.object({
   name: z.string().min(1, { message: "Enter your first name" }),
