@@ -116,7 +116,7 @@ const DynamicFormInput = ({
             {el.type === "file" && (
               <FileInput
                 id={el.name}
-                helperText="A profile picture is useful to confirm your are logged into your account"
+                helperText="Text needed here"
                 {...register(el.name)}
               />
             )}
@@ -147,13 +147,4 @@ const DynamicFormInput = ({
 
 export default DynamicFormInput;
 
-//  {
-//    el.type === "toggle" && (
-//      <ToggleSwitch
-//        checked={getValues()[el.name]}
-//        label="Toggle me (checked)"
-//        // {...register(el.name)}
-//        onChange={() => setValue(el.name, !getValues()[el.name])}
-//      />
-//    );
-//  }
+
