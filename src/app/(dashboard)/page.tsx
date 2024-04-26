@@ -22,7 +22,6 @@ const Home = () => {
   console.log("pendingTaskLength", pendingTaskLength ? pendingTaskLength.length : 0);
   
   const {data: session} = useSession();
-  console.log("session", session)
   return (
     <DoChecks
       items={["d"]}

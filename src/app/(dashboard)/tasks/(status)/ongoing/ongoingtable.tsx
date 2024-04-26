@@ -16,30 +16,16 @@ type CountryDataProps = {
   userid:string;
 };
 export const OngoingTable = () => {
-  const { assignedTasks, isLoading, returnTasks } = useActions();
+  const { assignedTasks, isLoading } = useActions();
   const ongoingTasksList = assignedTasks?.data?.data;
   console.log("ongoing tasks", ongoingTasksList)
 
-  const handleReturnTaskToAvailable = (taskId: string) => {
-    const taskObject = ongoingTasksList.find((task:any) => task.id === taskId);
-    // console.log("taskObject", taskObject);
-    if (taskObject) {
-      const userId = taskObject.id;
-      // console.log("taskfound found:", userIds);
-      returnTasks(userId);
-    } else {
-      console.error("Task not found:", taskId);
-    }
-  };
 
   const router = useRouter();
   const pathname = usePathname();
 
-  // const onClick = () => router.push(pathname + "/reg1");
 
   const handleRowClick = (data: CountryDataProps) => {
-    //router.push( + `/${data.id}`);
-    //const requestId = 
     router.push(`/tasks/${data.id}`);
   };
   

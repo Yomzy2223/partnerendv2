@@ -7,6 +7,8 @@ import { toast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
 import ConfirmAction from "@/components/confirmAction";
 import { useSession } from "next-auth/react";
+import useCountryApi from "@/hooks/useCountryApi";
+import { CountryTypes } from "@/types/type";
 
 type CountryDataProps = {
     id: string;
@@ -17,22 +19,18 @@ type CountryDataProps = {
     requeststatus: string;
 };
 
+
 const AvailableTask = () => {
+    const { getAllCountriesQuery } = useCountryApi();
+    const { data: countries } = getAllCountriesQuery;
+    const countryList = countries?.data.data
     const [openConfirm, setOpenConfirm] = useState(false);
     const { acceptTask, userData, isLoading, rejectTask,  } = useActions();
    
-
     const { data: session } = useSession();
-    console.log("session", session)
-
     const userId = session?.user.id;
-    console.log("userId", userId);
-
    
-    const { get } = useSearchParams();
     const assignedDataInfo = userData?.data?.data;
-    console.log("assigned tasks here", assignedDataInfo);
-    
 
     const handleAcceptTask = (taskId: string) => {
         const taskObject = assignedDataInfo.find((task:any) => task.id === taskId);
@@ -40,7 +38,6 @@ const AvailableTask = () => {
         if(taskObject){
             console.log("userIds", userId)
             console.log("taskObject", taskObject)
-            //acceptTask({ userId: userId, requestIds: [taskId] });
         }
         console.log("taskObject added", taskObject)   
     };
@@ -56,6 +53,8 @@ const AvailableTask = () => {
         console.log("taskObject removed", taskObject)
     };
 
+    const countryIso = countryList?.map((country: CountryTypes) => country.iso) || [];
+    console.log("countryNames", countryIso)
     return (
         <div>
             {isLoading ? (

@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 
 export const useActions = () => {
     const { setQuery } = useGlobalFunctions()
-    // const { userId } = useParams();
+    // const { requestId } = useParams();
 
     const {data : session } = useSession()
     const requestId = "b7dfaa4f-2804-472d-87c3-dc8b3697f7cf"
@@ -22,16 +22,10 @@ export const useActions = () => {
     } = useProductApi();
     
     
-   
-    // const countryDataInfo  = countryData?.data?.data;
-    // console.log("countryData", countryDataInfo);
-    //const userId = get("userId") as string;
-    // const userId = get("userId") as string || "c26b821e-d413-4d45-b802-09ba56185c54"
-    // console.log("user Id", userId)
     const userId = session?.user.id
     const { data: userData, isLoading, isError } = useGetAssignedTasks(userId);
+    
     console.log("userData", userData)
-
 
     const { data: assignedTasks } = useGetOngoingTasksQuery(userId);
 
@@ -65,25 +59,6 @@ export const useActions = () => {
         }
     }
 
-    
-    
-    // const returnTasks = async (values: RemoveTaskProps) => {
-    const returnTasks = async (requestId: string) => {
-
-        if("c26b821e-d413-4d45-b802-09ba56185c54") {
-            try {
-                await removePendingTaskMutation.mutate(requestId);
-                console.log("Task returned to available tab");
-            } catch (error) {
-                console.error("Error returning task:", error);
-            }
-        }
-       
-    }
-    
-
-    
-
     return { 
         userData,
         isLoading, 
@@ -91,8 +66,7 @@ export const useActions = () => {
         assignedTasks,
         eachRequestDetails,
         acceptTask,
-        rejectTask,
-        returnTasks,
+        rejectTask
 
     };
 }

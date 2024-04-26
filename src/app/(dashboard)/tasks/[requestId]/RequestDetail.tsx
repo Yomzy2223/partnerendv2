@@ -7,7 +7,7 @@ import PersonsCard from "@/components/cards/personsCard";
 import { cn, sluggify } from "@/lib/utils";
 import RequestDetailsSectionWrapper from "@/components/wrappers/requestDetailsSectionWrapper";
 import TextWithDetails from "@/components/texts/textWithDetails";
-import { BriefcaseIcon, PiggyBankIcon } from "lucide-react";
+import { BriefcaseIcon, Divide, PiggyBankIcon } from "lucide-react";
 import React from "react";
 import { FileInput } from "@/components/file/fileInput";
 import { FileInputMod } from "@/components/file/fileInput2";
@@ -152,48 +152,8 @@ const TaskDetails = ({
   const [type, setType] = useState(info?.type);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [hasSelectedFile, setHasSelectedFile] = useState(false);
-  // const dynamic = useDynamic({
-  //   subForms: withDocument()[selected - 1].docs.map((doc) => ({
-  //     name: sluggify(doc.question),
-  //     type: doc.type,
-  //   })),
-    
-  // });
-
-  // const schema = dynamic.schema;
-  // const dValues = dynamic.defaultValues;
-  // type formType = z.infer<typeof schema>;
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   formState: { errors },
-  //   getValues,
-  //   setValue,
-  //   control,
-  //   reset,
-  // } = useForm<formType>({
-  //   resolver: zodResolver(schema),
-  //   defaultValues: dValues,
-  // });
-
-  // useEffect(() => {
-  //   Object.keys(values).forEach((key) => {
-  //     if (isFileType(values[key])) {
-  //       setValue(key, values[key]);
-  //     }
-  //   });
-  //   // prevFormInfoRef.current = formInfo;
-  //   // }
-  //   return () => {
-  //     Object.keys(values).forEach((key) => {
-  //       if (isFileType(values[key])) {
-  //         setValue(key, null);
-  //       }
-  //     });
-  //   };
-  // }, [setValue, values]);
-
+  
+  const [fileInputCount, setFileInputCount] = useState(1);
   const { eachRequestDetails } = useActions();
   console.log("eachRequestDetails", eachRequestDetails)
 
@@ -209,13 +169,6 @@ const TaskDetails = ({
   });
 
   type formType = z.infer<typeof formSchema>;
-  // const handleFileUpload: (file: File, question: string) => Promise<any> = async (
-  //   file: File,
-  //   question
-  // ) => {
-  //   setValue(sluggify(question), file);
-  // };
-
 
   const handleSubmit = async () => {
     // ... other form submission logic ...
@@ -288,6 +241,9 @@ const TaskDetails = ({
     submitHandler({ values, setEdit });
   }
   
+  const handleAddDocument = () => {
+    setFileInputCount(fileInputCount + 1);
+  };
 
   return (
     <div>
@@ -315,31 +271,18 @@ const TaskDetails = ({
         title="Upload Documents"
         icon={<BriefcaseIcon />}
       >
-        <FileInput name=""/>
-        {/* <FileInputMod 
-          name="" 
-          handleFileChange={handleSubmit } 
-          selectedFile={""}
-        /> */}
-        {/* <div className="grid grid-cols-2 gap-5">
-                {withDocument()
-                  [selected - 1]?.docs?.filter((sub) => sub.type === "document upload")
-                  .map((sub) => {
-                    return (
-                      <FileInputMod
-                        key={sub.id}
-                        name={sub.question}
-                        handleFileChange={handleSubmit}
-                        selectedFile={watch(sluggify(sub.question))}
-                      />
-                    );
-                  }) || <p>No matching form found.</p>}
-              </div> */}
-        <Button color="ghost" size="fit" className="my-4 text-foreground-5">
+        
+        {[...Array(fileInputCount)].map((_, index) => (
+          <div className="pt-4">
+              <FileInput key={index} name="" />
+          </div>
+          
+        ))}
+
+        <Button color="ghost" size="fit" className="my-4 text-foreground-5" onClick={handleAddDocument}>
           <PlusCircle size={20} />
           Add Document
         </Button>
-
         
       </RequestDetailsSectionWrapper>
       <div>
