@@ -1,9 +1,10 @@
 import React from 'react'
-import { FileInput, Modal, Button, TextInput, Label, Select } from "@/components/flowbite";
+import { Modal, Button, TextInput, Label, Select } from "@/components/flowbite";
 import { ProfileProps } from './constants';
 import * as z from "zod"
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod'
+import { FileInput } from '../file/fileInput';
 
 const ProfileForm = ({
   children, 
@@ -58,11 +59,12 @@ const ProfileForm = ({
             )}
 
              {el.type === "file" && (
-              <FileInput
-                id={el.name}
-                helperText={<>{errors[el.name]?.message}</>}
-                {...register(el.name)}
-              />
+              // <FileInput
+              //   id={el.name}
+              //   helperText={<>{errors[el.name]?.message}</>}
+              //   {...register(el.name)}
+              // />
+              <FileInput name={el.name} />
             )}
 
             {el.type === "select" && el.selectOptions && (

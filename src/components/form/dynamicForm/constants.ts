@@ -23,4 +23,6 @@ export interface DynamicFormProps {
   onFormSubmit: (values: any) => void;
   className?: string;
   formClassName?: string;
+  watchValues?: (values: { [key: string]: string | string[] }) => void;
+  
 }

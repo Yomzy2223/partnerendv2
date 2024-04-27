@@ -13,8 +13,8 @@ const RequestDetailsSectionWrapper = ({
 }: {
   children: ReactNode;
   title: string;
-  raiseIssueAction: Function;
-  icon: any;
+  raiseIssueAction?: Function;
+  icon?: any;
   className?: string;
 }) => {
   return (

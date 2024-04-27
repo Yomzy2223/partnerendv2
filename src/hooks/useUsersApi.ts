@@ -9,6 +9,7 @@ import {
 } from "@/api/usersApi";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useResponse } from "./useResponse";
+import { useGlobalFunctions } from "@/hooks/globalFunctions";
 
 const useUserApi = () => {
   const { handleError, handleSuccess } = useResponse();
@@ -20,6 +21,7 @@ const useUserApi = () => {
       handleError({ title: "Failed", error });
     },
     onSuccess(data, variables, context) {
+      
       handleSuccess({ data });
     },
     retry: 3,

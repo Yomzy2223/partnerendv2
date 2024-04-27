@@ -39,4 +39,8 @@ const links = [
 		text: "Ongoing tasks",
 		href: "/tasks/ongoing",
 	},
+	{
+		text: "Completed tasks",
+		href: "/tasks/completed",
+	},
 ];

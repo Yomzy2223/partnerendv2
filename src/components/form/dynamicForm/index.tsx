@@ -10,12 +10,14 @@ import {
   TextInput,
   ToggleSwitch,
 } from "flowbite-react";
-import React from "react";
+import React, {useState} from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { DynamicFormProps } from "./constants";
 import { cn } from "@/lib/utils";
+import { StaticImageData } from "next/image";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 
 const DynamicForm = ({
   children,
@@ -27,6 +29,8 @@ const DynamicForm = ({
   formClassName,
 }: DynamicFormProps) => {
   type formType = z.infer<typeof formSchema>;
+
+  const [showPassword, setShowPassword] = useState(false);
 
   // Form definition
   const {
@@ -46,6 +50,13 @@ const DynamicForm = ({
     onFormSubmit && onFormSubmit(values);
   }
 
+  const handleIconClick = () => {
+    setShowPassword((prev) => !prev);
+  }
+  
+
+  const currentIcon: React.FC<React.SVGProps<SVGSVGElement>> = showPassword ? LuEye : LuEyeOff;
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -57,7 +68,7 @@ const DynamicForm = ({
       <div className={cn("space-y-8", className)}>
         {formInfo.map((el, i: number) => {
           const isTextInput =
-            el.type === "text" || el.type === "password" || el.type === "email";
+            el.type === "text"  || el.type === "email";
           const errorMsg = errors[el.name]?.message;
 
           return (
@@ -78,6 +89,20 @@ const DynamicForm = ({
                   className={errorMsg ? "focus:[&_input]:outline-none" : ""}
                   {...el.textInputProp}
                   {...register(el.name)}
+                />
+              )}
+
+              {el.type === "password" && (
+                <TextInput 
+                  id={el.name}
+                  type={showPassword ? "password" : "text"}
+                  // helperText={<>{errors[el.name]?.message}</>}
+                  helperText={<>{errorMsg}</>}
+                  color={errors[el.name] && "failure"}
+                  {...el.textInputProp}
+                  {...register(el.name)}
+                  rightIcon={currentIcon}
+                  onClick={handleIconClick}
                 />
               )}
 

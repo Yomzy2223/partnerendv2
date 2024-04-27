@@ -60,111 +60,126 @@ export const useTableInfo = () => {
   const onClick = () => router.push(pathname + "/reg1");
 
   // Services table header
-  const tableHeaders = ["S/N", "BUSINESS NAME", "SERVICE TYPE"];
+  const tableHeaders = ["S/N", "BUSINESS NAME", "SERVICE TYPE", "STATUS"];
 
   // Services table body
+  // const tableBody = [
+  //   {
+  //     rowProps: { onClick },
+  //     rowInfo: [
+  //       { text: "01" },
+  //       { text: "Sayo oil and gas" },
+  //       {
+  //         text: "Business certification",
+  //         cellProps: {
+  //           className: cellClassName,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rowProps: { onClick },
+  //     rowInfo: [
+  //       { text: "01" },
+  //       { text: "Sayo oil and gas" },
+  //       {
+  //         text: "Business certification",
+  //         cellProps: {
+  //           className: cn(
+  //             cellClassName,
+  //             "[&_span]:bg-primary-8 [&_span]:text-primary"
+  //           ),
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rowProps: { onClick },
+  //     rowInfo: [
+  //       { text: "01" },
+  //       { text: "Sayo oil and gas" },
+  //       {
+  //         text: "Business certification",
+  //         cellProps: {
+  //           className: cellClassName,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rowProps: { onClick },
+  //     rowInfo: [
+  //       { text: "01" },
+  //       { text: "Sayo oil and gas" },
+  //       {
+  //         text: "Business certification",
+  //         cellProps: {
+  //           className: cn(
+  //             cellClassName,
+  //             "[&_span]:bg-primary-8 [&_span]:text-primary"
+  //           ),
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rowProps: { onClick },
+  //     rowInfo: [
+  //       { text: "01" },
+  //       { text: "Sayo oil and gas" },
+  //       {
+  //         text: "Business certification",
+  //         cellProps: {
+  //           className: cellClassName,
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rowProps: { onClick },
+  //     rowInfo: [
+  //       { text: "01" },
+  //       { text: "Sayo oil and gas" },
+  //       {
+  //         text: "Business certification",
+  //         cellProps: {
+  //           className: cn(
+  //             cellClassName,
+  //             "[&_span]:bg-primary-8 [&_span]:text-primary"
+  //           ),
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     rowProps: { onClick },
+  //     rowInfo: [
+  //       { text: "01" },
+  //       { text: "Sayo oil and gas" },
+  //       {
+  //         text: "Business certification",
+  //         cellProps: {
+  //           className: cellClassName,
+  //         },
+  //       },
+  //     ],
+  //   },
+  // ];
   const tableBody = [
     {
       rowProps: { onClick },
       rowInfo: [
-        { text: "01" },
-        { text: "Sayo oil and gas" },
+        { text: "" },
+        { text: "" },
         {
-          text: "Business certification",
+          // text: "",
           cellProps: {
             className: cellClassName,
           },
         },
       ],
-    },
-    {
-      rowProps: { onClick },
-      rowInfo: [
-        { text: "01" },
-        { text: "Sayo oil and gas" },
-        {
-          text: "Business certification",
-          cellProps: {
-            className: cn(
-              cellClassName,
-              "[&_span]:bg-primary-8 [&_span]:text-primary"
-            ),
-          },
-        },
-      ],
-    },
-    {
-      rowProps: { onClick },
-      rowInfo: [
-        { text: "01" },
-        { text: "Sayo oil and gas" },
-        {
-          text: "Business certification",
-          cellProps: {
-            className: cellClassName,
-          },
-        },
-      ],
-    },
-    {
-      rowProps: { onClick },
-      rowInfo: [
-        { text: "01" },
-        { text: "Sayo oil and gas" },
-        {
-          text: "Business certification",
-          cellProps: {
-            className: cn(
-              cellClassName,
-              "[&_span]:bg-primary-8 [&_span]:text-primary"
-            ),
-          },
-        },
-      ],
-    },
-    {
-      rowProps: { onClick },
-      rowInfo: [
-        { text: "01" },
-        { text: "Sayo oil and gas" },
-        {
-          text: "Business certification",
-          cellProps: {
-            className: cellClassName,
-          },
-        },
-      ],
-    },
-    {
-      rowProps: { onClick },
-      rowInfo: [
-        { text: "01" },
-        { text: "Sayo oil and gas" },
-        {
-          text: "Business certification",
-          cellProps: {
-            className: cn(
-              cellClassName,
-              "[&_span]:bg-primary-8 [&_span]:text-primary"
-            ),
-          },
-        },
-      ],
-    },
-    {
-      rowProps: { onClick },
-      rowInfo: [
-        { text: "01" },
-        { text: "Sayo oil and gas" },
-        {
-          text: "Business certification",
-          cellProps: {
-            className: cellClassName,
-          },
-        },
-      ],
-    },
-  ];
+    }
+  ]
 
   return {
     tableHeaders,

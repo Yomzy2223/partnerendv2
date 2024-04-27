@@ -89,7 +89,12 @@ const handler = NextAuth({
                 headers: { "Content-Type": "application/json" },
               }
             );
-            console.log(response.data);
+            console.log(response.data, "response here");
+            if (typeof window !== "undefined") {
+              if (response) {
+                localStorage.setItem("userIds", JSON.stringify(response.data));
+              }
+            }
             if (response.data) return response.data as Awaitable<User>;
           } catch (e: any) {
             throw new Error(e.response.data.error);
@@ -113,10 +118,9 @@ const handler = NextAuth({
       return token as Awaitable<JWT>;
     },
     async session({ session, token }) {
-      console.log("Tokkkken: ", token);
-      session.user = token.user.data;
+      // console.log("Tokkkken: ", token);
+      session.user = token.user.data;  
       session.message = token.user.message;
-      // console.log("Returning session", session);
       return session as Awaitable<Session>;
     },
   },

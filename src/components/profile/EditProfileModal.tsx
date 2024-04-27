@@ -1,28 +1,132 @@
-import React, {useState} from 'react'
+import React, { useState, Dispatch, ReactNode, useEffect } from "react";
 import { Modal, Button } from "@/components/flowbite";
 import Profile from './profile';
 import  ProfileForm  from "./ProfileForm"; 
 import { ProfileSchema } from "./constants"
+import { Puff } from "react-loading-icons";
+import { FileInput } from "../file/fileInput";
+import useCountryApi from "@/hooks/useCountryApi";
+import { CountryTypes } from "@/types/type";
 
 export const EditProfileModal = ({
+    title,
+    description,
+    isLoading,
     open,
     close,
 }: {
+    title?: string;
+    description?: string;
+    children?: ReactNode;
     open: boolean;
-    close: () => void
+    close: () => void;
+    isLoading?: boolean;
 }) => {
 
     const [currentStep, setCurrentStep] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const [countriesData, setCountries] = useState<string[]>([]);
+    const { getAllCountriesQuery } = useCountryApi();
+    const { data: countries } = getAllCountriesQuery;
 
-    const handleNext = () => {
+    const countryList = countries?.data.data
+    console.log("countryList", countries?.data.data)
+
+    const countryNames: string[] = countryList?.map((country: CountryTypes) => {
+        const name = country.name;
+        return name.charAt(0).toUpperCase() + name.slice(1);
+    }) || [];
+    
+    console.log("countryNames", countryNames);
+
+    
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const response = await countries;
+                setCountries(response?.data?.data || []);
+                console.log("responses countries", response)
+            } catch (error) {
+                console.error("Error fetching countries:", error);
+            }
+        };
+        fetchCountries();
+    }, []);
+
+    const handleNext = async () => {
+        setLoading(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
         setCurrentStep((prevStep) => prevStep + 1);
+        
     };
 
-    const handleSubmit = (values: any) => {
+    const handleSubmit =  async (values: any) => {
         console.log(values);
+        setLoading(true);
+
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
+        setLoading(false);
         handleNext()
     };
 
+    const formInfo = [
+        {
+          name: "location",
+          label: "Where do you practice?",
+          type: "select",
+          selectOptions: countryNames,
+          textInputProp: {
+            placeholder: "Select Country",
+          },
+        }, 
+      
+        {
+          name:"name",
+          label:"Full Name",
+          type:"text",
+          textInputProp: {
+            placeholder: "Enter your full name",
+          },
+      
+        }, 
+      
+        {
+          name:"email",
+          label:"Email Address",
+          type:"email",
+          textInputProp: {
+            placeholder: "Enter your email address",
+          },
+        },
+      
+        {
+          name:"phoneNumber",
+          label:"Phone Number",
+          type:"text",
+          textInputProp: {
+            placeholder: "Enter your phone number",
+          },
+        },
+      
+        {
+          name:"payRange",
+          label:"Pay range",
+          type:"text",
+          textInputProp: {
+            placeholder: "Enter your pay range",
+          },
+        },
+    
+        {
+            name:"certificate",
+            label:"Certificate",
+            type:"file"
+        
+        },
+      ]
     const renderModalContent = () => {
         switch (currentStep) {
             case 1:
@@ -47,7 +151,8 @@ export const EditProfileModal = ({
                                         type="submit"
                                         className="rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white"
                                     >
-                                        Next
+
+                                        <span>Next</span>
                                     </Button>
                                 </div>
                             </ProfileForm>
@@ -106,60 +211,7 @@ const defaultValues = {
   };
   
 
-  const formInfo = [
-    {
-      name: "location",
-      label: "Where do you practice?",
-      type: "select",
-      selectOptions: [
-        "Kenya",
-        "Nigeria",
-        "Ghana",
-        "South Africa",
-        "Tanzania",
-      ],
-      textInputProp: {
-        placeholder: "Select Country",
-      },
-    }, 
   
-    {
-      name:"name",
-      label:"Full Name",
-      type:"text",
-      textInputProp: {
-        placeholder: "Enter your full name",
-      },
-  
-    }, 
-  
-    {
-      name:"email",
-      label:"Email Address",
-      type:"email",
-      textInputProp: {
-        placeholder: "Enter your email address",
-      },
-    },
-  
-    {
-      name:"phoneNumber",
-      label:"Phone Number",
-      type:"text",
-      textInputProp: {
-        placeholder: "Enter your phone number",
-      },
-    },
-  
-    {
-      name:"payRange",
-      label:"Pay range",
-      type:"text",
-      textInputProp: {
-        placeholder: "Enter your pay range",
-      },
-    },
-  ]
 
   const documentsSubmitted = [
     {

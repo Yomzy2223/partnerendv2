@@ -8,14 +8,14 @@ const TextWithDetails = ({
   text,
   textClassName,
 }: {
-  title: string;
-  list?: string[];
-  text?: string;
-  textClassName?: string;
+  title: string | any;
+  list?: string[] ;
+  text?: string | any;
+  textClassName?: string | any;
 }) => {
   return (
     <div>
-      <p className="text-base font-normal text-foreground-9">{title}</p>
+      <p className="text-base font-bold text-foreground-9">{title}</p>
 
       {text && (
         <p

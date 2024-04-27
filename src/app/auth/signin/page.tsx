@@ -23,14 +23,20 @@ const SignIn = () => {
       email: values.email,
       password: values.password,
     });
+    console.log(response, "user response");
     setIsPending(false);
+
+    
 
     if (response?.error) handleError({ error: response?.error });
     else {
-      handleSuccess({ data: "Login successfully" });
+      handleSuccess({ data: "" });
       push("/");
     }
   };
+
+  
+
 
   const handleSignInWithGoogle = async () => {
     await signIn("google", { redirect: true });
