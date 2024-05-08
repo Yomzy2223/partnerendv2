@@ -2,6 +2,7 @@ import axios from "axios";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import useMediaQuery from "./useMediaQuery";
+import { useSession } from "next-auth/react"
 // import { saveAs } from "file-saver";
 
 export const useGlobalFunctions = () => {
@@ -11,6 +12,10 @@ export const useGlobalFunctions = () => {
   const isDesktop = useMediaQuery("(min-width: 800px)");
   // Get a new searchParams string by merging the current
   // searchParams with a provided key/value pair
+  
+  const session = useSession();
+  const userCloudFolder = session.data?.user?.fullName + "-" + session.data?.user?.id;
+
   const createQueryString = useCallback(
     (name: string, value: string | number) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -43,6 +48,7 @@ export const useGlobalFunctions = () => {
     deleteQueryString,
     setQuery,
     isDesktop,
+    userCloudFolder
   };
 };
 
@@ -74,22 +80,4 @@ export const uploadFileToCloudinary = async ({
   });
 };
 
-// export const downloadFileFromCloudinary = (
-//   cloudinaryLink: string,
-//   fileName: string
-// ) => {
-//   const result = axios
-//     .get(cloudinaryLink, {
-//       responseType: "blob",
-//     })
-//     .then((res) => {
-//       console.log(res);
-//       saveAs(res.data, fileName);
-//     })
-//     .catch((err) => {
-//       console.log(err.message);
-//       throw new Error(err);
-//     });
 
-//   return result;
-// };

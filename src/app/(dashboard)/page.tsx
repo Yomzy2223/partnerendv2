@@ -42,8 +42,8 @@ const Home = () => {
         <AnalyticsCard3
           title="Pending tasks"
           total={pendingTaskLength ? pendingTaskLength.length : 0}
-          current={24}
-          previous={87}
+          current={pendingTaskLength ? pendingTaskLength.length : 0}
+          previous={pendingTaskLength ? pendingTaskLength.length : 0}
         />
         <AnalyticsCard3
           title="Amount Earned"
@@ -68,13 +68,11 @@ const Home = () => {
         </div>
       </CardWrapper>
 
-
       <CardWrapper className="p-0" title="Ongoing tasks">
         <GeneralTable
           tableHeaders={tableHeaders}
           tableBody={tableBody}
           hideSearch
-          // serviceTableNav={serviceTableNav}
         />
       </CardWrapper>
       <CardWrapper>

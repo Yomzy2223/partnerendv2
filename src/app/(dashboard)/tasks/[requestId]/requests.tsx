@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useParams } from "next/navigation";
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { useActions } from "../(status)/actions";
@@ -14,14 +14,12 @@ import { FileInputMod } from "@/components/file/fileInput2";
 import { Button } from "flowbite-react";
 import { PlusCircle } from "lucide-react";
 import { useAction, isFileType } from "./actions";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useDynamic } from "@/hooks/useDynamic";
 import { uploadFileToCloudinary } from "@/hooks/globalFunctions";
 import { UseFormSetValue } from "react-hook-form";
 import { LucideIcon } from "lucide-react";
-
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 
 type requestDetailFormType = {
   id: string;
@@ -40,6 +38,7 @@ type requestDetailFormType = {
   updatedAt: string;
   isDeprecated: boolean;
 };
+
 interface FieldType {
   id?: string;
   type: string;
@@ -61,15 +60,9 @@ interface IProps {
   submitHandler: ({
     values,
     setEdit,
-    fileData,
   }: {
     values: { [x: string]: any };
     setEdit: Dispatch<SetStateAction<boolean>>;
-    fileData?: {
-      fileName: string;
-      fileLink: string;
-      fileType: string;
-    };
   }) => void;
 }
 
@@ -138,65 +131,47 @@ const getDynamicFieldSchema = ({
   return z.object(schema);
 };
 
-const TaskDetails = ({ info, isEdit, isNew }: IProps) => {
+
+
+const TaskDetails = ({
+  info,
+  isEdit,
+  isNew,
+}: IProps ) => {
   const { requestId } = useParams();
   const [edit, setEdit] = useState(isNew || false);
   const [type, setType] = useState(info?.type);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [hasSelectedFile, setHasSelectedFile] = useState(false);
+  
   const [fileInputCount, setFileInputCount] = useState(1);
   const { eachRequestDetails } = useActions();
+  console.log("eachRequestDetails", eachRequestDetails)
+
   const requestDetails = eachRequestDetails?.data?.data;
 
-  
+  console.log("requestDetails", requestDetails);
+
   const formSchema = getDynamicFieldSchema({
     type,
     hasSelectedFile,
   });
+
   type formType = z.infer<typeof formSchema>;
 
+  
 
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = useForm<formType>({
-    resolver: zodResolver(formSchema),
-  });
-
-  const submitHandler = ({
-    values,
-    setEdit,
-    fileData,
-  }: {
-    values: { [x: string]: any };
-    setEdit: Dispatch<SetStateAction<boolean>>;
-    fileData?: {
-      fileName: string;
-      fileLink: string;
-      fileType: string;
-    };
-  }) => {
-    const newValues = fileData
-      ? { ...values, ...fileData }
-      : values;
-    console.log("Submitting values:", newValues);
+  const submitHandler = ({ values, setEdit }) => {
+    // Your submit handling logic goes here
+    console.log('Submitting values:', values);
+    // Call setEdit if needed
     if (setEdit) {
       setEdit(true);
     }
-  }
+  };
 
-  const submitFormHandler = async (
-    values: Record<any, any>
-  ) => {
-    if(!info) return
-    let resArray: any[] = [];
-
-    try {
-      
-    }
-  }
-  
-  async function onSubmit(values: formType) {
+  async function onSubmit(e:any, values: formType) {
+    e.preventDefault()
     const file = values?.documentTemp;
     if (file) {
       const response = await uploadFileToCloudinary({
@@ -205,27 +180,27 @@ const TaskDetails = ({ info, isEdit, isNew }: IProps) => {
           setUploadProgress(progress);
         },
       });
-      console.log("response", response)
       const data = response?.data;
       if (data) {
-        const fileData = {
+        const newValues = {
           ...values,
           fileName: data.original_filename,
           fileLink: data.secure_url,
           fileType: data.secure_url.split(".").pop(),
         };
-        submitHandler({ values, setEdit, fileData });
+        submitHandler({ values: newValues, setEdit });
       }
       return;
     }
 
     if (values?.fileName && values?.fileLink && values?.fileType) {
-      const fileData = {
+      const newValues = {
+        ...values,
         fileName: values.fileName,
         fileLink: values.fileLink,
         fileType: values.fileType,
       };
-      submitHandler({ values, setEdit, fileData });
+      submitHandler({ values: newValues, setEdit });
       return;
     }
     submitHandler({ values, setEdit });
@@ -233,13 +208,13 @@ const TaskDetails = ({ info, isEdit, isNew }: IProps) => {
 
 
   
-  
   const handleAddDocument = () => {
     setFileInputCount(fileInputCount + 1);
   };
 
   return (
     <div>
+      
       <div className="flex flex-col gap-8">
         <RequestDetailsSectionWrapper
           title="Business Information"
@@ -247,46 +222,50 @@ const TaskDetails = ({ info, isEdit, isNew }: IProps) => {
           raiseIssueAction={() => {}}
           className="flex flex-col gap-6"
         >
-          <TextWithDetails
-            title="Operational Country"
-            text={requestDetails?.product.country}
+          <TextWithDetails 
+              title="Operational Country"
+              text={requestDetails?.product.country}
           />
           <TextWithDetails
             title="Product Type"
             text={requestDetails?.currentState}
           />{" "}
+          
         </RequestDetailsSectionWrapper>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit} >
           <RequestDetailsSectionWrapper
             title="Upload Documents"
             icon={<BriefcaseIcon />}
           >
+            
             {[...Array(fileInputCount)].map((_, index) => (
-              <div className="pt-4" >
-                <FileInput key={index} name="" />
+              <div className="pt-4">
+                  <FileInput key={index} name="" />
               </div>
+              
             ))}
-            <div className="flex justify-between w-full mt-4">
-              <Button
-                color="ghost"
-                size="fit"
-                className="my-4 text-foreground-5"
-                onClick={handleAddDocument}
-              >
-                <PlusCircle size={20} />
-                Add Document
+          <div className="flex justify-between w-full mt-4">
+            <Button color="ghost" size="fit" className="my-4 text-foreground-5" onClick={handleAddDocument}>
+              <PlusCircle size={20} />
+              Add Document
+            </Button>
+              
+            <div>
+              <Button type="submit">
+                Send To Sidebrief
               </Button>
-
-              <div >
-                <Button type="submit">Send To Sidebrief</Button>
-              </div>
             </div>
+          </div>
+            
           </RequestDetailsSectionWrapper>
         </form>
+        
       </div>
     </div>
+  
   );
 };
 
 export default TaskDetails;
+

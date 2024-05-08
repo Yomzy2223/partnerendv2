@@ -23,6 +23,7 @@ export const useActions = () => {
     
     
     const userId = session?.user.id
+    console.log("user ID", userId)
     const { data: userData, isLoading, isError } = useGetAssignedTasks(userId);
     
     console.log("userData", userData)
