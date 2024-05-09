@@ -37,7 +37,14 @@ const config = {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
-
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        tertiary: {
+          DEFAULT: "hsl(var(--tertiary))",
+          foreground: "hsl(var(--tertiary-foreground))",
+        },
         yellow: {
           DEFAULT: "hsl(var(--yellow))",
           dark: "hsl(var(--sb-yellow-dark))",
@@ -52,10 +59,6 @@ const config = {
         },
         input: {
           DEFAULT: "hsl(var(--input))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
         },
         label: {
           DEFAULT: "hsl(var(--label))",
@@ -116,8 +119,7 @@ const config = {
       authPattern: "url(../assets/svg/auth_pattern.svg)",
       serviceCardBG: "url(../assets/images/service-card-background.png)",
       "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-      "gradient-conic":
-        "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
     },
   },
   plugins: [require("tailwindcss-animate")],

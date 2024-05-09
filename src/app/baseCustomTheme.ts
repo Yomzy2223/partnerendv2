@@ -17,8 +17,7 @@ export const customTheme: ThemeProps = {
           white: "border border-white enabled:hover:bg-foreground/10",
           primary:
             "border border-primary !text-primary bg-transparent enabled:hover:bg-primary-dark",
-          magenta:
-            "border border-magenta bg-transparent enabled:hover:bg-magenta-dark",
+          magenta: "border border-magenta bg-transparent enabled:hover:bg-magenta-dark",
         },
         on: "flex justify-center bg-white text-foreground transition-all duration-75 ease-in group-enabled:group-hover:bg-opacity-0 group-enabled:group-hover:text-inherit dark:bg-gray-900 dark:text-white w-full",
       },
@@ -29,8 +28,7 @@ export const customTheme: ThemeProps = {
         base: "flex justify-center items-center gap-2 !px-4 !py-2",
       },
       spinnerSlot: "h-max",
-      disabled:
-        "cursor-not-allowed opacity-50 hover:opacity-50 active:opacity-50",
+      disabled: "cursor-not-allowed opacity-50 hover:opacity-50 active:opacity-50",
     },
     textInput: {
       field: {
@@ -44,7 +42,8 @@ export const customTheme: ThemeProps = {
     },
     checkbox: {
       root: {
-        base: "h-4 w-4 rounded focus:ring-0",
+        base: "h-4 w-4 rounded focus:ring-offset-0 focus:ring-1 appearance-none bg-muted border-none rounded  bg-white ring-1 ring-border checked:bg-primary checked:ring-primary disabled:opacity-70",
+        color: {},
       },
     },
   },

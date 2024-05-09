@@ -50,7 +50,7 @@ import TaskDetails from './RequestDetail'
 
 const page = () => {
   return (
-    <TaskDetails/>
+    <TaskDetails />
   )
 }
 

@@ -1,8 +1,4 @@
-import { TaskCard } from "@/components/cards/TaskCard";
-import useProductApi from "@/hooks/useProductApi";
-import { useParams } from "next/navigation";
 import AvailableTask from "./available/[userId]/available";
-// import { useCustomActions } from "@/hooks/useCustomActions";
 
 const Tasks = () => {
   return (

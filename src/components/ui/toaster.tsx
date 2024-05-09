@@ -19,22 +19,12 @@ export function Toaster() {
 
   return (
     <ToastProvider>
-      {toasts.map(function ({
-        id,
-        title,
-        description,
-        action,
-        success,
-        ...props
-      }) {
+      {toasts.map(function ({ id, title, description, action, success, ...props }) {
         return (
           <Toast
             key={id}
             {...props}
-            className={cn(
-              "justify-start border border-primary py-4",
-              props.className
-            )}
+            className={cn("justify-start border border-primary py-4", props.className)}
           >
             {success !== null &&
               (success ? (
@@ -44,9 +34,7 @@ export function Toaster() {
               ))}
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
-              {description && (
-                <ToastDescription>{description}</ToastDescription>
-              )}
+              {description && <ToastDescription>{description}</ToastDescription>}
             </div>
             {action}
             <ToastClose />

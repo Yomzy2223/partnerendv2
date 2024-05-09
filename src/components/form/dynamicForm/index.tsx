@@ -1,36 +1,38 @@
-"use client";
-
-import {
-  Checkbox,
-  FileInput,
-  Label,
-  Radio,
-  Select,
-  Textarea,
-  TextInput,
-  ToggleSwitch,
-} from "flowbite-react";
-import React, {useState} from "react";
+import { Label, Textarea, TextInput } from "flowbite-react";
+import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { DynamicFormProps } from "./constants";
+import { DynamicFormProps } from "../constants";
+import ComboBox from "./comboBox";
 import { cn } from "@/lib/utils";
-import { StaticImageData } from "next/image";
-import { LuEye, LuEyeOff } from "react-icons/lu";
+import MultiSelectCombo from "./multiSelectCombo";
+import InputWithTags from "@/components/input/inputWithTags";
+import { countries } from "countries-list";
+import { FileInput } from "@/components/file/fileInput";
+import { useGetCountries } from "@/services/service";
+import { getDynamicSchema, getVisibilityStatus, resetDependees } from "./actions";
+import ListOptions from "./listOptions";
 
 const DynamicForm = ({
   children,
   formInfo,
-  defaultValues = {},
+  defaultValues,
   formSchema,
   onFormSubmit,
-  className,
+  disableAll,
   formClassName,
+  className,
+  fullFormInfo,
 }: DynamicFormProps) => {
-  type formType = z.infer<typeof formSchema>;
+  const [rerender, setRerender] = useState(false);
 
-  const [showPassword, setShowPassword] = useState(false);
+  let subFormsRef = useRef<any>([]);
+  const dynamic = getDynamicSchema({ subForms: subFormsRef.current });
+
+  const schema = formSchema || dynamic.schema;
+
+  type formType = z.infer<typeof schema>;
 
   // Form definition
   const {
@@ -40,115 +42,207 @@ const DynamicForm = ({
     formState: { errors },
     getValues,
     setValue,
+    control,
+    reset,
+    resetField,
   } = useForm<formType>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(schema),
     defaultValues,
   });
 
   // Submit handler
   function onSubmit(values: formType) {
-    onFormSubmit && onFormSubmit(values);
+    onFormSubmit && onFormSubmit({ values, reset });
   }
 
-  const handleIconClick = () => {
-    setShowPassword((prev) => !prev);
-  }
-  
+  useEffect(() => {
+    const newFormInfo = formInfo?.filter((field) =>
+      getVisibilityStatus({ field, getValues, fullFormInfo })
+    );
+    subFormsRef.current = newFormInfo;
+  }, [getValues()]);
 
-  const currentIcon: React.FC<React.SVGProps<SVGSVGElement>> = showPassword ? LuEye : LuEyeOff;
+  useEffect(() => {
+    (formInfo || []).forEach((form) => {
+      if (form.value) {
+        setValue(form.name, form.value);
+      }
+      if (form.fileName && form.fileLink && form.fileType && form.fileSize) {
+        setValue(form.name, {
+          fileName: form.fileName,
+          fileLink: form.fileLink,
+          fileType: form.fileType,
+          fileSize: form.fileSize,
+        });
+      }
+    });
+  }, [setValue, formInfo]);
+
+  const countriesRes = useGetCountries();
+  const sidebriefCountries = countriesRes.data?.data?.data?.map((el) => el.name);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={cn(
-        "flex flex-col gap-8 justify-between flex-1",
+        "flex flex-col gap-8 justify-between flex-1 max-w-[500px] min-h-full",
         formClassName
       )}
     >
-      <div className={cn("space-y-8", className)}>
-        {formInfo.map((el, i: number) => {
+      <div className={cn("flex flex-col justify-start gap-8", className)}>
+        {(formInfo || []).map((el, i: number) => {
           const isTextInput =
-            el.type === "text"  || el.type === "email";
+            el.type === "text" ||
+            el.type === "email" ||
+            el.type === "phone number" ||
+            el.type === "promocode" ||
+            el.type === "password" ||
+            el.type === "short answer";
+          const isSelect =
+            el.type === "select" ||
+            el.type === "countries-all" ||
+            el.type === "countries-operation";
           const errorMsg = errors[el.name]?.message;
+          let type = el.type === "phone number" ? "number" : "text";
+          if (el.type === "password") type = "password";
+
+          let selectOptions = el.options;
+          switch (el.type) {
+            case "countries-all":
+              selectOptions = Object.values(countries).map((country) => country.name);
+              break;
+            case "countries-operation":
+              selectOptions = sidebriefCountries;
+          }
+
+          let showField = getVisibilityStatus({ field: el, getValues, fullFormInfo });
+          if (!showField) return;
 
           return (
             <div key={i}>
               {el.label && (
                 <div className="mb-2 block">
-                  <Label htmlFor={el.name} value={el.label} {...el.labelProp} />
+                  <Label htmlFor={el.name} value={el.label} />
                 </div>
               )}
 
               {isTextInput && (
                 <TextInput
                   id={el.name}
-                  type={el.type}
-                  sizing={el.size || "md"}
+                  type={type}
+                  sizing="md"
                   helperText={<>{errorMsg}</>}
-                  color={errors[el.name] && "failure"}
-                  className={errorMsg ? "focus:[&_input]:outline-none" : ""}
+                  color={errorMsg && "failure"}
+                  className={errorMsg ? "focus:[&_input]:ring-0" : ""}
                   {...el.textInputProp}
                   {...register(el.name)}
                 />
               )}
 
-              {el.type === "password" && (
-                <TextInput 
-                  id={el.name}
-                  type={showPassword ? "password" : "text"}
-                  // helperText={<>{errors[el.name]?.message}</>}
-                  helperText={<>{errorMsg}</>}
-                  color={errors[el.name] && "failure"}
-                  {...el.textInputProp}
-                  {...register(el.name)}
-                  rightIcon={currentIcon}
-                  onClick={handleIconClick}
-                />
-              )}
-
-              {el.type === "textarea" && (
+              {el.type === "paragraph" && (
                 <Textarea
                   id={el.name}
-                  rows={7}
                   helperText={<>{errorMsg}</>}
-                  color={errors[el.name] && "failure"}
-                  className={cn("p-2.5 resize-none", {
-                    "focus:outline-none": errorMsg,
-                  })}
-                  {...el.textAreaProp}
+                  color={errorMsg && "failure"}
+                  className={errorMsg ? "focus:[&_input]:ring-0" : ""}
+                  {...el.textInputProp}
                   {...register(el.name)}
                 />
               )}
 
-              {el.type === "select" && el.selectOptions && (
-                <Select
-                  id={el.name}
-                  color={errors[el.name] && "failure"}
-                  helperText={<>{errors[el.name]?.message}</>}
-                  {...el.selectProp}
-                  {...register(el.name)}
-                >
-                  {el.selectOptions.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </Select>
+              {(el.type === "checkbox" || el.type === "multiple choice") && (
+                <ListOptions
+                  name={el.name}
+                  options={el.options}
+                  type={el.type}
+                  allowOther={el.allowOther}
+                  setValue={setValue}
+                  defaultValue={el.value}
+                  errorMsg={errorMsg as string}
+                />
               )}
 
-              {el.type === "checkbox" && (
-                <Checkbox id={el.name} defaultChecked {...register(el.name)} />
-              )}
-
-              {el.type === "radio" && (
-                <Radio id={el.name} {...register(el.name)} />
-              )}
-
-              {el.type === "file" && (
+              {(el.type === "document template" || el.type === "document upload") && (
                 <FileInput
-                  id={el.name}
-                  helperText="A profile picture is useful to confirm your are logged into your account"
-                  {...register(el.name)}
+                  onFileChange={(file) => setValue(el.name, file, { shouldValidate: true })}
+                  fileName={el.fileName || ""}
+                  fileLink={el.fileLink || ""}
+                  fileType={el.fileType || ""}
+                  fileSize={el.fileSize || ""}
+                  errorMsg={errorMsg as string}
                 />
               )}
+
+              {isSelect && (
+                <ComboBox
+                  name={el.name}
+                  options={selectOptions || []}
+                  setValue={setValue}
+                  errorMsg={errorMsg?.toString()}
+                  selectProp={el.selectProp}
+                  placeholder={el.placeholder}
+                  handleSelect={(value) => {
+                    setRerender(!rerender);
+                    resetDependees({ question: el.label || "", fullFormInfo, setValue });
+                    el.handleSelect && el.handleSelect(value);
+                  }}
+                  fieldName="options"
+                  leftContent={el.leftContent}
+                  defaultValue={el.value as string}
+                  disabled={disableAll}
+                  optionsLoading={el.optionsLoading || countriesRes.isLoading}
+                  optionsErrorMsg={el.optionsErrorMsg}
+                />
+              )}
+
+              {el.type === "objectives" && (
+                <MultiSelectCombo
+                  name={el.name}
+                  options={el.options || []}
+                  setValue={setValue}
+                  selectProp={el.selectProp}
+                  fieldName="objectives"
+                  defaultTags={el.value as string[]}
+                  disabled={disableAll}
+                  optionsLoading={el.optionsLoading}
+                  errorMsg={errorMsg?.toString()}
+                />
+              )}
+
+              {el.type === "business name" && (
+                <InputWithTags
+                  submitErr={errorMsg}
+                  maxTag={4}
+                  minTagChars={3}
+                  handleKeyDown={(tags) => setValue(el.name, tags)}
+                  defaultTags={el.value as string[]}
+                  disabled={disableAll}
+                  errors={{
+                    empty: "Enter a business name",
+                    exists: "Business name already exists",
+                    length: "You can only enter 4 business names",
+                    minTagChars: "Business name must be more than 3 characters",
+                  }}
+                />
+              )}
+
+              {/* {el.type === "objectives" && (
+                <BusinessObjectiveInput
+                  id={el.id!}
+                  // question={el.question}
+                  options={el.selectOptions || []}
+                  value={watch(el.name) || []}
+                  setValue={(value: string[]) => setValue(el.name, value)}
+                  error={errorMsg as string | undefined}
+                />
+              )} */}
+              {/* {el.type === "countries" && (
+                <CountryInput
+                  id={el.id}
+                  value={watch(el.name) || ""}
+                  setValue={(value: string) => setValue(el.name, value)}
+                />
+              )} */}
             </div>
           );
         })}
@@ -160,14 +254,3 @@ const DynamicForm = ({
 };
 
 export default DynamicForm;
-
-//  {
-//    el.type === "toggle" && (
-//      <ToggleSwitch
-//        checked={getValues()[el.name]}
-//        label="Toggle me (checked)"
-//        // {...register(el.name)}
-//        onChange={() => setValue(el.name, !getValues()[el.name])}
-//      />
-//    );
-//  }

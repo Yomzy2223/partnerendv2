@@ -10,33 +10,28 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useResponse } from "@/hooks/useResponse";
 import { Oval } from "react-loading-icons";
+import { IFormInput } from "@/components/form/constants";
 
 const SignIn = () => {
   const [isPending, setIsPending] = useState(false);
   const { push } = useRouter();
   const { handleError, handleSuccess } = useResponse();
 
-  const handleSignIn = async (values: any) => {
+  const handleSignIn = async ({ values }: { values: formType }) => {
     setIsPending(true);
     const response = await signIn("signIn", {
       redirect: false,
       email: values.email,
       password: values.password,
     });
-    console.log(response, "user response");
     setIsPending(false);
-
-    
 
     if (response?.error) handleError({ error: response?.error });
     else {
-      handleSuccess({ data: "" });
+      handleSuccess({ data: "Login successful" });
       push("/");
     }
   };
-
-  
-
 
   const handleSignInWithGoogle = async () => {
     await signIn("google", { redirect: true });
@@ -98,7 +93,7 @@ const SignIn = () => {
 
 export default SignIn;
 
-const formInfo = [
+const formInfo: IFormInput[] = [
   {
     name: "email",
     label: "Enter Email Address",
@@ -121,6 +116,8 @@ const signInSchema = z.object({
   email: z.string().email("Enter a valid email").min(1, { message: "Enter your email address" }),
   password: z.string().min(6, "Password must be 6 or more characters"),
 });
+
+type formType = z.infer<typeof signInSchema>;
 
 const defaultValues = {
   email: "",

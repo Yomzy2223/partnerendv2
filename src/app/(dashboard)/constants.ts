@@ -165,20 +165,24 @@ export const useTableInfo = () => {
   //     ],
   //   },
   // ];
+  
   const tableBody = [
     {
       rowProps: { onClick },
       rowInfo: [
-        { text: "" },
-        { text: "" },
+        { text: "01" },
+        { text: "Nil" },
         {
-          // text: "",
+          text: "Business certification",
           cellProps: {
             className: cellClassName,
           },
         },
+        {
+          text: "Assigned"
+        }
       ],
-    }
+    },
   ]
 
   return {

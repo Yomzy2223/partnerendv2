@@ -15,13 +15,11 @@ import { useSession } from "next-auth/react";
 
 const Home = () => {
   const { tableHeaders, tableBody } = useTableInfo();
-  const { userData  } = useActions();
+  const { userData } = useActions();
 
   const pendingTaskLength = userData?.data?.data;
-  console.log("pendingTaskLength", pendingTaskLength)
-  console.log("pendingTaskLength", pendingTaskLength ? pendingTaskLength.length : 0);
-  
-  const {data: session} = useSession();
+
+  const { data: session } = useSession();
   return (
     <DoChecks
       items={["d"]}
@@ -33,24 +31,14 @@ const Home = () => {
           title={session?.user.fullName}
           info="Joined Sidebrief on the 13th of February 2023."
         />
-        <AnalyticsCard3
-          title="Total Tasks Done"
-          total="0"
-          current={244}
-          previous={87}
-        />
+        <AnalyticsCard3 title="Total Tasks Done" total="0" current={244} previous={87} />
         <AnalyticsCard3
           title="Pending tasks"
           total={pendingTaskLength ? pendingTaskLength.length : 0}
-          current={24}
-          previous={87}
+          current={pendingTaskLength ? pendingTaskLength.length : 0}
+          previous={pendingTaskLength ? pendingTaskLength.length : 0}
         />
-        <AnalyticsCard3
-          title="Amount Earned"
-          total="0"
-          current={244}
-          previous={87}
-        />
+        <AnalyticsCard3 title="Amount Earned" total="0" current={244} previous={87} />
       </div>
       <CardWrapper title="Newly added tasks" className="my-2 flex-1 p-0">
         <div className="flex gap-4 flex-wrap px-4 pb-4">
@@ -68,14 +56,8 @@ const Home = () => {
         </div>
       </CardWrapper>
 
-
       <CardWrapper className="p-0" title="Ongoing tasks">
-        <GeneralTable
-          tableHeaders={tableHeaders}
-          tableBody={tableBody}
-          hideSearch
-          // serviceTableNav={serviceTableNav}
-        />
+        <GeneralTable tableHeaders={tableHeaders} tableBody={tableBody} hideSearch />
       </CardWrapper>
       <CardWrapper>
         <AnalyticsHeader

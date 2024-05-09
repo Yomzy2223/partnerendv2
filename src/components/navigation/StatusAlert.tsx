@@ -1,56 +1,59 @@
-import Image from "next/image"
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert"
-import { kyc } from "@/assets/icons"
-import { PartnerKYCModal } from "../profile/PartnerKYCModal"
-import { Button } from "flowbite-react"
-import { useState } from "react"
-import { useGlobalFunctions } from "@/hooks/globalFunctions"
-import { usePathname } from "next/navigation";
-export default function AlertDemo() {
-    const [openModal, setOpenModal] = useState(false);
+import { Button } from "flowbite-react";
+import { useState } from "react";
+import RequirementForm from "../form/requirementForm";
+import { useGetCountryReqForm } from "@/services/requirementQA";
+import { useSession } from "next-auth/react";
+import { Check } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-    const closeModal = () => {
-        setOpenModal(false);
-    };
-    const { isDesktop } = useGlobalFunctions();
+export default function StatusAlert({ hasSubmittedQA }: { hasSubmittedQA: boolean }) {
+  const [open, setOpen] = useState(false);
 
-    const pathname = usePathname();
-    const isHome = pathname === "/"
-    return (
-        <div className="mr-8">
-            { isHome && (
-                    <>
-                         {isDesktop ? (
-                                <div className="border rounded-md border-none bg-[#FDF2F2] m-2 p-3.5">
-                                    <span className="inline-flex items-center space-x-2 font-bold text-magenta">
-                                        <Image src={kyc} alt="" className="w-4 h-4" />
-                                        <h2 >KYC</h2>
-                                    </span>
-                    
-                                    
-                                    <div className="font-bold">
-                                        <span className="text-sm text-magenta">It is essential that you fill your documents before proceeding. </span>
-                                        <Button size="fit" color="ghost" className="w-max" onClick={() => setOpenModal(true)}>
-                                            <span className="text-sm mr-2 text-primary">click here to upload</span>{" "}
-                                        </Button> 
-                                    </div>
-                                
-                                </div>
-                            ) : (
-                                <Button size="fit" color="ghost" className="w-max" onClick={() => setOpenModal(true)}>
-                                    <Image src={kyc} alt="" className="w-4 h-4" />
-                                    <span className="text-sm mr-2 text-magenta">Complete KYC</span>{" "}
-                                </Button> 
-                        )}
-                    </>
-                )
-            }
-            <PartnerKYCModal open={openModal} close={closeModal}/>
-        </div>
-        
-    )
+  const session = useSession();
+  const country = session.data?.user?.country?.toLowerCase();
+
+  const countryReqFormRes = useGetCountryReqForm({ country });
+  const countryReqForms = countryReqFormRes.data?.data?.data;
+
+  return (
+    <div className="mr-4 absolute right-0 top-0">
+      <div className="border rounded-md border-none bg-destructive m-2 p-3.5">
+        <span
+          className={cn("inline-flex items-center space-x-2 font-semibold text-magenta", {
+            " text-destructive-foreground": hasSubmittedQA,
+          })}
+        >
+          <div
+            className={cn("p-1 rounded-full bg-secondary", {
+              "bg-destructive-foreground": hasSubmittedQA,
+            })}
+          >
+            <Check size={10} strokeWidth={6} color="#fff" />
+          </div>
+          <h2>Activation</h2>
+        </span>
+
+        {hasSubmittedQA ? (
+          <div>
+            <span className="text-sm text-destructive-foreground">
+              Our team is currently going through your application. We will notify you soon.{" "}
+            </span>
+            <Button size="fit" color="ghost" className="w-max" onClick={() => setOpen(true)}>
+              <span className="text-sm mr-2 text-primary">Edit form</span>
+            </Button>
+          </div>
+        ) : (
+          <div className="font-medium">
+            <span className="text-sm text-magenta">
+              To receive tasks, you need to activate your account.{" "}
+            </span>
+            <Button size="fit" color="ghost" className="w-max" onClick={() => setOpen(true)}>
+              <span className="text-sm mr-2 text-primary">Click here to verify</span>{" "}
+            </Button>
+          </div>
+        )}
+      </div>
+      <RequirementForm open={open} setOpen={setOpen} forms={countryReqForms || []} />
+    </div>
+  );
 }

@@ -5,33 +5,34 @@ import DynamicForm from "@/components/form/dynamicForm";
 import { AuthStepper } from "@/components/stepper/auth";
 import { useResponse } from "@/hooks/useResponse";
 import { Button } from "flowbite-react";
-import { ArrowRight, ArrowRightCircle } from "lucide-react";
+import { ArrowRightCircle } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Oval } from "react-loading-icons";
 import * as z from "zod";
-import useCountryApi from "@/hooks/useCountryApi";
-import { CountryTypes } from "@/types/type";
+import { IFormInput } from "@/components/form/constants";
+import { useGetCountries } from "@/services/service";
+import { countries, TCountryCode } from "countries-list";
 
 const SignUp = () => {
   const [isPending, setIsPending] = useState(false);
   const { push } = useRouter();
   const { handleError, handleSuccess } = useResponse();
-  const { getAllCountriesQuery } = useCountryApi();
-    const { data: countries } = getAllCountriesQuery;
 
-    const countryList = countries?.data.data
+  const countriesRes = useGetCountries();
+  const countriesData = countriesRes.data?.data.data;
+  const countriesNames = countriesData?.map((el) => el.name);
 
-    const countryNames: string[] = countryList?.map((country: CountryTypes) => {
-      const name = country.name;
-      return name.charAt(0).toUpperCase() + name.slice(1);
-  }) || [];
-  
-  console.log("countryNames", countryNames);
+  const worldCountries = Object.keys(countries).map(
+    (el: string) => countries[el as TCountryCode].name
+  );
+  const originalCountries = worldCountries.filter((el) =>
+    countriesNames?.find((each) => each.toLowerCase() === el.toLowerCase())
+  );
 
-  const handleSignUp = async (values: signUpType) => {
+  const handleSignUp = async ({ values }: { values: signUpType }) => {
     setIsPending(true);
     const response = await signIn("signUp", {
       redirect: false,
@@ -62,7 +63,7 @@ const SignUp = () => {
     // console.log(response);
   };
 
-  const formInfo = [
+  const formInfo: IFormInput[] = [
     {
       name: "name",
       label: "Hello, Tell us your name",
@@ -103,7 +104,6 @@ const SignUp = () => {
         placeholder: "Home Address",
       },
     },
-    
     {
       name: "referral",
       label: "Select Country",
@@ -111,11 +111,8 @@ const SignUp = () => {
       selectProp: {
         placeholder: "Select a referral",
       },
-      selectOptions: countryNames,
-  
+      options: originalCountries || [],
     },
-  
-  
   ];
   return (
     <AuthFormWrapper
@@ -169,11 +166,9 @@ const SignUp = () => {
 
 export default SignUp;
 
-
-
 const signUpSchema = z.object({
   name: z.string().min(1, { message: "Enter your first name" }),
-  organization:  z.string().min(1, { message: "Enter your organization name" }),
+  organization: z.string().min(1, { message: "Enter your organization name" }),
   email: z.string().email("Enter a valid email").min(1, { message: "Enter your email address" }),
   password: z.string().min(6, "Password must be 6 or more characters"),
   referral: z.string().min(1, { message: "Select a Country" }),
@@ -184,7 +179,7 @@ type signUpType = z.infer<typeof signUpSchema>;
 
 const defaultValues = {
   name: "",
-  organization:"",
+  organization: "",
   email: "",
   password: "",
   referral: "",
