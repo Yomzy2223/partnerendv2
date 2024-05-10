@@ -6,31 +6,39 @@ import { Upload } from "@/assets/icons";
 import { cn } from "@/lib/utils";
 import { FileIcon, defaultStyles, DefaultExtensionType } from "react-file-icon";
 import { Button } from "flowbite-react";
-import { DownloadIcon, PenIcon, PenLineIcon } from "lucide-react";
+import { DownloadIcon, PenIcon, PenLineIcon, X } from "lucide-react";
 import { saveAs } from "file-saver";
 
 export const FileInput = ({
   fileName,
   fileLink,
   onFileChange,
+  editMode = true,
   fileType,
   fileSize,
   errorMsg,
-  onlyDownload,
+  onFileRemove,
+  defaultFile,
 }: {
   fileName: string;
   fileLink: string;
   fileType: string;
   fileSize: string;
-  onFileChange?: (file: File) => void;
   errorMsg?: string;
-  onlyDownload?: boolean;
+  onFileChange: (file: File) => void;
+  onFileRemove?: (file?: File) => void;
+  editMode?: boolean;
+  defaultFile?: File;
 }) => {
   const [file, setFile] = useState<File>();
 
+  useEffect(() => {
+    defaultFile && setFile(defaultFile);
+  }, [file]);
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFile(acceptedFiles[0]);
-    onFileChange && onFileChange(acceptedFiles[0]);
+    onFileChange(acceptedFiles[0]);
   }, []);
 
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
@@ -41,9 +49,8 @@ export const FileInput = ({
     accept: {
       "application/msword": [],
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [],
-      "application/pdf": [],
     },
-    disabled: onlyDownload || false,
+    disabled: !editMode,
   });
 
   const fileExtension = file?.name.split(".").pop() || fileType;
@@ -64,20 +71,30 @@ export const FileInput = ({
     >
       {/* <input {...getInputProps({})} /> */}
       {!file && !fileName && !fileLink ? (
-        <>
-          <Upload />
-          {isDragActive ? (
-            <p className="text-gray-500 text-sm leading-normal">Drop the files here ...</p>
-          ) : (
-            <div className="flex flex-col items-center">
-              <p className="text-gray-500 text-sm leading-normal">Drag files here to upload</p>
-              <p className="underline text-xs leading-normal text-primary">or browse for files</p>
-            </div>
-          )}
-        </>
+        editMode ? (
+          <>
+            <Upload />
+            {isDragActive ? (
+              <p className="text-gray-500 text-sm leading-normal">Drop the files here ...</p>
+            ) : (
+              <div className="flex flex-col items-center">
+                <p className="text-gray-500 text-sm leading-normal">Drag files here to upload</p>
+                <p className="underline text-xs leading-normal text-primary">or browse for files</p>
+              </div>
+            )}
+          </>
+        ) : (
+          <p className="flex items-center gap-1 text-gray-500 text-sm leading-normal">
+            Click edit button below to upload a file {<PenLineIcon size={15} />}
+          </p>
+        )
       ) : (
         <div className="flex w-full justify-between">
-          <div className={"flex items-center space-x-3 w-4/6"}>
+          <div
+            className={cn("flex items-center space-x-3", {
+              "text-foreground-5": !editMode,
+            })}
+          >
             <div className="w-4 h-4">
               <FileIcon
                 extension={fileExtension}
@@ -85,35 +102,41 @@ export const FileInput = ({
                 glyphColor={`${fileExtension === "pdf" && "red"}`}
               />
             </div>
-            <div className="max-w-full">
-              <p className="text-sm underline text-nowrap text-ellipsis overflow-hidden">
-                {file?.name || fileName}
-              </p>
+            <div>
+              <p className="text-sm underline">{file?.name || fileName}</p>
               <p className="text-xs">{size || 0}</p>
             </div>
           </div>
-          <div className="flex gap-3">
-            {!onlyDownload && (
-              <Button color="link" size="fit" onClick={open}>
-                change
+          {(file || fileLink) && (
+            <div className="flex items-center gap-4">
+              <Button
+                color="ghost"
+                size="fit"
+                className="text-foreground-5"
+                onClick={() => {
+                  setFile(undefined);
+                  onFileRemove && onFileRemove(file);
+                }}
+              >
+                <X size={16} />
               </Button>
-            )}
-            {(file || fileLink) && (
+              {editMode && (
+                <Button color="link" size="fit" className="text-foreground-5" onClick={open}>
+                  <PenIcon size={18} />
+                </Button>
+              )}
               <Button
                 color="link"
                 size="fit"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  saveAs(file || fileLink, file?.name || fileName);
-                }}
+                onClick={() => saveAs(file || fileLink, file?.name || fileName)}
               >
                 <DownloadIcon size={18} />
               </Button>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       )}
-      <p className="text-xs text-destructive-foreground ">{errorMsg}</p>
+      <p className="text-destructive-foreground text-sm">{errorMsg}</p>
     </div>
   );
 };

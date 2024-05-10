@@ -6,14 +6,16 @@ import TextWithDetails from "@/components/texts/textWithDetails";
 import RequestDetailsSectionWrapper from "@/components/wrappers/requestDetailsSectionWrapper";
 import { useGetRequestBusinessQuery, useGetRequestQAFormsQuery } from "@/services/tasks";
 import { Button } from "flowbite-react";
-import { BriefcaseIcon, PlusCircle } from "lucide-react";
+import { BriefcaseIcon } from "lucide-react";
 import React from "react";
+import DocSection from "./docSection";
 
 const page = ({ params }: { params: { requestId: string } }) => {
-  const requestQAFormsRes = useGetRequestQAFormsQuery({ requestId: params.requestId });
+  const { requestId } = params;
+  const requestQAFormsRes = useGetRequestQAFormsQuery({ requestId });
   const requestQAForms = requestQAFormsRes.data?.data?.data;
 
-  const requestBusinessRes = useGetRequestBusinessQuery({ requestId: params.requestId });
+  const requestBusinessRes = useGetRequestBusinessQuery({ requestId });
   const requestBusiness = requestBusinessRes.data?.data?.data?.[0];
 
   const nonPersonForms = requestQAForms?.filter((el) => el.type !== "person");
@@ -80,30 +82,14 @@ const page = ({ params }: { params: { requestId: string } }) => {
             </RequestDetailsSectionWrapper>
           );
         })}
-        {/* <form onSubmit={handleSubmit(onSubmit)}>
-          <RequestDetailsSectionWrapper title="Upload Documents" icon={<BriefcaseIcon />}>
-            {[...Array(fileInputCount)].map((_, index) => (
-              <div className="pt-4">
-                <FileInput key={index} name="" />
-              </div>
-            ))}
-            <div className="flex justify-between w-full mt-4">
-              <Button
-                color="ghost"
-                size="fit"
-                className="my-4 text-foreground-5"
-                onClick={handleAddDocument}
-              >
-                <PlusCircle size={20} />
-                Add Document
-              </Button>
-
-              <div>
-                <Button type="submit">Send To Sidebrief</Button>
-              </div>
-            </div>
-          </RequestDetailsSectionWrapper>
-        </form> */}
+        <RequestDetailsSectionWrapper
+          title="Upload Documents"
+          icon={<BriefcaseIcon />}
+          raiseIssueAction={() => {}}
+          className="flex flex-col gap-6"
+        >
+          <DocSection businessId={requestBusiness?.id || ""} requestId={requestId} />
+        </RequestDetailsSectionWrapper>
       </div>
     </div>
   );

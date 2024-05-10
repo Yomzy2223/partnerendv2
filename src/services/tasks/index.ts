@@ -8,6 +8,7 @@ import {
   getRequestBusiness,
   getRequestQAForms,
   rejectTasks,
+  updateBusinessInfo,
 } from "./operations";
 
 export const useAcceptTasksMutation = () => {
@@ -79,5 +80,21 @@ export const useGetRequestBusinessQuery = ({ requestId }: { requestId: string })
     queryKey: ["request", requestId],
     queryFn: ({ queryKey }) => getRequestBusiness(queryKey[1]),
     enabled: !!requestId,
+  });
+};
+
+export const useUpdateBusinessInfoMutation = () => {
+  const queryClient = useQueryClient();
+  const { handleError } = useResponse();
+
+  return useMutation({
+    mutationKey: ["update business info"],
+    mutationFn: updateBusinessInfo,
+    onError(error, variables, context) {
+      handleError({ title: "Failed", error });
+    },
+    onSuccess(data, variables, context) {
+      queryClient.invalidateQueries({ queryKey: ["business info"] });
+    },
   });
 };

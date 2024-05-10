@@ -50,7 +50,23 @@ export type TRequestQASubForm = {
   updatedAt: string;
 };
 
-export type TBusiness = {
+export type TBusinessInfoCreate = {
+  rcNumber: number;
+  companyName: string;
+  companyEmail: string;
+  companyType: string;
+  branchAddress: string;
+  city: string;
+  classification: string;
+  headOfficeAddress: string;
+  lga: string;
+  affiliates: number;
+  shareCapital: string;
+  state: string;
+  status: string;
+};
+
+export type TBusinessInfoGet = {
   id: string;
   rcNumber: string;
   companyName: string;

@@ -133,7 +133,7 @@ const DynamicForm = ({
                   sizing="md"
                   helperText={<>{errorMsg}</>}
                   color={errorMsg && "failure"}
-                  className={errorMsg ? "focus:[&_input]:ring-0" : ""}
+                  className={errorMsg ? "focus:[&_input]:ring-0 focus:[&_input]:outline-0" : ""}
                   {...el.textInputProp}
                   {...register(el.name)}
                 />

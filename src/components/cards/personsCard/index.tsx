@@ -36,7 +36,7 @@ const PersonsCard = ({ title, info }: { title: string; info: IPersonCard[][] }) 
 
         return (
           <div
-            // key={i}
+            key={ind}
             className={cn("transition-all border border-border rounded", {
               "w-[235px]": !clicked,
               "w-[600px] overflow-auto border-none": !!clicked,
@@ -53,6 +53,7 @@ const PersonsCard = ({ title, info }: { title: string; info: IPersonCard[][] }) 
                   .fill("")
                   ?.map((el, i) => (
                     <Button
+                      key={i}
                       color="ghost"
                       size="fit"
                       className={cn("text-foreground-5 px-2.5 py-0.5", {
@@ -118,7 +119,7 @@ export default PersonsCard;
 
 export interface IPersonCard {
   field: string;
-  value: string;
+  value: string | string[];
   type?: TFieldTypes;
   fileName?: string;
   fileLink?: string;
