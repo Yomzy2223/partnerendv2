@@ -66,7 +66,7 @@ const SignIn = () => {
             className="text-foreground hover:underline"
             href="/auth/forgot-password"
           >
-            Forgotten password
+            Forgotten password?
           </Button>
         </div>
         <div className="flex items-center justify-between gap-10">

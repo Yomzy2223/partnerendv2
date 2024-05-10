@@ -22,6 +22,7 @@ export const useGetService = (id: string) => {
   return useQuery({
     queryKey: ["service", id],
     queryFn: () => getService({ id }),
+    enabled: !!id,
   });
 };
 
@@ -29,12 +30,14 @@ export const useGetServiceForms = (serviceId: string) =>
   useQuery({
     queryKey: ["serviceForm", serviceId],
     queryFn: () => getServiceForms({ serviceId }),
+    enabled: !!serviceId,
   });
 
 export const useGetServiceFormSubForms = (serviceFormId: string) =>
   useQuery({
     queryKey: ["serviceFormSubForms", serviceFormId],
     queryFn: () => getServiceFormSubForms({ serviceFormId }),
+    enabled: !!serviceFormId,
   });
 
 export const useGetCountries = () =>

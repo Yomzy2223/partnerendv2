@@ -6,6 +6,7 @@ import { getSession } from "next-auth/react";
 export type rootType<T = any> = {
   message: string;
   data: T;
+  total?: number;
 };
 
 export type errorType = AxiosError;

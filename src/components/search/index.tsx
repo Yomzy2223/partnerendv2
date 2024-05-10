@@ -9,17 +9,6 @@ import React, {
   SVGProps,
 } from "react";
 
-interface propTypes {
-  type?: string;
-  icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
-  placeholder?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-  searchText?: string;
-  onSubmit?: MouseEventHandler<HTMLButtonElement>;
-  buttonProps?: HTMLAttributes<HTMLButtonElement>;
-  wrapperClassName?: string;
-}
-
 const SearchComp = ({
   type,
   icon,
@@ -31,12 +20,7 @@ const SearchComp = ({
   wrapperClassName,
 }: propTypes) => {
   return (
-    <div
-      className={cn(
-        "hidden w-full max-w-[364px] h-max md:flex",
-        wrapperClassName
-      )}
-    >
+    <div className={cn("hidden w-full max-w-[364px] h-max md:flex", wrapperClassName)}>
       <TextInput
         type={type || "text"}
         icon={icon ? icon : () => <Search color="#727474" />}
@@ -64,3 +48,14 @@ const SearchComp = ({
 };
 
 export default SearchComp;
+
+interface propTypes {
+  type?: string;
+  icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
+  placeholder?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  searchText?: string;
+  onSubmit?: MouseEventHandler<HTMLButtonElement>;
+  buttonProps?: HTMLAttributes<HTMLButtonElement>;
+  wrapperClassName?: string;
+}

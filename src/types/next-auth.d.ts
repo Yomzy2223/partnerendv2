@@ -10,6 +10,7 @@ interface User {
   phone?: number;
   picture?: string;
   referral?: string;
+  country?: string;
   refreshToken: string;
   token: string;
   tokenExpiresIn: number;

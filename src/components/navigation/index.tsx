@@ -23,7 +23,6 @@ export const Navigation = ({ navRoutes, className, inactiveClassName = "" }: pro
   const partnerReqQARes = useGetPartnerReqQA({ userId });
   const partnerReqQA = partnerReqQARes.data?.data?.data;
   const hasSubmittedQA = (partnerReqQA?.length ?? 0) > 0;
-  console.log(partnerReqQA);
 
   useEffect(() => {
     if (partnerReqQARes.isSuccess) {
@@ -80,7 +79,9 @@ export const Navigation = ({ navRoutes, className, inactiveClassName = "" }: pro
           </div>
         );
       })}
-      {isHome && openAlert && <StatusAlert hasSubmittedQA={hasSubmittedQA} />}
+      {isHome && openAlert && (
+        <StatusAlert hasSubmittedQA={hasSubmittedQA} setOpenAlert={setOpenAlert} />
+      )}
     </div>
   );
 };

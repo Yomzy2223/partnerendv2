@@ -1,77 +1,94 @@
-"use client"
-import { useState } from "react";
-import { Badge, Checkbox, Button } from "flowbite-react";
+"use client";
+
 import Image from "next/image";
-import { useActions } from "@/app/(dashboard)/tasks/(status)/actions";
-import {  useSearchParams } from "next/navigation";
+import { countries, getCountryCode, TCountryCode } from "countries-list";
+import { Button } from "flowbite-react";
+import { useAcceptTasksMutation, useRejectTasksMutation } from "@/services/tasks";
+import { Oval } from "react-loading-icons";
+import ConfirmAction from "@/components/confirmAction";
+import { useState } from "react";
 
-export const TaskCard = ({
-	id,
-	countryName,
-	countryCode,
-	businessName,
-	servicename,
-	onAcceptTask,
-	onRejectTask
-}: {
-	id:string;
-	countryName: string;
-	countryCode: string;
-	businessName: string;
-	servicename:string;
-	onAcceptTask: (taskId: string) => void;
-	onRejectTask: (taskId: string) => void;
-}) => {
+export const TaskCard = ({ id, productCountry, productName, serviceName, userId }: IProps) => {
+  const [openConfirm, setOpenConfirm] = useState(false);
 
-	// const { acceptTask } = useActions();
-	const [isChecked, setIsChecked] = useState(false);
-    // const { get } = useSearchParams();
-	
-	// const handleAcceptTask = () => {
-	// 	const userId = get("userId") as string || "5c99014f-4d5f-4771-9c6e-8e56d3afd819";
-        
-	// 	const taskValues = {
-    //         userId: userId,
-    //         requestIds: ["4220aa59-efe0-4818-bcc1-e26da84ff192"]
-    //     };
+  const accepTasks = useAcceptTasksMutation();
+  const rejectTasks = useRejectTasksMutation();
 
-    //     acceptTask(taskValues);
-    // };
+  const handleAcceptTasks = () => {
+    accepTasks.mutate({ userId, requestIds: [id] });
+  };
 
-	const handleCheckboxChange = () => {
-        setIsChecked(!isChecked); 
-        onAcceptTask(id);
-    }
-	return (
-		<div className="p-3 border border-gray-200 rounded">
-			<div className="flex flex-col gap-3.5 items-start">
-				<div className="flex justify-between w-full">
-					<div className="flex gap-4 items-center">
-						<div className="relative w-7 h-5 rounded overflow-hidden outline-4 outline-black">
-							<Image
-								src={`https://flagcdn.com/w160/${countryCode}.png`}
-								alt={countryName}
-								fill
-							/>
-						</div>
-						<p>Nigeria</p>
-					</div>
-					<Badge color={"green"}>{servicename}</Badge>
-				</div>
-				<p>{businessName}</p>
-				{/* <Button color="ghost" size={"fit"}>
-					<div className="flex space-x-2 items-center">
-						<Checkbox checked={isChecked} onChange={handleCheckboxChange}/>
-						<p className="font-normal text-sm leading-normal">
-							Accept task
-						</p>
-					</div>
-				</Button> */}
-				 <div className="flex justify-between w-full">
-					<Button color="primary" onClick={() => onAcceptTask(id)} >Accept Task</Button>
-					<Button color="danger" onClick={() => onRejectTask(id)} title="Reject" className="border-gray-200 border-2">Reject </Button>
-				</div>
-			</div>
-		</div>
-	);
+  const handleRejectTasks = () => {
+    rejectTasks.mutate({ userId, requestIds: [id] });
+  };
+
+  const originalCountry = Object.keys(countries)
+    .map((el: string) => countries[el as TCountryCode].name)
+    .find((el) => el.toLowerCase() === productCountry?.toLowerCase());
+
+  let countryCode = getCountryCode(originalCountry || "")
+    ?.toString()
+    ?.toLowerCase();
+
+  return (
+    <div className="border border-border rounded p-4 space-y-3">
+      <div className="flex justify-between gap-6">
+        <div className="flex gap-3">
+          <Image
+            src={`https://flagcdn.com/w160/${countryCode}.png`}
+            alt={productCountry}
+            width={28}
+            height={24}
+            className="rounded object-contain"
+          />
+          <p className="text-sm ">{originalCountry}</p>
+        </div>
+        <span className="text-xs bg-success text-success-foreground px-2.5 py-0.5 rounded">
+          {serviceName}
+        </span>
+      </div>
+
+      <p className="">{productName}</p>
+
+      <div className="flex justify-between w-full">
+        <Button
+          color="primary"
+          onClick={handleAcceptTasks}
+          isProcessing={accepTasks.isPending}
+          processingSpinner={<Oval color="white" strokeWidth={4} className="h-6 w-6" />}
+        >
+          Accept Task
+        </Button>
+        <Button
+          outline
+          onClick={() => setOpenConfirm(true)}
+          title="Reject"
+          className="border-gray-200 border-2"
+        >
+          Reject
+        </Button>
+      </div>
+
+      {openConfirm && (
+        <ConfirmAction
+          open={openConfirm}
+          setOpen={setOpenConfirm}
+          confirmAction={handleRejectTasks}
+          title="Reject Task"
+          description="Are you sure you want to reject this task?"
+          isLoading={rejectTasks.isPending}
+          dismissible={!rejectTasks.isPending}
+          isDelete
+        />
+      )}
+    </div>
+  );
 };
+
+interface IProps {
+  id: string;
+  productCountry: string;
+  productName: string;
+  serviceName: string;
+  userId: string;
+}

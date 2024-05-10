@@ -38,7 +38,7 @@ const RequirementForm = ({
       size="4xl"
       dismissible={false}
     >
-      <div className="flex flex-col gap-2 max-w-[500px] w-full">
+      <div className="flex flex-col gap-2 max-w-[600px] w-full">
         {forms.length > 1 ? (
           <Tabs
             aria-label="Form tabs"

@@ -7,14 +7,15 @@ import { ArrowRightCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import * as z from "zod";
 import useUserApi from "@/hooks/useUsersApi";
-import { useGlobalFucntions } from "@/hooks/globalFunctions";
+import { useGlobalFunctions } from "@/hooks/globalFunctions";
 import { useSearchParams } from "next/navigation";
 import { Oval } from "react-loading-icons";
+import { IFormInput } from "@/components/form/constants";
 
 const ForgotPassword = () => {
   const [formValue, setformValue] = useState<forgotPasswordType>({ email: "" });
 
-  const { setQuery } = useGlobalFucntions();
+  const { setQuery } = useGlobalFunctions();
   const { forgotPasswordMutation } = useUserApi();
   const { mutate, isSuccess, isPending } = forgotPasswordMutation;
 
@@ -25,7 +26,7 @@ const ForgotPassword = () => {
     if (isSuccess && formValue.email) setQuery("verification", formValue.email);
   }, [isSuccess]);
 
-  const handleForgot = async (values: forgotPasswordType) => {
+  const handleForgot = async ({ values }: { values: forgotPasswordType }) => {
     setformValue(values);
     mutate(values.email);
   };
@@ -110,7 +111,7 @@ const ForgotPassword = () => {
 
 export default ForgotPassword;
 
-const formInfo = [
+const formInfo: IFormInput[] = [
   {
     name: "email",
     label: "Enter Email Address",

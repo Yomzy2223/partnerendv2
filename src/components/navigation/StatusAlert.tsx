@@ -1,12 +1,18 @@
 import { Button } from "flowbite-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import RequirementForm from "../form/requirementForm";
 import { useGetCountryReqForm } from "@/services/requirementQA";
 import { useSession } from "next-auth/react";
-import { Check } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export default function StatusAlert({ hasSubmittedQA }: { hasSubmittedQA: boolean }) {
+export default function StatusAlert({
+  hasSubmittedQA,
+  setOpenAlert,
+}: {
+  hasSubmittedQA: boolean;
+  setOpenAlert: Dispatch<SetStateAction<boolean>>;
+}) {
   const [open, setOpen] = useState(false);
 
   const session = useSession();
@@ -18,20 +24,25 @@ export default function StatusAlert({ hasSubmittedQA }: { hasSubmittedQA: boolea
   return (
     <div className="mr-4 absolute right-0 top-0">
       <div className="border rounded-md border-none bg-destructive m-2 p-3.5">
-        <span
-          className={cn("inline-flex items-center space-x-2 font-semibold text-magenta", {
-            " text-destructive-foreground": hasSubmittedQA,
-          })}
-        >
-          <div
-            className={cn("p-1 rounded-full bg-secondary", {
-              "bg-destructive-foreground": hasSubmittedQA,
+        <div className="flex items-center justify-between gap-6">
+          <span
+            className={cn("inline-flex items-center space-x-2 font-semibold text-magenta", {
+              " text-destructive-foreground": hasSubmittedQA,
             })}
           >
-            <Check size={10} strokeWidth={6} color="#fff" />
-          </div>
-          <h2>Activation</h2>
-        </span>
+            <div
+              className={cn("p-1 rounded-full bg-secondary", {
+                "bg-destructive-foreground": hasSubmittedQA,
+              })}
+            >
+              <Check size={10} strokeWidth={6} color="#fff" />
+            </div>
+            <h2>Activation</h2>
+          </span>
+          <Button size="fit" color="ghost" className="w-max" onClick={() => setOpenAlert(false)}>
+            <X size={14} color="hsl(var(--destructive-foreground))" />
+          </Button>
+        </div>
 
         {hasSubmittedQA ? (
           <div>

@@ -22,7 +22,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
   const session = useSession();
   const userId = session.data?.user?.id;
 
-  const saveReqtQA = useSavePartnerReqQA();
+  const saveReqQA = useSavePartnerReqQA();
   const updateReqQA = useUpdatePartnerReqQA();
 
   const reqFormQARes = useGetPartnerReqQA({ userId });
@@ -96,7 +96,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
       return answer;
     };
 
-    let resArray: TSubformQACreate[] = [];
+    let resArray: (TSubformQACreate & { id: string })[] = [];
 
     try {
       setIsUploading(true);
@@ -106,7 +106,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
           let isANewFile: boolean = file instanceof File;
 
           let response = {
-            id: getQAField(el.question)?.id,
+            id: getQAField(el.question)?.id || "",
             question: el.question,
             answer: getAnswer(el.question) || "",
             type: el.type,
@@ -143,17 +143,24 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
       setIsUploading(false);
     }
 
+    const subFormWithId = resArray?.filter((field) => !!field.id);
+    const subFormWithNoId = resArray?.filter((field) => !field.id);
+
     const payload: TFormQACreate = {
       title: info.title,
       description: info.description,
       type: info.type,
       compulsory: info.compulsory,
       isGeneral: false,
-      subForm: resArray,
+      subForm: QAForm?.id ? subFormWithId : resArray,
     };
     console.log(payload);
 
     if (QAForm?.id) {
+      if (subFormWithNoId?.length > 0) {
+        console.log(subFormWithNoId);
+        // Create multiple subforms
+      }
       updateReqQA.mutate(
         { id: QAForm.id, form: payload },
         {
@@ -165,7 +172,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
       );
       return;
     }
-    saveReqtQA.mutate(
+    saveReqQA.mutate(
       { userId, form: payload },
       {
         onSuccess: (data) => {
@@ -176,7 +183,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
     );
   };
 
-  const isPending = saveReqtQA.isPending || updateReqQA.isPending;
+  const isPending = saveReqQA.isPending || updateReqQA.isPending;
 
   return { submitFormHandler, isPending, formInfo, reqFormQA };
 };

@@ -85,7 +85,7 @@ const DynamicForm = ({
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={cn(
-        "flex flex-col gap-8 justify-between flex-1 max-w-[500px] min-h-full",
+        "flex flex-col gap-8 justify-between flex-1 max-w-[600px] min-h-full",
         formClassName
       )}
     >

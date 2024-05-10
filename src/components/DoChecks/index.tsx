@@ -8,13 +8,19 @@ const DoChecks = ({
   errorText,
   emptyText,
   className,
+  isLoading,
+  Skeleton,
 }: {
   children: ReactNode;
-  items: (string | number)[];
+  items: any[];
   errorText?: string;
   emptyText?: string;
   className?: string;
+  isLoading?: boolean;
+  Skeleton?: any;
 }) => {
+  if (isLoading) return Skeleton;
+
   if (errorText) return <p>{errorText}</p>;
 
   if (items?.length === 0)
