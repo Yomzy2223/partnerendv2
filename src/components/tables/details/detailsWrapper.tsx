@@ -43,7 +43,7 @@ const TableDetailsWrapper = ({
 
       <div
         className={cn(
-          "flex-1 rounded border border-border p-4 w-full max-w-[542px] overflow-auto shadow-none",
+          "flex-1 rounded border border-border p-4 min-w-full sm:min-w-20 w-full max-w-[542px] overflow-auto shadow-none",
           className
         )}
       >

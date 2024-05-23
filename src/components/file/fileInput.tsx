@@ -25,7 +25,7 @@ export const FileInput = ({
   fileType: string;
   fileSize: string;
   errorMsg?: string;
-  onFileChange: (file: File) => void;
+  onFileChange?: (file: File) => void;
   onFileRemove?: (file?: File) => void;
   editMode?: boolean;
   defaultFile?: File;
@@ -38,7 +38,7 @@ export const FileInput = ({
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFile(acceptedFiles[0]);
-    onFileChange(acceptedFiles[0]);
+    onFileChange && onFileChange(acceptedFiles[0]);
   }, []);
 
   const { getRootProps, getInputProps, open, isDragActive } = useDropzone({

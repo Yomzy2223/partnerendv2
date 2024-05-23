@@ -109,6 +109,8 @@ const TableDetails = ({
           </TableDetailsWrapper>
         );
       })}
+
+      {children}
     </DoChecks>
   );
 };
