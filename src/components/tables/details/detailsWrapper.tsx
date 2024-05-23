@@ -23,7 +23,7 @@ const TableDetailsWrapper = ({
     <div
       className={cn(
         "flex flex-col gap-2 md:gap-8 sm:flex-row",
-        { "gap-0": previewMode },
+        { "gap-0 md:gap-0": previewMode },
         wrapperClassName
       )}
     >

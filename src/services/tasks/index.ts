@@ -45,7 +45,7 @@ export const useRejectTasksMutation = () => {
 
 export const useGetAssignedTasks = ({ userId }: { userId: string }) => {
   return useQuery({
-    queryKey: ["tasks", userId],
+    queryKey: ["Assigned Tasks", userId],
     queryFn: ({ queryKey }) => getAssignedTasks(queryKey[1]),
     enabled: !!userId,
   });
@@ -53,7 +53,7 @@ export const useGetAssignedTasks = ({ userId }: { userId: string }) => {
 
 export const useGetAcceptedTasks = ({ userId }: { userId: string }) => {
   return useQuery({
-    queryKey: ["tasks", userId],
+    queryKey: ["Accepted Tasks", userId],
     queryFn: ({ queryKey }) => getAcceptedTasks(queryKey[1]),
     enabled: !!userId,
   });
@@ -61,7 +61,7 @@ export const useGetAcceptedTasks = ({ userId }: { userId: string }) => {
 
 export const useGetCompletedTasks = ({ userId }: { userId: string }) => {
   return useQuery({
-    queryKey: ["tasks", userId],
+    queryKey: ["Completed Tasks", userId],
     queryFn: ({ queryKey }) => getCompletedTasks(queryKey[1]),
     enabled: !!userId,
   });
@@ -77,7 +77,7 @@ export const useGetRequestQAFormsQuery = ({ requestId }: { requestId: string }) 
 
 export const useGetRequestBusinessQuery = ({ requestId }: { requestId: string }) => {
   return useQuery({
-    queryKey: ["request", requestId],
+    queryKey: ["business info", requestId],
     queryFn: ({ queryKey }) => getRequestBusiness(queryKey[1]),
     enabled: !!requestId,
   });

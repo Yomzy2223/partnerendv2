@@ -35,6 +35,8 @@ const TableSection = ({
     );
     setSelectedRows(allSelected ? removed : included);
   };
+
+  console.log(preview);
   return (
     <Table hoverable striped>
       <Table.Head>
