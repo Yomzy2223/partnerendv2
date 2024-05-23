@@ -1,4 +1,4 @@
-import DialogWrapper from "@/components/wrapper/dialogWrapper";
+import DialogWrapper from "@/components/wrappers/dialogWrapper";
 import { useUpdateBusinessInfoMutation } from "@/services/tasks";
 import { Button } from "flowbite-react";
 import React, { Dispatch, SetStateAction } from "react";

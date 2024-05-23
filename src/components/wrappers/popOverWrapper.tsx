@@ -1,6 +1,10 @@
 import { useGlobalFunctions } from "@/hooks/globalFunctions";
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +51,9 @@ const PopOverWrapper = ({
             {children}
           </DrawerTrigger>
           <DrawerContent className="max-h-screen">
-            <div className={cn("overflow-auto mt-4 border-t", cn)}>{content}</div>
+            <div className={cn("overflow-auto mt-4 border-t", cn)}>
+              {content}
+            </div>
           </DrawerContent>
         </Drawer>
       )}

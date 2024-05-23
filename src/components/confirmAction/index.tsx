@@ -1,7 +1,7 @@
 import { Button } from "flowbite-react";
 import React, { Dispatch, ReactNode, SetStateAction } from "react";
 import { Oval } from "react-loading-icons";
-import DialogWrapper from "../wrapper/dialogWrapper";
+import DialogWrapper from "../wrappers/dialogWrapper";
 
 const ConfirmAction = ({
   children,
@@ -30,9 +30,7 @@ const ConfirmAction = ({
       dismissible={dismissible}
     >
       <div className="flex flex-col gap-4">
-        <p className="sb-text-16 text-foreground-5 text-center">
-          {description}
-        </p>
+        <p className="sb-text-16 text-foreground-5 text-center">{description}</p>
         {children}
 
         <div className="flex justify-center items-center gap-4 mt-1">
@@ -41,9 +39,7 @@ const ConfirmAction = ({
             color={isDelete ? "failure" : "primary"}
             isProcessing={isLoading}
             disabled={isLoading}
-            processingSpinner={
-              <Oval color="white" strokeWidth={4} className="h-5 w-5" />
-            }
+            processingSpinner={<Oval color="white" strokeWidth={4} className="h-5 w-5" />}
           >
             Yes, I'm sure
           </Button>

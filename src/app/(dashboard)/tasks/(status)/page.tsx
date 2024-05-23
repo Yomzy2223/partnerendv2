@@ -12,6 +12,7 @@ export default function AvailableTasks() {
   const assignedTasksRes = useGetAssignedTasks({ userId });
   const assignedTasks = assignedTasksRes.data?.data?.data || [];
   console.log(assignedTasks);
+  console.log(useSession().data);
 
   return (
     <div className=" p-4 border rounded border-border">

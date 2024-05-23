@@ -1,16 +1,16 @@
 "use client";
 
-import React, { MouseEvent, useState } from "react";
+import React, { ChangeEventHandler, MouseEventHandler, useState } from "react";
 import { ITableBody } from "./constants";
-import PaginatedItems, { IPagination } from "./pagination";
+import PaginatedItems from "./pagination";
 import { useSearchParams } from "next/navigation";
 import DoChecks from "@/components/DoChecks";
 import TableSection from "./tableSection";
 import HeaderSection from "./headerSection";
-import CardWrapper from "@/components/wrappers/cardWrapper";
-import TableSkeleton from "./TableSkeleton";
+import TableSkeleton from "../skeleton/TableSkeleton";
 
 const GeneralTable = ({
+  title,
   tableHeaders,
   tableBody,
   tableNav,
@@ -21,6 +21,8 @@ const GeneralTable = ({
   onSearchSubmit,
   handleFilter,
   dataLoading,
+  errorMsg,
+  preview,
   hideHeader,
 }: IProps) => {
   const [selectOn, setSelectOn] = useState(false);
@@ -29,68 +31,82 @@ const GeneralTable = ({
   const searchParams = useSearchParams();
   const tablePage = parseInt(searchParams.get("page") || "1");
 
-  const offset = (tablePage - 1) * itemsPerPage;
+  const offset = itemsPerPage ? (tablePage - 1) * itemsPerPage : 0;
+
+  const tableBodyPreview = tableBody.map((row) => ({
+    ...row,
+    rowInfo: row.rowInfo.slice(0, 3),
+  }));
 
   return (
-    <CardWrapper className="pb-0">
-      <div>
-        {!hideHeader && (
-          <HeaderSection
-            selectOn={selectOn}
-            setSelectOn={setSelectOn}
-            selectedRows={selectedRows}
-            setSelectedRows={setSelectedRows}
-            tableNav={tableNav}
-            onSearchChange={onSearchChange}
-            onSearchSubmit={onSearchSubmit}
-            handleFilter={handleFilter}
-          />
-        )}
+    <div className="flex flex-col flex-1 max-w-full pb-0 bg-background rounded-lg shadow-md">
+      {!hideHeader && (
+        <HeaderSection
+          title={title}
+          selectOn={selectOn}
+          setSelectOn={setSelectOn}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+          tableNav={tableNav}
+          onSearchChange={onSearchChange}
+          onSearchSubmit={onSearchSubmit}
+          handleFilter={handleFilter}
+          preview={preview}
+        />
+      )}
 
-        <DoChecks
-          items={tableBody}
-          emptyText="No data"
-          className="max-w-full overflow-auto"
-          Skeleton={<TableSkeleton />}
-          isLoading={dataLoading}
-        >
-          <TableSection
-            onSelect={onRowSelect}
-            selectOn={selectOn}
-            selectedRows={selectedRows}
-            setSelectedRows={setSelectedRows}
-            tableBody={tableBody}
-            tableHeaders={tableHeaders}
-          />
-          {itemsLength > itemsPerPage && (
-            <div className="flex flex-col justify-between gap-4 sticky left-0 p-4 md:flex-row md:items-center md:py-5">
-              <p className="inline-flex gap-1 text-sm text-foreground-5">
-                Showing
-                <span className="text-foreground font-medium">
-                  {offset + 1}-{offset + tableBody?.length}
-                </span>
-                of <span className="text-foreground font-medium">{itemsLength}</span>
-              </p>
-              <PaginatedItems itemsLength={itemsLength} itemsPerPage={itemsPerPage} />
-            </div>
-          )}
-        </DoChecks>
-      </div>
-    </CardWrapper>
+      <DoChecks
+        items={tableBody}
+        emptyText="No data"
+        className="flex flex-col justify-between flex-1 max-w-full overflow-auto"
+        Skeleton={<TableSkeleton />}
+        errorText={errorMsg}
+        isLoading={dataLoading}
+      >
+        <TableSection
+          onSelect={onRowSelect}
+          selectOn={selectOn}
+          selectedRows={selectedRows}
+          setSelectedRows={setSelectedRows}
+          tableBody={preview ? tableBodyPreview : tableBody}
+          tableHeaders={preview ? tableHeaders.slice(0, 3) : tableHeaders}
+          preview={preview}
+        />
+
+        {itemsLength && itemsPerPage && itemsLength > itemsPerPage ? (
+          <div className="flex flex-col justify-between gap-4 sticky left-0 p-4 md:flex-row md:items-center md:py-5">
+            <p className="inline-flex gap-1 text-sm text-foreground-5">
+              Showing
+              <span className="text-foreground font-medium whitespace-nowrap">
+                {offset + 1}-{offset + tableBody?.length}
+              </span>
+              of <span className="text-foreground font-medium">{itemsLength}</span>
+            </p>
+            <PaginatedItems itemsLength={itemsLength} itemsPerPage={itemsPerPage} />
+          </div>
+        ) : (
+          ""
+        )}
+      </DoChecks>
+    </div>
   );
 };
 
 export default GeneralTable;
 
-interface IProps extends IPagination {
+interface IProps {
+  title?: string;
   tableHeaders: string[];
   tableBody: ITableBody[];
   tableNav?: string[];
-  // tableNav: { name: string; value: string; text: string }[];
   onRowSelect?: (selected: string[]) => void;
-  onSearchChange?: (value: string) => void;
-  onSearchSubmit?: (e: MouseEvent<HTMLButtonElement>) => void;
+  onSearchChange?: ChangeEventHandler<HTMLInputElement>;
+  onSearchSubmit?: MouseEventHandler<HTMLButtonElement>;
   handleFilter?: (value?: string) => void;
   dataLoading?: boolean;
+  errorMsg?: string;
+  preview?: string;
+  itemsPerPage?: number;
+  itemsLength?: number;
   hideHeader?: boolean;
 }

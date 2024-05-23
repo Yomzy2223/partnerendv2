@@ -3,7 +3,7 @@ import BusinessInfoForm from "@/components/form/businessInfoForm";
 import { uploadFileToCloudinary, useGlobalFunctions } from "@/hooks/globalFunctions";
 import { useCreateUserDocMutation } from "@/services/userDocument";
 import { Button } from "flowbite-react";
-import { PlusCircle, X } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 

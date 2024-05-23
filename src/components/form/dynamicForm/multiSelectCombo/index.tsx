@@ -5,7 +5,7 @@ import { Button } from "flowbite-react";
 import { cn } from "@/lib/utils";
 import { UseFormSetValue } from "react-hook-form";
 import Content from "./content";
-import PopOverWrapper from "@/components/wrapper/popOverWrapper";
+import PopOverWrapper from "@/components/wrappers/popOverWrapper";
 
 // A combo box to select multiple options
 const MultiSelectCombo = ({

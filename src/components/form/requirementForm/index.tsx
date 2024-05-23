@@ -1,6 +1,6 @@
 "use client";
 
-import DialogWrapper from "@/components/wrapper/dialogWrapper";
+import DialogWrapper from "@/components/wrappers/dialogWrapper";
 import { TFormQAGet, TReqForm } from "@/services/requirementQA/types";
 import { Tabs, TabsRef } from "flowbite-react";
 import { Dispatch, SetStateAction, useRef, useState } from "react";

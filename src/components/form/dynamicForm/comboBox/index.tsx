@@ -1,11 +1,10 @@
 import React, { HTMLAttributes, ReactNode, useEffect, useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { UseFormSetValue } from "react-hook-form";
 import ComboContent from "./content";
-import PopOverWrapper from "@/components/wrapper/popOverWrapper";
 import { ChevronDown } from "lucide-react";
 import { Button } from "flowbite-react";
 import { cn } from "@/lib/utils";
+import PopOverWrapper from "@/components/wrappers/popOverWrapper";
 
 const ComboBox = ({
   name,
@@ -23,11 +22,11 @@ const ComboBox = ({
   optionsErrorMsg,
   isMultiCombo,
   className,
+  hideValue,
 }: IProps) => {
   const [openSelect, setOpenSelect] = useState(false);
   const [selectValue, setSelectValue] = useState(defaultValue);
 
-  // console.log(defaultValue, selectValue);
   const findOriginalValue = (value: string) =>
     options.find((el) => el.toLowerCase() === value.toLowerCase()) || "";
 
@@ -62,28 +61,30 @@ const ComboBox = ({
           outline
           role="combobox"
           className={cn(
-            "w-full [&_span]:justify-between [&>span]:!p-2.5",
+            "w-full [&_span]:justify-between [&_span]:gap-2 [&>span]:!p-2.5",
             {
               "border-primary ring-primary ring-1": openSelect && !isMultiCombo,
-              "[&_span]:rounded-none rounded-none border-none bg-transparent": isMultiCombo,
-              "border-destructive-foreground !bg-destructive-foreground": errorMsg,
+              "[&_span]:rounded-none rounded-none border-none bg-transparent whitespace-nowrap":
+                isMultiCombo,
+              "w-max [&>span]:!py-1": hideValue,
             },
             className
           )}
           disabled={disabled}
           {...selectProp}
         >
-          {selectValue ? (
-            <div className="flex gap-1">
-              {leftContent && leftContent}
-              <span>{findOriginalValue(selectValue)}</span>
-            </div>
-          ) : optionsLoading ? (
-            "Loading..."
-          ) : (
-            placeholder || "Select " + (fieldName || name)
-          )}
-          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {!hideValue &&
+            (selectValue ? (
+              <div className="flex gap-1">
+                {leftContent && leftContent}
+                <span>{findOriginalValue(selectValue)}</span>
+              </div>
+            ) : optionsLoading ? (
+              "Loading..."
+            ) : (
+              placeholder || "Select " + (fieldName || name)
+            ))}
+          <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopOverWrapper>
       {errorMsg && <p className="text-sm text-destructive-foreground mt-1">{errorMsg}</p>}
@@ -108,4 +109,5 @@ interface IProps {
   optionsErrorMsg?: string;
   isMultiCombo?: boolean;
   className?: string;
+  hideValue?: boolean;
 }

@@ -1,3 +1,4 @@
+import { ITableBody } from "@/components/tables/generalTable/constants";
 import { cn } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -62,112 +63,9 @@ export const useTableInfo = () => {
   // Services table header
   const tableHeaders = ["S/N", "BUSINESS NAME", "SERVICE TYPE", "STATUS"];
 
-  // Services table body
-  // const tableBody = [
-  //   {
-  //     rowProps: { onClick },
-  //     rowInfo: [
-  //       { text: "01" },
-  //       { text: "Sayo oil and gas" },
-  //       {
-  //         text: "Business certification",
-  //         cellProps: {
-  //           className: cellClassName,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rowProps: { onClick },
-  //     rowInfo: [
-  //       { text: "01" },
-  //       { text: "Sayo oil and gas" },
-  //       {
-  //         text: "Business certification",
-  //         cellProps: {
-  //           className: cn(
-  //             cellClassName,
-  //             "[&_span]:bg-primary-8 [&_span]:text-primary"
-  //           ),
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rowProps: { onClick },
-  //     rowInfo: [
-  //       { text: "01" },
-  //       { text: "Sayo oil and gas" },
-  //       {
-  //         text: "Business certification",
-  //         cellProps: {
-  //           className: cellClassName,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rowProps: { onClick },
-  //     rowInfo: [
-  //       { text: "01" },
-  //       { text: "Sayo oil and gas" },
-  //       {
-  //         text: "Business certification",
-  //         cellProps: {
-  //           className: cn(
-  //             cellClassName,
-  //             "[&_span]:bg-primary-8 [&_span]:text-primary"
-  //           ),
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rowProps: { onClick },
-  //     rowInfo: [
-  //       { text: "01" },
-  //       { text: "Sayo oil and gas" },
-  //       {
-  //         text: "Business certification",
-  //         cellProps: {
-  //           className: cellClassName,
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rowProps: { onClick },
-  //     rowInfo: [
-  //       { text: "01" },
-  //       { text: "Sayo oil and gas" },
-  //       {
-  //         text: "Business certification",
-  //         cellProps: {
-  //           className: cn(
-  //             cellClassName,
-  //             "[&_span]:bg-primary-8 [&_span]:text-primary"
-  //           ),
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     rowProps: { onClick },
-  //     rowInfo: [
-  //       { text: "01" },
-  //       { text: "Sayo oil and gas" },
-  //       {
-  //         text: "Business certification",
-  //         cellProps: {
-  //           className: cellClassName,
-  //         },
-  //       },
-  //     ],
-  //   },
-  // ];
-  
-  const tableBody = [
+  const tableBody: ITableBody[] = [
     {
+      rowId: "",
       rowProps: { onClick },
       rowInfo: [
         { text: "01" },
@@ -179,11 +77,11 @@ export const useTableInfo = () => {
           },
         },
         {
-          text: "Assigned"
-        }
+          text: "Assigned",
+        },
       ],
     },
-  ]
+  ];
 
   return {
     tableHeaders,
