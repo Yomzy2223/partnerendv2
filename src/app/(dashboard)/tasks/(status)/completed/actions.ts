@@ -8,7 +8,6 @@ import {
 } from "@/services/tasks";
 import { countries, TCountryCode } from "countries-list";
 import { format } from "date-fns";
-import { useRouter } from "next/navigation";
 import { Dispatch, MouseEvent, SetStateAction } from "react";
 
 export const useActions = ({
@@ -20,9 +19,7 @@ export const useActions = ({
   preview: string;
   setPreview: Dispatch<SetStateAction<string>>;
 }) => {
-  const { isDesktop } = useGlobalFunctions();
-
-  const router = useRouter();
+  const { isDesktop, setQueriesWithPath } = useGlobalFunctions();
 
   const completedTasksRes = useGetCompletedTasks({ userId });
   const completedTasks = completedTasksRes.data?.data?.data || [];
@@ -33,7 +30,14 @@ export const useActions = ({
   const requestBusiness = requestBusinessRes.data?.data?.data?.[0];
 
   const handleClick = (e: MouseEvent<HTMLTableRowElement>, rowId: string, rowInfo: IRowInfo[]) => {
-    isDesktop ? setPreview(rowId) : router.push(`/services/requests/${rowId}`);
+    isDesktop ? setPreview(rowId) : goToDetailsPage(rowId);
+  };
+
+  const goToDetailsPage = (rowId: string) => {
+    setQueriesWithPath({
+      path: `/tasks/${rowId}`,
+      queries: [{ name: "path", value: "completed" }],
+    });
   };
 
   const tableBody = completedTasks?.map((task, i) => {
@@ -61,5 +65,6 @@ export const useActions = ({
     requestQAFormsRes,
     completedTasksRes,
     requestBusiness,
+    goToDetailsPage,
   };
 };

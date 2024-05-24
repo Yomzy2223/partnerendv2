@@ -7,9 +7,13 @@ import { useAcceptTasksMutation, useRejectTasksMutation } from "@/services/tasks
 import { Oval } from "react-loading-icons";
 import ConfirmAction from "@/components/confirmAction";
 import { useState } from "react";
+import { TGetTasks } from "@/services/tasks/types";
+import { format, isValid } from "date-fns";
 
-export const TaskCard = ({ id, productCountry, productName, serviceName, userId }: IProps) => {
+export const TaskCard = ({ info, userId }: IProps) => {
   const [openConfirm, setOpenConfirm] = useState(false);
+
+  const { id, productCountry, productName, serviceName, assignedAt } = info;
 
   const accepTasks = useAcceptTasksMutation();
   const rejectTasks = useRejectTasksMutation();
@@ -19,7 +23,12 @@ export const TaskCard = ({ id, productCountry, productName, serviceName, userId 
   };
 
   const handleRejectTasks = () => {
-    rejectTasks.mutate({ userId, requestIds: [id] });
+    rejectTasks.mutate(
+      { userId, requestIds: [id] },
+      {
+        onSuccess: () => setOpenConfirm(false),
+      }
+    );
   };
 
   const originalCountry = Object.keys(countries)
@@ -29,6 +38,9 @@ export const TaskCard = ({ id, productCountry, productName, serviceName, userId 
   let countryCode = getCountryCode(originalCountry || "")
     ?.toString()
     ?.toLowerCase();
+
+  const date = isValid(new Date(assignedAt)) ? format(assignedAt, "dd MMM, yyyy") : "";
+  const time = isValid(new Date(assignedAt)) ? format(assignedAt, "p") : "";
 
   return (
     <div className="border border-border rounded p-4 space-y-3">
@@ -48,7 +60,14 @@ export const TaskCard = ({ id, productCountry, productName, serviceName, userId 
         </span>
       </div>
 
-      <p className="">{productName}</p>
+      <div className="flex justify-between gap-4 items-center">
+        <p className="">{productName}</p>
+        <div className="flex items-center gap-1">
+          <span className="text-foreground-5 text-xs">{date}</span>
+          <div className="w-1 h-1 bg-primary rounded-full" />
+          <span className="text-foreground-5 text-xs">{time}</span>
+        </div>
+      </div>
 
       <div className="flex justify-between w-full">
         <Button
@@ -86,9 +105,6 @@ export const TaskCard = ({ id, productCountry, productName, serviceName, userId 
 };
 
 interface IProps {
-  id: string;
-  productCountry: string;
-  productName: string;
-  serviceName: string;
+  info: TGetTasks;
   userId: string;
 }

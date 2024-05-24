@@ -4,7 +4,7 @@ import React from "react";
 
 const TableDetailsSkt = ({ previewMode }: { previewMode?: boolean }) => {
   return (
-    <div className="flex flex-col gap-6">
+    <>
       {[1, 2].map((el) => (
         <div key={el} className={cn("flex gap-2", { "gap-0": previewMode })}>
           {!previewMode && <Skeleton className="hidden md:block h-12 w-12 shrink-0" />}
@@ -15,7 +15,14 @@ const TableDetailsSkt = ({ previewMode }: { previewMode?: boolean }) => {
                 { "h-52 w-60": previewMode }
               )}
             />
-            <div className="flex-1 w-[90vw] md:w-[542px] h-full border border-border rounded-md p-4">
+            <div
+              className={cn(
+                "flex-1 w-[90vw] md:w-[542px] h-full border border-border rounded-md p-4",
+                {
+                  "md:w-[250px]": previewMode,
+                }
+              )}
+            >
               <Skeleton className="h-5 w-4/5 mb-3" />
               <Skeleton className="h-8 w-1/2 mb-6" />
               <Skeleton className="h-5 w-3/5 mb-3" />
@@ -41,7 +48,14 @@ const TableDetailsSkt = ({ previewMode }: { previewMode?: boolean }) => {
               { "h-52 w-60": previewMode }
             )}
           />
-          <div className="flex-1 w-[90vw] md:w-[542px] h-full border border-border rounded-md p-4">
+          <div
+            className={cn(
+              "flex-1 w-[90vw] md:w-[542px] h-full border border-border rounded-md p-4",
+              {
+                "md:w-[250px]": previewMode,
+              }
+            )}
+          >
             <Skeleton className="h-5 w-4/5 mb-3" />
             <Skeleton className="h-8 w-1/2 mb-6" />
             <Skeleton className="h-5 w-3/5 mb-3" />
@@ -61,13 +75,17 @@ const TableDetailsSkt = ({ previewMode }: { previewMode?: boolean }) => {
         <Skeleton className="hidden md:block h-12 w-12 shrink-0" />
         <div className={cn("flex flex-col md:flex-row gap-2 md:gap-8")}>
           <Skeleton className={cn("h-10 md:h-40 w-full md:w-[304px]")} />
-          <div className="flex gap-3 w-[542px] h-40 border border-border rounded-md p-4">
+          <div
+            className={cn("flex gap-3 w-[542px] h-40 border border-border rounded-md p-4", {
+              "md:w-[250px]": previewMode,
+            })}
+          >
             <Skeleton className="h-full w-1/2" />
             <Skeleton className="h-full w-1/2" />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

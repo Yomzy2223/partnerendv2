@@ -9,11 +9,12 @@ import { useActions } from "./actions";
 export default function CompletedTasks({ userId }: { userId: string }) {
   const [preview, setPreview] = useState("");
 
-  const { tableBody, completedTasksRes, requestQAFormsRes, requestBusiness } = useActions({
-    userId,
-    preview,
-    setPreview,
-  });
+  const { tableBody, completedTasksRes, requestQAFormsRes, requestBusiness, goToDetailsPage } =
+    useActions({
+      userId,
+      preview,
+      setPreview,
+    });
 
   const requestQAForms = requestQAFormsRes.data?.data?.data || [];
   const totalTasks = completedTasksRes.data?.data?.total;
@@ -35,12 +36,11 @@ export default function CompletedTasks({ userId }: { userId: string }) {
       />
       {preview && (
         <PreviewDetails
-          selectedRequestId={preview}
           setPreview={setPreview}
           QAForms={requestQAForms}
           business={requestBusiness}
           isLoading={requestQAFormsRes.isLoading}
-          detailsUrl={`/tasks/${preview}`}
+          onExpand={() => goToDetailsPage(preview)}
         />
       )}
     </div>

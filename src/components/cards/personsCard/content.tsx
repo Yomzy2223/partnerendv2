@@ -34,7 +34,7 @@ const Content = ({
         <div key={el?.field}>
           {el.fileName && el.fileLink && el.fileSize && el.fileType ? (
             <div>
-              <p className="sb-text-16">{el?.field}</p>
+              <p className="text-base font-medium text-foreground-9">{el?.field}</p>
               <FileInput
                 fileName={el.fileName}
                 fileLink={el.fileLink}
@@ -45,7 +45,7 @@ const Content = ({
             </div>
           ) : (
             <div>
-              <p className="text-base font-semibold text-foreground-9">{el.field}</p>
+              <p className="text-base font-medium text-foreground-9">{el.field}</p>
               <p className="text-foreground-5 text-sm italic">Document not uploaded yet</p>
             </div>
           )}

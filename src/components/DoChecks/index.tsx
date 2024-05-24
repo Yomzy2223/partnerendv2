@@ -19,7 +19,7 @@ const DoChecks = ({
   isLoading?: boolean;
   Skeleton?: any;
 }) => {
-  if (isLoading) return Skeleton;
+  if (isLoading) return <div className={className}>{Skeleton}</div>;
 
   if (errorText) return <p>{errorText}</p>;
 

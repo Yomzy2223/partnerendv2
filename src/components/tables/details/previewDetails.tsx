@@ -1,26 +1,21 @@
 import { TBusinessInfoGet, TRequestQAForm } from "@/services/tasks/types";
 import { Button } from "flowbite-react";
-import { useRouter } from "next/navigation";
 import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import TableDetails from "./details";
 
 const PreviewDetails = ({
-  selectedRequestId,
   QAForms,
   business,
   isLoading,
   setPreview,
-  detailsUrl,
+  onExpand,
 }: {
-  selectedRequestId?: string;
   QAForms: TRequestQAForm[];
   business?: TBusinessInfoGet;
   isLoading?: boolean;
   setPreview: Dispatch<SetStateAction<string>>;
-  detailsUrl: string;
+  onExpand: () => void;
 }) => {
-  const router = useRouter();
-
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,12 +28,7 @@ const PreviewDetails = ({
       className="flex flex-1 flex-col gap-6 bg-background min-h-[max(500px,100%)] max-h-[600px] max-w-[50%] overflow-auto rounded-lg px-4"
     >
       <div className="flex flex-row justify-end gap-6 sticky top-0 bg-background py-4">
-        <Button
-          size="fit"
-          color="transparent"
-          className="text-primary"
-          onClick={() => router.push(detailsUrl)}
-        >
+        <Button size="fit" color="transparent" className="text-primary" onClick={() => onExpand()}>
           expand
         </Button>
         <Button

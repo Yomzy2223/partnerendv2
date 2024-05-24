@@ -13,7 +13,7 @@ import {
 
 export const useAcceptTasksMutation = () => {
   const queryClient = useQueryClient();
-  const { handleError } = useResponse();
+  const { handleError, handleSuccess } = useResponse();
 
   return useMutation({
     mutationKey: ["accept tasks"],
@@ -22,14 +22,17 @@ export const useAcceptTasksMutation = () => {
       handleError({ title: "Failed", error });
     },
     onSuccess(data, variables, context) {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      handleSuccess(data);
+      queryClient.invalidateQueries({
+        queryKey: ["Assigned Tasks", "Accepted Tasks", "Completed Tasks"],
+      });
     },
   });
 };
 
 export const useRejectTasksMutation = () => {
   const queryClient = useQueryClient();
-  const { handleError } = useResponse();
+  const { handleError, handleSuccess } = useResponse();
 
   return useMutation({
     mutationKey: ["reject tasks"],
@@ -38,7 +41,11 @@ export const useRejectTasksMutation = () => {
       handleError({ title: "Failed", error });
     },
     onSuccess(data, variables, context) {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+      handleSuccess(data);
+      console.log(data);
+      queryClient.invalidateQueries({
+        queryKey: ["Assigned Tasks", "Accepted Tasks", "Completed Tasks"],
+      });
     },
   });
 };
@@ -85,7 +92,7 @@ export const useGetRequestBusinessQuery = ({ requestId }: { requestId: string })
 
 export const useUpdateBusinessInfoMutation = () => {
   const queryClient = useQueryClient();
-  const { handleError } = useResponse();
+  const { handleError, handleSuccess } = useResponse();
 
   return useMutation({
     mutationKey: ["update business info"],
@@ -94,6 +101,7 @@ export const useUpdateBusinessInfoMutation = () => {
       handleError({ title: "Failed", error });
     },
     onSuccess(data, variables, context) {
+      handleSuccess(data);
       queryClient.invalidateQueries({ queryKey: ["business info"] });
     },
   });

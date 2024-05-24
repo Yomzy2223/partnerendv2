@@ -1,5 +1,3 @@
-"use client";
-
 import { getServerSession } from "@/lib/helpers/getServerSession";
 import CompletedTasks from "./completedTasks";
 

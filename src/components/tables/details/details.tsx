@@ -5,9 +5,10 @@ import DoChecks from "@/components/DoChecks";
 import TextWithDetails from "@/components/texts/textWithDetails";
 import { cn } from "@/lib/utils";
 import { TBusinessInfoGet, TRequestQAForm } from "@/services/tasks/types";
+import { Breadcrumb } from "flowbite-react";
 import { BriefcaseIcon } from "lucide-react";
 import React, { ReactNode } from "react";
-import RequestDetailsSkt from "../skeleton/detailsSkt";
+import TableDetailsSkt from "../skeleton/detailsSkt";
 import TableDetailsWrapper from "./detailsWrapper";
 
 const TableDetails = ({
@@ -16,6 +17,7 @@ const TableDetails = ({
   business,
   isLoading,
   errorMsg,
+  prev,
   children,
 }: {
   previewMode?: boolean;
@@ -23,6 +25,10 @@ const TableDetails = ({
   business?: TBusinessInfoGet;
   isLoading?: boolean;
   errorMsg?: string;
+  prev?: {
+    path: string;
+    text: string;
+  };
   children?: ReactNode;
 }) => {
   const nonPersonForms = QAForms?.filter((el) => el.type !== "person");
@@ -37,11 +43,20 @@ const TableDetails = ({
     <DoChecks
       items={QAForms}
       isLoading={isLoading}
-      Skeleton={<RequestDetailsSkt previewMode={previewMode} />}
+      Skeleton={<TableDetailsSkt previewMode={previewMode} />}
       emptyText="No form submitted yet"
       className="flex flex-col gap-8 bg-background"
       errorText={errorMsg}
     >
+      {prev && (
+        <Breadcrumb aria-label="Request details">
+          <Breadcrumb.Item href={prev.path}>
+            <span className="first-letter:uppercase">{prev.text}</span>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>{business?.companyName || "Business"}</Breadcrumb.Item>
+        </Breadcrumb>
+      )}
+
       {business?.companyEmail && (
         <TableDetailsWrapper
           title="Business Information"

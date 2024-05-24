@@ -9,7 +9,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
       <div className="relative">
         <Navigation navRoutes={navRoutes} className="flex bg-label/[0.02] py-5" />
-        <div className="flex-1 px-5 md:px-8">{children}</div>
+        <div className="flex-1 px-5 md:px-8 pb-6">{children}</div>
       </div>
     </div>
   );
