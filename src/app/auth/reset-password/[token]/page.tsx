@@ -9,6 +9,7 @@ import * as z from "zod";
 import { useParams, useRouter } from "next/navigation";
 import useUserApi from "@/hooks/useUsersApi";
 import { Oval } from "react-loading-icons";
+import { IFormInput } from "@/components/form/constants";
 
 const ResetPassword = () => {
   const { resetPasswordMutation } = useUserApi();
@@ -17,7 +18,7 @@ const ResetPassword = () => {
   const { token } = useParams();
   const { push } = useRouter();
 
-  const handleReset = async (values: resetPasswordType) => {
+  const handleReset = async ({ values }: { values: resetPasswordType }) => {
     mutate({ token: token as string, password: values.password });
   };
 
@@ -53,7 +54,7 @@ const ResetPassword = () => {
 
 export default ResetPassword;
 
-const formInfo = [
+const formInfo: IFormInput[] = [
   {
     name: "password",
     label: "Enter Password",

@@ -40,7 +40,7 @@ const Home = () => {
         />
         <AnalyticsCard3 title="Amount Earned" total="0" current={244} previous={87} />
       </div>
-      <CardWrapper title="Newly added tasks" className="my-2 flex-1 p-0">
+      <CardWrapper className="my-2 flex-1 p-0">
         <div className="flex gap-4 flex-wrap px-4 pb-4">
           {Array(1)
             .fill("")
@@ -56,8 +56,8 @@ const Home = () => {
         </div>
       </CardWrapper>
 
-      <CardWrapper className="p-0" title="Ongoing tasks">
-        <GeneralTable tableHeaders={tableHeaders} tableBody={tableBody} hideSearch />
+      <CardWrapper className="p-0">
+        <GeneralTable tableHeaders={tableHeaders} tableBody={tableBody} hideHeader />
       </CardWrapper>
       <CardWrapper>
         <AnalyticsHeader

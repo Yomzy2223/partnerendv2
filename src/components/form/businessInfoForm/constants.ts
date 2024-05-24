@@ -105,15 +105,15 @@ export const formInfo: IFormInput[] = [
       placeholder: "Enter share capital",
     },
   },
-  //   {
-  //     name: "status",
-  //     label: "Status",
-  //     type: "select",
-  //     selectProp: {
-  //       placeholder: "Select current status",
-  //     },
-  //     options: ["Active", "Inactive"],
-  //   },
+  {
+    name: "status",
+    label: "Status",
+    type: "select",
+    selectProp: {
+      placeholder: "Select current status",
+    },
+    options: ["Active", "Inactive"],
+  },
 ];
 
 export const formSchema = z.object({
@@ -129,7 +129,7 @@ export const formSchema = z.object({
   state: z.string().min(1, { message: "Enter company state" }),
   affiliates: z.coerce.number().min(1, { message: "Enter affiliates" }),
   shareCapital: z.string().min(1, { message: "Enter share capital" }),
-  //   status: z.string().min(1, { message: "Select current status" }),
+  status: z.string().min(1, { message: "Select current status" }),
 });
 
 export type formType = z.infer<typeof formSchema>;

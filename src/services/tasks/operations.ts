@@ -1,6 +1,12 @@
 import { Client } from "@/lib/axios";
 import { rootType } from "..";
-import { TBusinessInfoCreate, TBusinessInfoGet, TGetTasks, TRequestQAForm } from "./types";
+import {
+  TBusinessInfoCreate,
+  TBusinessInfoGet,
+  TGetTasks,
+  TRequest,
+  TRequestQAForm,
+} from "./types";
 
 export const acceptTasks = async (form: { userId: string; requestIds: string[] }) => {
   const client = await Client();
@@ -27,6 +33,11 @@ export const getCompletedTasks = async (userId: string) => {
   return client.get<rootType<TGetTasks[]>>(`/productRequest/completed/${userId}`);
 };
 
+export const getRequest = async (id: string) => {
+  const client = await Client();
+  return client.get<rootType<TRequest>>(`/productRequest/${id}`);
+};
+
 export const getRequestQAForms = async (requestId: string) => {
   const client = await Client();
   return client.get<rootType<TRequestQAForm[]>>(`/productRequest/form/${requestId}`);
@@ -45,5 +56,5 @@ export const updateBusinessInfo = async ({
   formInfo: TBusinessInfoCreate;
 }) => {
   const client = await Client();
-  return client.post<rootType<TBusinessInfoGet>>(`/businessRequest/${id}`, formInfo);
+  return client.put<rootType<TBusinessInfoGet>>(`/businessRequest/${id}`, formInfo);
 };

@@ -1,4 +1,4 @@
-import { TFieldTypes } from "../service/types";
+import { TFieldTypes, TProduct } from "../service/types";
 
 export type TGetTasks = {
   assignedAt: string;
@@ -17,6 +17,12 @@ export type TGetTasks = {
   status: TRequestStatus;
   submittedAt: string;
   updatedAt: string;
+};
+
+export type TRequest = TGetTasks & {
+  product: TProduct;
+  business: TBusinessInfoGet;
+  requestQA: TRequestQAForm[];
 };
 
 export type TRequestQAForm = {

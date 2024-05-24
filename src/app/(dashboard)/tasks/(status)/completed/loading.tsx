@@ -1,8 +1,8 @@
 import TableSkeleton from "@/components/tables/skeleton/TableSkeleton";
 import React from "react";
 
-const loading = () => {
+const Loading = () => {
   return <TableSkeleton />;
 };
 
-export default loading;
+export default Loading;

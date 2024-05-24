@@ -1,7 +1,7 @@
 import { getServerSession } from "@/lib/helpers/getServerSession";
 import CompletedTasks from "./completedTasks";
 
-export default async function page() {
+export default async function Page() {
   const session = await getServerSession();
   const userId = session?.user?.id;
 

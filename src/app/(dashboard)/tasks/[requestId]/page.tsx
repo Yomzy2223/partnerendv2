@@ -3,9 +3,11 @@
 import ConfirmAction from "@/components/confirmAction";
 import TableDetails from "@/components/tables/details/details";
 import TableDetailsWrapper from "@/components/tables/details/detailsWrapper";
+import { useGetService } from "@/services/service";
 import {
   useGetRequestBusinessQuery,
   useGetRequestQAFormsQuery,
+  useGetRequestQuery,
   useRejectTasksMutation,
 } from "@/services/tasks";
 import { Button } from "flowbite-react";
@@ -15,7 +17,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import DocSection from "./docSection";
 
-const page = ({ params }: { params: { requestId: string } }) => {
+const Page = ({ params }: { params: { requestId: string } }) => {
   const [openConfirm, setOpenConfirm] = useState(false);
 
   const searchParams = useSearchParams();
@@ -24,14 +26,19 @@ const page = ({ params }: { params: { requestId: string } }) => {
 
   const path = searchParams.get("path") || "";
 
-  const requestQAFormsRes = useGetRequestQAFormsQuery({ requestId });
-  const requestQAForms = requestQAFormsRes.data?.data?.data || [];
-
-  const requestBusinessRes = useGetRequestBusinessQuery({ requestId });
-  const requestBusiness = requestBusinessRes.data?.data?.data?.[0];
-
   const session = useSession();
   const rejectTaskMutation = useRejectTasksMutation();
+
+  const requestRes = useGetRequestQuery({ requestId });
+  const request = requestRes.data?.data?.data;
+  const requestBusiness = request?.business;
+  const requestQAForms = request?.requestQA || [];
+
+  const serviceRes = useGetService(request?.product?.serviceId || "");
+  const service = serviceRes.data?.data?.data;
+
+  // const requestQAFormsRes = useGetRequestQAFormsQuery({ requestId });
+  // const requestQAForms = requestQAFormsRes.data?.data?.data || [];
 
   const dropTask = () => {
     rejectTaskMutation.mutate(
@@ -49,7 +56,7 @@ const page = ({ params }: { params: { requestId: string } }) => {
     <div className="flex flex-col py-6">
       <TableDetails
         QAForms={requestQAForms}
-        isLoading={requestQAFormsRes.isLoading}
+        isLoading={requestRes.isLoading}
         business={requestBusiness}
         prev={{ path: `/tasks/${path}`, text: `${path} tasks` }}
       >
@@ -59,11 +66,15 @@ const page = ({ params }: { params: { requestId: string } }) => {
           raiseIssueAction={() => {}}
           className="flex flex-col gap-6"
         >
-          <DocSection businessId={requestBusiness?.id || ""} requestId={requestId} />
+          <DocSection
+            businessId={requestBusiness?.id || ""}
+            requestId={requestId}
+            priority={service?.priority}
+          />
         </TableDetailsWrapper>
 
         <div className="self-end space-x-2">
-          <span className="sb-text-16 text-foreground-5">Can't continue anymore?</span>
+          <span className="sb-text-16 text-foreground-5">Can&#39;t continue anymore?</span>
           <Button color="failure" onClick={() => setOpenConfirm(true)}>
             Drop Task
           </Button>
@@ -86,4 +97,4 @@ const page = ({ params }: { params: { requestId: string } }) => {
   );
 };
 
-export default page;
+export default Page;

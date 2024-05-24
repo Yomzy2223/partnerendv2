@@ -22,15 +22,16 @@ const BusinessInfoForm = ({
   const updateBusinessInfo = useUpdateBusinessInfoMutation();
 
   const submitBusinessInfo = ({ values }: { values: formType }) => {
-    const formInfo = { ...values, status: "" };
+    console.log(values);
+
     updateBusinessInfo.mutate(
-      { id: businessId, formInfo },
+      { id: businessId, formInfo: values },
       {
         onSuccess: () => onSubmit && onSubmit(),
       }
     );
-    console.log(values);
   };
+  console.log(businessId);
 
   return (
     <DialogWrapper
@@ -57,6 +58,7 @@ const BusinessInfoForm = ({
           isProcessing={updateBusinessInfo.isPending || isPending}
           disabled={updateBusinessInfo.isPending || isPending}
           processingSpinner={<Oval color="white" strokeWidth={4} className="h-6 w-6" />}
+          className="self-end"
         >
           Submit
         </Button>

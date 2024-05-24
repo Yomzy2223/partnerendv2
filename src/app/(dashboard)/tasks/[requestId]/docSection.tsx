@@ -7,7 +7,15 @@ import { PlusCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
-const DocSection = ({ businessId, requestId }: { businessId: string; requestId: string }) => {
+const DocSection = ({
+  businessId,
+  requestId,
+  priority,
+}: {
+  businessId: string;
+  requestId: string;
+  priority?: number;
+}) => {
   const [openForm, setOpenForm] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -112,7 +120,11 @@ const DocSection = ({ businessId, requestId }: { businessId: string; requestId: 
         )}
       </div>
       {files.length > 0 && (
-        <Button color="primary" className="self-end" onClick={() => setOpenForm(true)}>
+        <Button
+          color="primary"
+          className="self-end"
+          onClick={() => (priority === 1 ? setOpenForm(true) : submitFiles())}
+        >
           Send to Sidebrief
         </Button>
       )}

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { TBusinessInfoGet, TRequestQAForm } from "@/services/tasks/types";
 import { Breadcrumb } from "flowbite-react";
 import { BriefcaseIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import React, { ReactNode } from "react";
 import TableDetailsSkt from "../skeleton/detailsSkt";
 import TableDetailsWrapper from "./detailsWrapper";
@@ -31,6 +32,8 @@ const TableDetails = ({
   };
   children?: ReactNode;
 }) => {
+  const searchParams = useSearchParams();
+
   const nonPersonForms = QAForms?.filter((el) => el.type !== "person");
   const personForms = QAForms?.filter((el) => el.type === "person");
   const titles = [...new Set(personForms?.map((el) => el.title))] || [];
@@ -50,7 +53,7 @@ const TableDetails = ({
     >
       {prev && (
         <Breadcrumb aria-label="Request details">
-          <Breadcrumb.Item href={prev.path}>
+          <Breadcrumb.Item href={prev.path + "?" + searchParams.toString()}>
             <span className="first-letter:uppercase">{prev.text}</span>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{business?.companyName || "Business"}</Breadcrumb.Item>
@@ -65,11 +68,8 @@ const TableDetails = ({
           className="flex flex-col gap-6"
           previewMode={previewMode}
         >
-          {/* <TextWithDetails
-            title="Operational Country"
-            text={business?.companyName}
-          />
-          <TextWithDetails title="Product Type" text={business?.rcNumber} /> */}
+          <TextWithDetails title="Operational Country" text={business?.companyName} />
+          <TextWithDetails title="Product Type" text={business?.rcNumber} />
         </TableDetailsWrapper>
       )}
 

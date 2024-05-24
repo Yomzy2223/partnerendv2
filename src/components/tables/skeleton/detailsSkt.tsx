@@ -5,6 +5,8 @@ import React from "react";
 const TableDetailsSkt = ({ previewMode }: { previewMode?: boolean }) => {
   return (
     <>
+      {!previewMode && <Skeleton className="w-44 h-5" />}
+
       {[1, 2].map((el) => (
         <div key={el} className={cn("flex gap-2", { "gap-0": previewMode })}>
           {!previewMode && <Skeleton className="hidden md:block h-12 w-12 shrink-0" />}

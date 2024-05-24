@@ -5,6 +5,7 @@ import {
   getAcceptedTasks,
   getAssignedTasks,
   getCompletedTasks,
+  getRequest,
   getRequestBusiness,
   getRequestQAForms,
   rejectTasks,
@@ -71,6 +72,14 @@ export const useGetCompletedTasks = ({ userId }: { userId: string }) => {
     queryKey: ["Completed Tasks", userId],
     queryFn: ({ queryKey }) => getCompletedTasks(queryKey[1]),
     enabled: !!userId,
+  });
+};
+
+export const useGetRequestQuery = ({ requestId }: { requestId: string }) => {
+  return useQuery({
+    queryKey: ["request", requestId],
+    queryFn: ({ queryKey }) => getRequest(queryKey[1]),
+    enabled: !!requestId,
   });
 };
 
