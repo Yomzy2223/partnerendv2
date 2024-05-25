@@ -8,9 +8,9 @@ import React, { useState } from "react";
 import * as z from "zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useResponse } from "@/hooks/useResponse";
 import { Oval } from "react-loading-icons";
 import { IFormInput } from "@/components/form/constants";
+import { useResponse } from "@/services";
 
 const SignIn = () => {
   const [isPending, setIsPending] = useState(false);

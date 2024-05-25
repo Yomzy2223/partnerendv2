@@ -3,7 +3,6 @@
 import AuthFormWrapper from "@/components/features/auth/authFormWrapper";
 import DynamicForm from "@/components/form/dynamicForm";
 import { AuthStepper } from "@/components/stepper/auth";
-import { useResponse } from "@/hooks/useResponse";
 import { Button } from "flowbite-react";
 import { ArrowRightCircle } from "lucide-react";
 import { signIn } from "next-auth/react";
@@ -15,6 +14,7 @@ import * as z from "zod";
 import { IFormInput } from "@/components/form/constants";
 import { useGetCountries } from "@/services/service";
 import { countries, TCountryCode } from "countries-list";
+import { useResponse } from "@/services";
 
 const SignUp = () => {
   const [isPending, setIsPending] = useState(false);

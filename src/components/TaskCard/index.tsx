@@ -15,13 +15,13 @@ export const TaskCard = ({
       <div className="flex flex-col gap-3.5 items-start">
         <div className="flex justify-between w-full">
           <div className="flex gap-4 items-center">
-            <div className="relative w-7 h-5 rounded overflow-hidden outline-4 outline-black">
+            {/* <div className="relative w-7 h-5 rounded overflow-hidden outline-4 outline-black">
               <Image
                 src={`https://flagcdn.com/w160/${countryCode}.png`}
                 alt={countryName}
                 fill
               />
-            </div>
+            </div> */}
             <p>{countryName}</p>
           </div>
           <Badge color={"green"}>Business </Badge>
@@ -33,10 +33,12 @@ export const TaskCard = ({
             <p className="font-normal text-sm leading-normal">Accept task</p>
           </div>
         </Button> */}
-         <div className="flex justify-between w-full">
-					<Button color="primary" >Accept Task</Button>
-					<Button color="danger" className="border-gray-200 border-2">Reject </Button>
-				</div>
+        <div className="flex justify-between w-full">
+          <Button color="primary">Accept Task</Button>
+          <Button color="danger" className="border-gray-200 border-2">
+            Reject{" "}
+          </Button>
+        </div>
       </div>
     </div>
   );
