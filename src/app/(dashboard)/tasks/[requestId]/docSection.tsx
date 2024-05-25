@@ -1,7 +1,7 @@
 import { FileInput } from "@/components/file/fileInput";
 import BusinessInfoForm from "@/components/form/businessInfoForm";
 import { uploadFileToCloudinary, useGlobalFunctions } from "@/hooks/globalFunctions";
-import { useCreateUserDocMutation } from "@/services/userDocument";
+import { useCreateUserDocMutation } from "@/services/users";
 import { Button } from "flowbite-react";
 import { PlusCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
