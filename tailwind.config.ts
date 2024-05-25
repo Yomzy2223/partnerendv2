@@ -122,7 +122,7 @@ const config = {
       "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("flowbite/plugin")],
 } satisfies Config;
 
 export default config;

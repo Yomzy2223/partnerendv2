@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ChangeEventHandler, MouseEventHandler, useState } from "react";
+import React, { useState } from "react";
 import { ITableBody } from "./constants";
 import PaginatedItems from "./pagination";
 import { useSearchParams } from "next/navigation";
@@ -100,8 +100,8 @@ interface IProps {
   tableBody: ITableBody[];
   tableNav?: string[];
   onRowSelect?: (selected: string[]) => void;
-  onSearchChange?: ChangeEventHandler<HTMLInputElement>;
-  onSearchSubmit?: MouseEventHandler<HTMLButtonElement>;
+  onSearchChange?: (value: string) => void;
+  onSearchSubmit?: (value: string) => void;
   handleFilter?: (value?: string) => void;
   dataLoading?: boolean;
   errorMsg?: string;

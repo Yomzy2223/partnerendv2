@@ -71,8 +71,8 @@ interface IProps {
   setSelectOn: Dispatch<SetStateAction<boolean>>;
   selectedRows: string[];
   setSelectedRows: Dispatch<SetStateAction<string[]>>;
-  onSearchChange?: ChangeEventHandler<HTMLInputElement>;
-  onSearchSubmit?: MouseEventHandler<HTMLButtonElement>;
+  onSearchChange?: (value: string) => void;
+  onSearchSubmit?: (value: string) => void;
   handleFilter?: (value?: string) => void;
   preview?: string;
 }

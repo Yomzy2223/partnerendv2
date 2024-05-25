@@ -30,25 +30,35 @@ export const useGlobalFunctions = () => {
     [searchParams]
   );
 
-  const deleteQueryString = useCallback(
-    (name: string) => {
-      const newQuery = new URLSearchParams(searchParams.toString());
-      newQuery.delete(name);
-      router.push(pathname + "?" + newQuery.toString());
-
-      return newQuery.toString();
-    },
-    [searchParams, pathname, router]
-  );
-
   const setQuery = (name: string, value: string | number) => {
     router.push(pathname + "?" + createQueryString([{ name, value: value.toString() }]), {
       scroll: false,
     });
   };
 
+  const deleteQueryStrings = useCallback(
+    (names: string[], newQueries?: string | URLSearchParams, dontPush?: boolean) => {
+      const params = new URLSearchParams(newQueries || searchParams.toString());
+      names.forEach((name) => params.delete(name));
+      if (!dontPush) router.push(pathname + "?" + params.toString(), { scroll: false });
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   const getRandColor = (i: number) => {
     return tagColors[i % 5];
+  };
+
+  const getReqStatusColor = (status: string) => {
+    if (status === "PENDING") return "[&_span]:bg-primary-8 [&_span]:text-primary";
+    if (status === "SUBMITTED") return "[&_span]:bg-success [&_span]:text-success-foreground";
+    if (status === "ASSIGNED") return "[&_span]:bg-success [&_span]:text-success-foreground";
+    if (status === "ACCEPTED") return "[&_span]:bg-tertiary [&_span]:text-tertiary-foreground";
+    if (status === "REJECTED")
+      return "[&_span]:bg-destructive [&_span]:text-destructive-foreground";
+    if (status === "COMPLETED") return "[&_span]:bg-success [&_span]:text-success-foreground";
   };
 
   // Use this to set a pathname (uses current pathname, if not provided)
@@ -57,16 +67,20 @@ export const useGlobalFunctions = () => {
     path,
     addPath,
     queries,
+    rmQueries,
     returnUrl,
   }: {
     path?: string;
     addPath?: string;
     queries?: { name: string; value: string | string[] }[];
+    rmQueries?: string[];
     returnUrl?: boolean;
   }) => {
     let realPath = path || pathname;
+    let newQueries = createQueryString(queries);
+    if (rmQueries) newQueries = deleteQueryStrings(rmQueries, newQueries, true);
     if (addPath) realPath = realPath + "/" + addPath;
-    realPath = realPath + "?" + createQueryString(queries);
+    realPath = realPath + "?" + newQueries;
 
     if (returnUrl) return realPath;
     router.push(realPath, {
@@ -76,11 +90,12 @@ export const useGlobalFunctions = () => {
 
   return {
     createQueryString,
-    deleteQueryString,
+    deleteQueryStrings,
     setQuery,
-    setQueriesWithPath,
     isDesktop,
     getRandColor,
+    getReqStatusColor,
+    setQueriesWithPath,
     userCloudFolder,
   };
 };

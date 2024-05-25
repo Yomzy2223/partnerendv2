@@ -1,5 +1,4 @@
 "use client";
-import { useActions } from "./tasks/(status)/actions";
 import { PaymentAnalyticsImg } from "@/assets/svg";
 import AnalyticsCard3 from "@/components/cards/analytics/analyticsCard3";
 import ServiceSummaryCard from "@/components/cards/profileSummaryCard";
@@ -15,9 +14,8 @@ import { useSession } from "next-auth/react";
 
 const Home = () => {
   const { tableHeaders, tableBody } = useTableInfo();
-  const { userData } = useActions();
 
-  const pendingTaskLength = userData?.data?.data;
+  const pendingTaskLength = 0;
 
   const { data: session } = useSession();
   return (
@@ -34,9 +32,9 @@ const Home = () => {
         <AnalyticsCard3 title="Total Tasks Done" total="0" current={244} previous={87} />
         <AnalyticsCard3
           title="Pending tasks"
-          total={pendingTaskLength ? pendingTaskLength.length : 0}
-          current={pendingTaskLength ? pendingTaskLength.length : 0}
-          previous={pendingTaskLength ? pendingTaskLength.length : 0}
+          total={pendingTaskLength ? "0" : "0"}
+          current={pendingTaskLength ? 0 : 0}
+          previous={pendingTaskLength ? 0 : 0}
         />
         <AnalyticsCard3 title="Amount Earned" total="0" current={244} previous={87} />
       </div>

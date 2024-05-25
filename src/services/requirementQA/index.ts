@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useResponse } from "@/hooks/useResponse";
+import { useResponse } from "..";
 import {
   getCountryReqForm,
   getPartnerReqQA,

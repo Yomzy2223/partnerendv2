@@ -1,41 +1,49 @@
 import { cn } from "@/lib/utils";
 import { Button, TextInput } from "flowbite-react";
 import { Search } from "lucide-react";
-import React, {
-  ChangeEventHandler,
-  FunctionComponent,
-  HTMLAttributes,
-  MouseEventHandler,
-  SVGProps,
-} from "react";
+import React, { ChangeEvent, FunctionComponent, HTMLAttributes, SVGProps, useState } from "react";
+import { DebounceInput } from "react-debounce-input";
 
 const SearchComp = ({
   type,
   icon,
   placeholder,
-  onChange = () => {},
+  onChange,
   searchText,
   onSubmit,
   buttonProps,
   wrapperClassName,
-}: propTypes) => {
+}: IProps) => {
+  const [value, setValue] = useState("");
+
+  const handleSearchSubmit = () => {
+    onSubmit && onSubmit(value);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    onChange && onChange(e.target.value);
+  };
+
   return (
-    <div className={cn("hidden w-full max-w-[364px] h-max md:flex", wrapperClassName)}>
-      <TextInput
-        type={type || "text"}
-        icon={icon ? icon : () => <Search color="#727474" />}
-        placeholder={"Search..." || placeholder}
-        onChange={onChange}
-        className={cn("w-full", {
-          "[&_input]:rounded-r-none": onSubmit,
-        })}
-        theme={{ field: { input: { base: "!py-2 w-full" } } }}
-      />
+    <div className={cn("flex w-[364px] h-max ", wrapperClassName)}>
+      <div className="flex-1 flex items-center relative w-max">
+        <Search color="#727474" className="absolute left-4" width={20} height={20} />
+        <DebounceInput
+          type={type || "text"}
+          minLength={3}
+          debounceTimeout={1000}
+          onChange={handleChange}
+          placeholder={"Search..." || placeholder}
+          className="flex-1 pl-11 pr-4 border-r-0 border-border rounded-l-lg text-sm focus:ring-0 focus:border-primary"
+        />
+      </div>
       {onSubmit && (
         <Button
           size="md"
-          onClick={onSubmit}
-          className={cn("text-sm font-medium bg-primary h-max", {
+          color="primary"
+          onClick={handleSearchSubmit}
+          className={cn("text-sm font-medium h-max", {
             "rounded-l-none": onSubmit,
           })}
           {...buttonProps}
@@ -49,13 +57,13 @@ const SearchComp = ({
 
 export default SearchComp;
 
-interface propTypes {
+interface IProps {
   type?: string;
   icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
   placeholder?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onChange?: (value: string) => void;
   searchText?: string;
-  onSubmit?: MouseEventHandler<HTMLButtonElement>;
+  onSubmit?: (value: string) => void;
   buttonProps?: HTMLAttributes<HTMLButtonElement>;
   wrapperClassName?: string;
 }

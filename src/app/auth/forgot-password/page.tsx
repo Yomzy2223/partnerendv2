@@ -6,18 +6,17 @@ import { Button } from "flowbite-react";
 import { ArrowRightCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import * as z from "zod";
-import useUserApi from "@/hooks/useUsersApi";
 import { useGlobalFunctions } from "@/hooks/globalFunctions";
 import { useSearchParams } from "next/navigation";
 import { Oval } from "react-loading-icons";
 import { IFormInput } from "@/components/form/constants";
+import { useForgotPasswordMutation } from "@/services/users";
 
 const ForgotPassword = () => {
   const [formValue, setformValue] = useState<forgotPasswordType>({ email: "" });
 
   const { setQuery } = useGlobalFunctions();
-  const { forgotPasswordMutation } = useUserApi();
-  const { mutate, isSuccess, isPending } = forgotPasswordMutation;
+  const { mutate, isSuccess, isPending } = useForgotPasswordMutation();
 
   const { get } = useSearchParams();
   const email = get("verification") || "";

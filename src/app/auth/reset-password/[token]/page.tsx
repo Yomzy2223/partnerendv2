@@ -7,13 +7,12 @@ import { ArrowRightCircle } from "lucide-react";
 import React, { useEffect } from "react";
 import * as z from "zod";
 import { useParams, useRouter } from "next/navigation";
-import useUserApi from "@/hooks/useUsersApi";
 import { Oval } from "react-loading-icons";
 import { IFormInput } from "@/components/form/constants";
+import { useResetPasswordMutation } from "@/services/users";
 
 const ResetPassword = () => {
-  const { resetPasswordMutation } = useUserApi();
-  const { mutate, isPending, isSuccess } = resetPasswordMutation;
+  const { mutate, isPending, isSuccess } = useResetPasswordMutation();
 
   const { token } = useParams();
   const { push } = useRouter();
