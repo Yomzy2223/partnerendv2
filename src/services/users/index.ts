@@ -8,6 +8,7 @@ import {
   getUser,
   getUserBusinessDoc,
   getUserDoc,
+  getUserRequestDoc,
   resetPassword,
   updateUser,
   updateUserDoc,
@@ -155,6 +156,14 @@ export const useGetUserDocQuery = ({ id }: { id: string }) => {
     queryKey: ["user documents", id],
     queryFn: ({ queryKey }) => getUserDoc(queryKey[1]),
     enabled: !!id,
+  });
+};
+
+export const useGetUserRequestDocQuery = ({ requestId }: { requestId: string }) => {
+  return useQuery({
+    queryKey: ["user documents", requestId],
+    queryFn: ({ queryKey }) => getUserRequestDoc(queryKey[1]),
+    enabled: !!requestId,
   });
 };
 

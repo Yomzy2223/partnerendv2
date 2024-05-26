@@ -19,6 +19,7 @@ export const FileInput = ({
   errorMsg,
   onFileRemove,
   defaultFile,
+  hideRemove,
 }: {
   fileName: string;
   fileLink: string;
@@ -29,6 +30,7 @@ export const FileInput = ({
   onFileRemove?: (file?: File) => void;
   editMode?: boolean;
   defaultFile?: File;
+  hideRemove?: boolean;
 }) => {
   const [file, setFile] = useState<File>();
 
@@ -55,7 +57,9 @@ export const FileInput = ({
 
   const fileExtension = file?.name.split(".").pop() || fileType;
 
-  let size: string | number = Math.ceil(file?.size ? file?.size / 1000 : 0) || parseInt(fileSize);
+  let size: string | number = Math.ceil(
+    file?.size ? file?.size / 1000 : parseInt(fileSize) ? parseInt(fileSize) / 1000 : 0
+  );
   if (size >= 1000) size = (size / 1000).toFixed(2) + "MB";
   else if (size > 0) size = size + "KB";
 
@@ -109,17 +113,19 @@ export const FileInput = ({
           </div>
           {(file || fileLink) && (
             <div className="flex items-center gap-4">
-              <Button
-                color="ghost"
-                size="fit"
-                className="text-foreground-5"
-                onClick={() => {
-                  setFile(undefined);
-                  onFileRemove && onFileRemove(file);
-                }}
-              >
-                <X size={16} />
-              </Button>
+              {!hideRemove && (
+                <Button
+                  color="ghost"
+                  size="fit"
+                  className="text-foreground-5"
+                  onClick={() => {
+                    setFile(undefined);
+                    onFileRemove && onFileRemove(file);
+                  }}
+                >
+                  <X size={16} />
+                </Button>
+              )}
               {editMode && (
                 <Button color="link" size="fit" className="text-foreground-5" onClick={open}>
                   <PenIcon size={18} />

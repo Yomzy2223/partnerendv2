@@ -22,8 +22,6 @@ const BusinessInfoForm = ({
   const updateBusinessInfo = useUpdateBusinessInfoMutation();
 
   const submitBusinessInfo = ({ values }: { values: formType }) => {
-    console.log(values);
-
     updateBusinessInfo.mutate(
       { id: businessId, formInfo: values },
       {
@@ -31,7 +29,6 @@ const BusinessInfoForm = ({
       }
     );
   };
-  console.log(businessId);
 
   return (
     <DialogWrapper

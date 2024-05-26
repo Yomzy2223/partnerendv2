@@ -68,6 +68,7 @@ const Page = ({ params }: { params: { requestId: string } }) => {
         >
           <DocSection
             businessId={requestBusiness?.id || ""}
+            companyName={requestBusiness?.companyName}
             requestId={requestId}
             priority={service?.priority}
           />

@@ -72,6 +72,11 @@ export const getUserDoc = async (id: string) => {
   return client.get<rootType<TUserDocGet>>(`/userDocument/${id}`);
 };
 
+export const getUserRequestDoc = async (requestId: string) => {
+  const client = await Client();
+  return client.get<rootType<TUserDocGet[]>>(`/userDocument/request/${requestId}`);
+};
+
 export const getUserBusinessDoc = async (businessId: string) => {
   const client = await Client();
   return client.get<rootType<TUserDocGet>>(`/userDocument/business/${businessId}`);

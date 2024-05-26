@@ -29,4 +29,9 @@ export type TUserDocCreate = {
 
 export type TUserDocGet = TUserDocCreate & {
   id: string;
+  createdAt: string;
+  updatedAt: string;
+  isApproved: boolean;
+  isDeprecated: boolean;
+  requestSubFormId: string;
 };

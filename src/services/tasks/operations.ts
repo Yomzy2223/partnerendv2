@@ -56,5 +56,8 @@ export const updateBusinessInfo = async ({
   formInfo: TBusinessInfoCreate;
 }) => {
   const client = await Client();
-  return client.put<rootType<TBusinessInfoGet>>(`/businessRequest/${id}`, formInfo);
+  return client.put<rootType<TBusinessInfoGet>>(`/businessRequest/${id}`, {
+    ...formInfo,
+    status: formInfo.status.toUpperCase(),
+  });
 };

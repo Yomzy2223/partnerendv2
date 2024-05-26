@@ -1,7 +1,14 @@
+import ConfirmAction from "@/components/confirmAction";
 import { FileInput } from "@/components/file/fileInput";
 import BusinessInfoForm from "@/components/form/businessInfoForm";
 import { uploadFileToCloudinary, useGlobalFunctions } from "@/hooks/globalFunctions";
-import { useCreateUserDocMutation } from "@/services/users";
+import {
+  useCreateUserDocMutation,
+  useDeleteUserDocMutation,
+  useGetUserDocQuery,
+  useGetUserRequestDocQuery,
+} from "@/services/users";
+import { TUserDocGet } from "@/services/users/types";
 import { Button } from "flowbite-react";
 import { PlusCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -11,10 +18,12 @@ const DocSection = ({
   businessId,
   requestId,
   priority,
+  companyName,
 }: {
   businessId: string;
   requestId: string;
   priority?: number;
+  companyName: string;
 }) => {
   const [openForm, setOpenForm] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -22,11 +31,23 @@ const DocSection = ({
   const [files, setFiles] = useState<File[]>([]);
   const [newInstance, setNewInstance] = useState(false);
 
+  const [existingFiles, setExistingFiles] = useState<TUserDocGet[]>([]);
+  const [deleteId, setDeleteId] = useState("");
+
   const createUserDoc = useCreateUserDocMutation();
+  const deleteUserDoc = useDeleteUserDocMutation();
+  const userDocRes = useGetUserRequestDocQuery({ requestId });
+  const userDoc = userDocRes.data?.data?.data || [];
 
   const { userCloudFolder } = useGlobalFunctions();
   const session = useSession();
   const userId = session.data?.user?.id;
+
+  useEffect(() => {
+    if (userDoc?.length > 0) {
+      setExistingFiles(userDoc);
+    }
+  }, [userDoc]);
 
   useEffect(() => {
     if (files.length === 0) setNewInstance(true);
@@ -42,19 +63,19 @@ const DocSection = ({
           let response = {
             userId,
             requestId,
-            fileName: "",
-            fileLink: "",
-            fileType: "",
-            fileSize: "",
+            name: "",
+            link: "",
+            type: "",
+            size: "",
           };
           const uploadRes = await uploadFileToCloudinary({
             file,
             folderName: userCloudFolder,
           });
-          response.fileName = uploadRes.data?.original_filename;
-          response.fileLink = uploadRes.data?.secure_url;
-          response.fileType = uploadRes.data?.secure_url.split(".").pop();
-          response.fileSize = uploadRes.data?.bytes?.toString();
+          response.name = uploadRes.data?.original_filename;
+          response.link = uploadRes.data?.secure_url;
+          response.type = uploadRes.data?.secure_url.split(".").pop();
+          response.size = uploadRes.data?.bytes?.toString();
 
           return response;
         })
@@ -74,10 +95,30 @@ const DocSection = ({
     }
   };
 
+  const deleteDocument = () => {
+    deleteUserDoc.mutate(deleteId, {
+      onSuccess: () => setDeleteId(""),
+    });
+  };
+
+  console.log(existingFiles);
+  console.log(files);
   return (
     <div className="flex flex-col justify-end gap-8">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
+          {existingFiles.map((file, i) => (
+            <FileInput
+              key={i}
+              fileLink={file.link}
+              fileName={file.name}
+              fileSize={file.size}
+              fileType={file.type}
+              editMode={false}
+              onFileRemove={() => setDeleteId(file.id)}
+              hideRemove={file.isApproved}
+            />
+          ))}
           {files.map((file, i) => (
             <FileInput
               key={i}
@@ -123,7 +164,7 @@ const DocSection = ({
         <Button
           color="primary"
           className="self-end"
-          onClick={() => (priority === 1 ? setOpenForm(true) : submitFiles())}
+          onClick={() => (priority === 1 && !companyName ? setOpenForm(true) : submitFiles())}
         >
           Send to Sidebrief
         </Button>
@@ -136,6 +177,18 @@ const DocSection = ({
         onSubmit={submitFiles}
         isPending={isUploading || createUserDoc.isPending}
       />
+      {!!deleteId && (
+        <ConfirmAction
+          open={!!deleteId}
+          setOpen={(open) => !open && setDeleteId("")}
+          confirmAction={deleteDocument}
+          title="Remove Document"
+          description="Are you sure you want to remove this document? This action is irreversible"
+          isLoading={deleteUserDoc.isPending}
+          dismissible={!deleteUserDoc.isPending}
+          isDelete
+        />
+      )}
     </div>
   );
 };

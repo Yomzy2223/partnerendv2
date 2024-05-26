@@ -86,7 +86,6 @@ export type TBusinessInfoGet = {
   lga: string;
   affiliates: string;
   shareCapital: string;
-  shareCapitalInWords: string;
   state: string;
   status: string;
   isDeprecated: false;

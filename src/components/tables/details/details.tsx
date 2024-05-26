@@ -68,8 +68,18 @@ const TableDetails = ({
           className="flex flex-col gap-6"
           previewMode={previewMode}
         >
-          <TextWithDetails title="Operational Country" text={business?.companyName} />
-          <TextWithDetails title="Product Type" text={business?.rcNumber} />
+          <TextWithDetails title="Company name" text={business?.companyName} />
+          <TextWithDetails title="RC Number" text={business?.rcNumber} />
+          <TextWithDetails title="Company email" text={business?.companyEmail} />
+          <TextWithDetails title="Company type" text={business?.companyType} />
+          <TextWithDetails title="Share capital" text={business?.shareCapital} />
+          <TextWithDetails title="Business status" text={business?.status} />
+          <TextWithDetails title="Affliates" text={business?.affiliates} />
+          <TextWithDetails title="Classification" text={business?.classification} />
+          <TextWithDetails title="Head office address" text={business?.headOfficeAddress} />
+          <TextWithDetails title="LGA" text={business?.lga} />
+          <TextWithDetails title="City" text={business?.city} />
+          <TextWithDetails title="State" text={business?.state} />
         </TableDetailsWrapper>
       )}
 

@@ -42,18 +42,18 @@ const Page = () => {
             ))}
         </div>
       </CardWrapper> */}
-
       {/* <CardWrapper className="p-0">
         <GeneralTable tableHeaders={tableHeaders} tableBody={tableBody} hideHeader />
       </CardWrapper> */}
       {/* <CardWrapper> */}
-      <AnalyticsHeader
+      {/* <AnalyticsHeader
         title="Payment analytics"
         description="Total revenue for registrations"
         queryNav={paymentQueryNav}
       />
-      <Image src={PaymentAnalyticsImg} alt="payment analytics" />
+      <Image src={PaymentAnalyticsImg} alt="payment analytics" /> */}
       {/* </CardWrapper> */}
+      Hello
     </DoChecks>
   );
 };
