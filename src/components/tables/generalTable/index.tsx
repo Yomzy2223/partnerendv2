@@ -24,6 +24,8 @@ const GeneralTable = ({
   errorMsg,
   preview,
   hideHeader,
+  emptyText,
+  emptyTextClassName,
 }: IProps) => {
   const [selectOn, setSelectOn] = useState(false);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -57,11 +59,12 @@ const GeneralTable = ({
 
       <DoChecks
         items={tableBody}
-        emptyText="No data"
+        emptyText={emptyText || "No data"}
         className="flex flex-col justify-between flex-1 max-w-full overflow-auto"
         Skeleton={<TableSkeleton />}
         errorText={errorMsg}
         isLoading={dataLoading}
+        textClassName={emptyTextClassName}
       >
         <TableSection
           onSelect={onRowSelect}
@@ -109,4 +112,6 @@ interface IProps {
   itemsPerPage?: number;
   itemsLength?: number;
   hideHeader?: boolean;
+  emptyText?: string;
+  emptyTextClassName?: string;
 }

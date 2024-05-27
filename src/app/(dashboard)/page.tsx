@@ -9,8 +9,6 @@ import AnalyticsHeader from "@/components/header/analyticsHeader";
 import GeneralTable from "@/components/tables/generalTable";
 import CardWrapper from "@/components/wrappers/cardWrapper";
 import { useGetAcceptedTasks, useGetAssignedTasks, useGetCompletedTasks } from "@/services/tasks";
-import { getCompletedTasks } from "@/services/tasks/operations";
-import { format, isValid } from "date-fns";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import React from "react";
@@ -74,6 +72,7 @@ const Page = () => {
             isLoading={assignedTasksRes.isLoading}
             className="grid grid-cols-[repeat(auto-fit,minmax(300px,400px))] gap-y-6 gap-x-4"
             errorText={assignedTasksRes.error?.message}
+            textClassName="!sb-text-16"
             Skeleton={[1, 2].map((el) => (
               <TaskCardSkt key={el} />
             ))}
@@ -92,6 +91,8 @@ const Page = () => {
         itemsLength={totalTasks || 0}
         itemsPerPage={10}
         dataLoading={acceptedTasksRes.isLoading}
+        errorMsg={acceptedTasksRes.error?.message}
+        emptyTextClassName="!sb-text-16"
         hideHeader
       />
       <CardWrapper>
