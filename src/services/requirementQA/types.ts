@@ -53,6 +53,7 @@ export type FileType = {
 
 export type saveReqQAPayload = {
   userId: string;
+  formId: string;
   form: TFormQACreate;
 };
 

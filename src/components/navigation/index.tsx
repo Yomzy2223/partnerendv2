@@ -13,7 +13,8 @@ export const Navigation = ({ navRoutes, className, inactiveClassName = "" }: pro
   const [openAlert, setOpenAlert] = useState(false);
 
   const session = useSession();
-  const userId = session.data?.user?.id;
+  const user = session.data?.user;
+  const userId = user?.id;
 
   const router = useRouter();
   const pathname = usePathname();
@@ -26,7 +27,7 @@ export const Navigation = ({ navRoutes, className, inactiveClassName = "" }: pro
 
   useEffect(() => {
     if (partnerReqQARes.isSuccess) {
-      hasSubmittedQA && setOpenAlert(true);
+      if (user?.partnerStatus !== "ACTIVATED") setOpenAlert(true);
     }
   }, [partnerReqQARes.isSuccess]);
 
@@ -80,7 +81,11 @@ export const Navigation = ({ navRoutes, className, inactiveClassName = "" }: pro
         );
       })}
       {isHome && openAlert && (
-        <StatusAlert hasSubmittedQA={hasSubmittedQA} setOpenAlert={setOpenAlert} />
+        <StatusAlert
+          hasSubmittedQA={hasSubmittedQA}
+          setOpenAlert={setOpenAlert}
+          partnerStatus={user?.partnerStatus}
+        />
       )}
     </div>
   );

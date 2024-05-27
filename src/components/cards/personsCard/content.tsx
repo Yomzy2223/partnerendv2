@@ -41,6 +41,7 @@ const Content = ({
                 fileSize={el.fileSize}
                 fileType={el.fileType}
                 editMode={false}
+                hideRemove
               />
             </div>
           ) : (

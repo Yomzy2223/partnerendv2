@@ -6,7 +6,7 @@ import { Upload } from "@/assets/icons";
 import { cn } from "@/lib/utils";
 import { FileIcon, defaultStyles, DefaultExtensionType } from "react-file-icon";
 import { Button } from "flowbite-react";
-import { DownloadIcon, PenIcon, PenLineIcon, X } from "lucide-react";
+import { CheckCircle, DownloadIcon, PenIcon, PenLineIcon, X } from "lucide-react";
 import { saveAs } from "file-saver";
 
 export const FileInput = ({
@@ -20,6 +20,7 @@ export const FileInput = ({
   onFileRemove,
   defaultFile,
   hideRemove,
+  approved,
 }: {
   fileName: string;
   fileLink: string;
@@ -31,6 +32,7 @@ export const FileInput = ({
   editMode?: boolean;
   defaultFile?: File;
   hideRemove?: boolean;
+  approved?: boolean;
 }) => {
   const [file, setFile] = useState<File>();
 
@@ -107,7 +109,21 @@ export const FileInput = ({
               />
             </div>
             <div>
-              <p className="text-sm underline">{file?.name || fileName}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-sm underline text-ellipsis whitespace-nowrap">
+                  {file?.name || fileName}
+                </p>
+                {approved && (
+                  <div className="flex items-center gap-1">
+                    <span className="text-xs text-success-foreground">Approved</span>{" "}
+                    <CheckCircle
+                      size={12}
+                      fill="#a8fce050"
+                      stroke="hsl(var(--success-foreground))"
+                    />
+                  </div>
+                )}
+              </div>
               <p className="text-xs">{size || 0}</p>
             </div>
           </div>

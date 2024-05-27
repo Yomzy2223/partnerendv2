@@ -60,12 +60,12 @@ const TableDetails = ({
         </Breadcrumb>
       )}
 
-      {business?.companyEmail && (
+      {business?.companyName && (
         <TableDetailsWrapper
           title="Business Information"
           icon={<BriefcaseIcon />}
           raiseIssueAction={() => {}}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-6 md:grid md:grid-cols-2"
           previewMode={previewMode}
         >
           <TextWithDetails title="Company name" text={business?.companyName} />

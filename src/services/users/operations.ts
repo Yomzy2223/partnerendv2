@@ -52,14 +52,20 @@ export const getAllUsers = async () => {
 
 //
 
-export const createUserDoc = async ({ formInfo }: { formInfo: TUserDocCreate }) => {
+export const createUserDoc = async ({ formInfo }: { formInfo: { document: TUserDocCreate[] } }) => {
   const client = await Client();
-  return client.post<rootType<TUserDocGet>>(`/userDocument`, formInfo);
+  return client.post<rootType>(`/userDocument`, formInfo);
 };
 
-export const updateUserDoc = async ({ id, formInfo }: { id: string; formInfo: TUserDocCreate }) => {
+export const updateUserDoc = async ({
+  id,
+  formInfo,
+}: {
+  id: string;
+  formInfo: { document: TUserDocCreate[] };
+}) => {
   const client = await Client();
-  return client.put<rootType<TUserDocGet>>(`/userDocument/${id}`, formInfo);
+  return client.put<rootType>(`/userDocument/${id}`, formInfo);
 };
 
 export const deleteUserDoc = async (id: string) => {

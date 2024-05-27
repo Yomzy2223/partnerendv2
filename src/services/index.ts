@@ -15,10 +15,11 @@ export const Client = async () => {
   const session = await getSession();
 
   const client = defaultAxios.create({
-    baseURL:
-      process.env.NODE_ENV === "production"
-        ? "https://iapkmjspxh.us-east-1.awsapprunner.com/"
-        : "https://h2rwx2fbhm.us-east-1.awsapprunner.com/",
+    // baseURL:
+    //   process.env.NODE_ENV === "production"
+    //     ? "https://iapkmjspxh.us-east-1.awsapprunner.com/"
+    //     : "https://h2rwx2fbhm.us-east-1.awsapprunner.com/",
+    baseURL: "https://h2rwx2fbhm.us-east-1.awsapprunner.com/",
     headers: {
       "Content-Type": "application/json",
       Authorization: session?.user?.token ? `Bearer ${session?.user?.token}` : ``,
@@ -36,7 +37,7 @@ export const useResponse = () => {
     if (typeof error === "string") errorMessage = error;
     console.log(error);
     toast({
-      className: "bg-red-200 border border-destructive-foreground",
+      className: "bg-destructive border border-destructive-foreground",
       title,
       description: errorMessage,
       success: hideIcon ? null : false,

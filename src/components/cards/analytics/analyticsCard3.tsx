@@ -16,21 +16,19 @@ const AnalyticsCard3 = ({
   title: string;
   previous: number;
   current: number;
-  total: string;
+  total: string | number;
   bottomText?: string;
   className?: string;
 }) => {
-  const difference = current - previous;
-  let perc = ((100 * difference) / previous).toFixed(2) || 0;
-  perc = parseInt(perc.toString());
+  let perc = ((current - previous) / (previous || 1)) * 100;
+  perc = parseFloat(perc.toFixed(2));
+
+  // let perc = 100 * difference || 0;
   const decreased = perc < 0;
 
   return (
     <CardWrapper
-      className={cn(
-        "flex flex-col justify-between w-full min-w-[200px] max-w-[300px]",
-        className
-      )}
+      className={cn("flex flex-col justify-between w-full min-w-[200px] max-w-[300px]", className)}
     >
       <p className="text-sm text-foreground-5 mb-3">{title}</p>
       <div className="flex justify-between gap-4 mb-6">

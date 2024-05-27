@@ -4,12 +4,7 @@ import ConfirmAction from "@/components/confirmAction";
 import TableDetails from "@/components/tables/details/details";
 import TableDetailsWrapper from "@/components/tables/details/detailsWrapper";
 import { useGetService } from "@/services/service";
-import {
-  useGetRequestBusinessQuery,
-  useGetRequestQAFormsQuery,
-  useGetRequestQuery,
-  useRejectTasksMutation,
-} from "@/services/tasks";
+import { useGetRequestQuery, useRejectTasksMutation } from "@/services/tasks";
 import { Button } from "flowbite-react";
 import { BriefcaseIcon } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -36,9 +31,6 @@ const Page = ({ params }: { params: { requestId: string } }) => {
 
   const serviceRes = useGetService(request?.product?.serviceId || "");
   const service = serviceRes.data?.data?.data;
-
-  // const requestQAFormsRes = useGetRequestQAFormsQuery({ requestId });
-  // const requestQAForms = requestQAFormsRes.data?.data?.data || [];
 
   const dropTask = () => {
     rejectTaskMutation.mutate(
@@ -70,16 +62,19 @@ const Page = ({ params }: { params: { requestId: string } }) => {
             businessId={requestBusiness?.id || ""}
             companyName={requestBusiness?.companyName}
             requestId={requestId}
+            requestStatus={request?.status}
             priority={service?.priority}
           />
         </TableDetailsWrapper>
 
-        <div className="self-end space-x-2">
-          <span className="sb-text-16 text-foreground-5">Can&#39;t continue anymore?</span>
-          <Button color="failure" onClick={() => setOpenConfirm(true)}>
-            Drop Task
-          </Button>
-        </div>
+        {request?.status !== "COMPLETED" && (
+          <div className="self-end space-x-2">
+            <span className="sb-text-16 text-foreground-5">Can&#39;t continue anymore?</span>
+            <Button color="failure" onClick={() => setOpenConfirm(true)}>
+              Drop Task
+            </Button>
+          </div>
+        )}
 
         {openConfirm && (
           <ConfirmAction

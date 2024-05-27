@@ -3,6 +3,7 @@ import { useResponse } from "..";
 import {
   getCountryReqForm,
   getPartnerReqQA,
+  saveMultipleReqQASubform,
   savePartnerReqQA,
   updatePartnerReqQA,
 } from "./operations";
@@ -52,3 +53,19 @@ export const useGetCountryReqForm = ({ country }: { country: string }) =>
     queryFn: ({ queryKey }) => getCountryReqForm(queryKey[1]),
     enabled: !!country,
   });
+
+export const useSaveMultipleReqQASubform = () => {
+  const queryClient = useQueryClient();
+  const { handleError } = useResponse();
+
+  return useMutation({
+    mutationKey: ["save product QA"],
+    mutationFn: saveMultipleReqQASubform,
+    onError(error, variables, context) {
+      handleError({ title: "Failed", error });
+    },
+    onSuccess(data, variables, context) {
+      queryClient.invalidateQueries({ queryKey: ["partnerQA"] });
+    },
+  });
+};

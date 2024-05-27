@@ -1,9 +1,15 @@
 import { Client, rootType } from "../index";
-import { TFormQAGet, saveReqQAPayload, updateReqQAPayload, TReqForm } from "./types";
+import {
+  TFormQAGet,
+  saveReqQAPayload,
+  updateReqQAPayload,
+  TReqForm,
+  TSubformQACreate,
+} from "./types";
 
-export const savePartnerReqQA = async ({ userId, form }: saveReqQAPayload) => {
+export const savePartnerReqQA = async ({ userId, formId, form }: saveReqQAPayload) => {
   const client = await Client();
-  return client.post<rootType<TFormQAGet[]>>(`/partner/formAnswer/${userId}`, form);
+  return client.post<rootType<TFormQAGet[]>>(`/partner/formAnswer/${userId}/${formId}`, form);
 };
 
 export const updatePartnerReqQA = async ({ id, form }: updateReqQAPayload) => {
@@ -19,4 +25,15 @@ export const getPartnerReqQA = async (userId: string) => {
 export const getCountryReqForm = async (country: string) => {
   const client = await Client();
   return client.get<rootType<TReqForm[]>>(`/partner/forms/${country}`);
+};
+
+export const saveMultipleReqQASubform = async ({
+  formId,
+  form,
+}: {
+  formId: string;
+  form: { subForm: TSubformQACreate[] };
+}) => {
+  const client = await Client();
+  return client.post<rootType<TFormQAGet[]>>(`/partner/subformAnswer/${formId}`, form);
 };

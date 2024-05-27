@@ -2,10 +2,10 @@ import ConfirmAction from "@/components/confirmAction";
 import { FileInput } from "@/components/file/fileInput";
 import BusinessInfoForm from "@/components/form/businessInfoForm";
 import { uploadFileToCloudinary, useGlobalFunctions } from "@/hooks/globalFunctions";
+import { TRequestStatus } from "@/services/tasks/types";
 import {
   useCreateUserDocMutation,
   useDeleteUserDocMutation,
-  useGetUserDocQuery,
   useGetUserRequestDocQuery,
 } from "@/services/users";
 import { TUserDocGet } from "@/services/users/types";
@@ -13,17 +13,20 @@ import { Button } from "flowbite-react";
 import { PlusCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import { Oval } from "react-loading-icons";
 
 const DocSection = ({
   businessId,
   requestId,
+  requestStatus,
   priority,
   companyName,
 }: {
   businessId: string;
   requestId: string;
+  requestStatus?: TRequestStatus;
   priority?: number;
-  companyName: string;
+  companyName?: string;
 }) => {
   const [openForm, setOpenForm] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -31,23 +34,17 @@ const DocSection = ({
   const [files, setFiles] = useState<File[]>([]);
   const [newInstance, setNewInstance] = useState(false);
 
-  const [existingFiles, setExistingFiles] = useState<TUserDocGet[]>([]);
   const [deleteId, setDeleteId] = useState("");
 
   const createUserDoc = useCreateUserDocMutation();
   const deleteUserDoc = useDeleteUserDocMutation();
-  const userDocRes = useGetUserRequestDocQuery({ requestId });
-  const userDoc = userDocRes.data?.data?.data || [];
+
+  const requestDocsRes = useGetUserRequestDocQuery({ requestId });
+  const requestDocs = requestDocsRes.data?.data?.data || [];
 
   const { userCloudFolder } = useGlobalFunctions();
   const session = useSession();
   const userId = session.data?.user?.id;
-
-  useEffect(() => {
-    if (userDoc?.length > 0) {
-      setExistingFiles(userDoc);
-    }
-  }, [userDoc]);
 
   useEffect(() => {
     if (files.length === 0) setNewInstance(true);
@@ -67,6 +64,7 @@ const DocSection = ({
             link: "",
             type: "",
             size: "",
+            isReceived: true,
           };
           const uploadRes = await uploadFileToCloudinary({
             file,
@@ -87,11 +85,18 @@ const DocSection = ({
     }
 
     if (resArray?.length > 0) {
-      await Promise.all(
-        resArray.map((res) => {
-          createUserDoc.mutate({ formInfo: res });
-        })
+      createUserDoc.mutate(
+        { formInfo: { document: resArray } },
+        {
+          onSuccess: () => setFiles([]),
+        }
       );
+
+      // await Promise.all(
+      //   resArray.map((res) => {
+      //     createUserDoc.mutate({ formInfo: res });
+      //   })
+      // );
     }
   };
 
@@ -101,13 +106,11 @@ const DocSection = ({
     });
   };
 
-  console.log(existingFiles);
-  console.log(files);
   return (
     <div className="flex flex-col justify-end gap-8">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-4">
-          {existingFiles.map((file, i) => (
+          {requestDocs.map((file, i) => (
             <FileInput
               key={i}
               fileLink={file.link}
@@ -117,6 +120,7 @@ const DocSection = ({
               editMode={false}
               onFileRemove={() => setDeleteId(file.id)}
               hideRemove={file.isApproved}
+              approved={file.isApproved}
             />
           ))}
           {files.map((file, i) => (
@@ -135,7 +139,7 @@ const DocSection = ({
             />
           ))}
         </div>
-        {newInstance && (
+        {newInstance && requestStatus !== "COMPLETED" && (
           <FileInput
             fileLink=""
             fileName=""
@@ -164,6 +168,9 @@ const DocSection = ({
         <Button
           color="primary"
           className="self-end"
+          isProcessing={isUploading || createUserDoc.isPending}
+          disabled={isUploading || createUserDoc.isPending}
+          processingSpinner={<Oval color="white" strokeWidth={4} className="h-5 w-5" />}
           onClick={() => (priority === 1 && !companyName ? setOpenForm(true) : submitFiles())}
         >
           Send to Sidebrief

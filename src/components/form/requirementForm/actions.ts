@@ -2,6 +2,7 @@ import { uploadFileToCloudinary, useGlobalFunctions } from "@/hooks/globalFuncti
 import { sluggify } from "@/lib/utils";
 import {
   useGetPartnerReqQA,
+  useSaveMultipleReqQASubform,
   useSavePartnerReqQA,
   useUpdatePartnerReqQA,
 } from "@/services/requirementQA";
@@ -24,6 +25,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
 
   const saveReqQA = useSavePartnerReqQA();
   const updateReqQA = useUpdatePartnerReqQA();
+  const saveMultipleReqQASubform = useSaveMultipleReqQASubform();
 
   const reqFormQARes = useGetPartnerReqQA({ userId });
   const reqFormQA = reqFormQARes.data?.data?.data;
@@ -89,6 +91,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
     // reset: UseFormReset<any>
   ) => {
     if (!info) return;
+    const formId = info.id;
 
     const getAnswer = (question: string) => {
       let answer = values[sluggify(question)];
@@ -154,12 +157,13 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
       isGeneral: false,
       subForm: QAForm?.id ? subFormWithId : resArray,
     };
-    console.log(payload);
 
     if (QAForm?.id) {
       if (subFormWithNoId?.length > 0) {
         console.log(subFormWithNoId);
+
         // Create multiple subforms
+        saveMultipleReqQASubform.mutate({ formId, form: { subForm: subFormWithNoId } });
       }
       updateReqQA.mutate(
         { id: QAForm.id, form: payload },
@@ -173,7 +177,7 @@ export const useActions = ({ info, handeleSubmit, setIsUploading }: INewFormActi
       return;
     }
     saveReqQA.mutate(
-      { userId, form: payload },
+      { userId, formId, form: payload },
       {
         onSuccess: (data) => {
           handeleSubmit();

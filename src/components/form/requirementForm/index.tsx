@@ -35,7 +35,7 @@ const RequirementForm = ({
       open={open}
       setOpen={setOpen}
       title="Verification Form"
-      size="4xl"
+      size={forms.length > 1 ? "5xl" : ""}
       dismissible={false}
     >
       <div className="flex flex-col gap-2 max-w-[600px] w-full">
