@@ -2,7 +2,6 @@
 import React from "react";
 import { EmptyContentSvg } from "@/assets/svg";
 import Image from "next/image";
-
 const Payments = () => {
   return (
     <div className="flex flex-col justify-center gap-4 items-center flex-1 w-max my-10 m-auto ">
