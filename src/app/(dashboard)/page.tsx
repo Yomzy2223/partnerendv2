@@ -1,18 +1,16 @@
 "use client";
 
-import { PaymentAnalyticsImg } from "@/assets/svg";
-import AnalyticsCard3 from "@/components/cards/analytics/analyticsCard3";
+import PartnerAreaChart from "@/components/cards/analytics/partnerAreaChart";
+import PartnerLineChart from "@/components/cards/analytics/partnerLineChart";
 import { TaskCard } from "@/components/cards/TaskCard";
 import TaskCardSkt from "@/components/cards/TaskCard/taskCardSkt";
 import DoChecks from "@/components/DoChecks";
-import AnalyticsHeader from "@/components/header/analyticsHeader";
 import GeneralTable from "@/components/tables/generalTable";
 import CardWrapper from "@/components/wrappers/cardWrapper";
 import { useGetAcceptedTasks, useGetAssignedTasks, useGetCompletedTasks } from "@/services/tasks";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import React from "react";
-import { paymentQueryNav, useTableInfo } from "./constants";
+import { useTableInfo } from "./constants";
 
 const Page = () => {
   const { tableHeaders, tableBody, acceptedTasksRes } = useTableInfo();
@@ -36,11 +34,7 @@ const Page = () => {
   const totalTasks = acceptedTasksRes.data?.data?.total;
 
   return (
-    <DoChecks
-      items={["d"]}
-      emptyText="You have not added any product"
-      className="grid grid-cols-2 gap-8"
-    >
+    <div className="grid grid-cols-2 gap-8">
       <div className="flex flex-nowrap gap-8 flex-1 overflow-auto px-1 py-2 lg:grid lg:grid-cols-2">
         <CardWrapper className="flex flex-col justify-between gap-4 bg-primary-8 rounded-lg w-full min-w-[200px] max-w-[300px] h-[158px]">
           <div>
@@ -50,19 +44,24 @@ const Page = () => {
             </p>
           </div>
         </CardWrapper>
-        <AnalyticsCard3
-          title="Total Tasks Done"
-          total={completedTasks?.length || 0}
-          current={244}
-          previous={87}
+        <PartnerLineChart
+          title="Completed tasks"
+          rangeData={completedTasks || []}
+          isLoading={completedTasksRes.isLoading}
+          errMsg={completedTasksRes.error?.message as string}
         />
-        <AnalyticsCard3
+        <PartnerLineChart
+          title="Inprogress tasks"
+          rangeData={pendingTasks || []}
+          isLoading={pendingTasksRes.isLoading}
+          errMsg={pendingTasksRes.error?.message as string}
+        />
+        <PartnerLineChart
           title="Pending tasks"
-          total={pendingTasks?.length || 0}
-          current={0}
-          previous={0}
+          rangeData={assignedTasks || []}
+          isLoading={assignedTasksRes.isLoading}
+          errMsg={assignedTasksRes.error?.message as string}
         />
-        <AnalyticsCard3 title="Amount Earned" total="0" current={244} previous={87} />
       </div>
       <CardWrapper className="my-2 flex-1 p-0">
         <div className="flex gap-4 flex-wrap px-4 pb-4">
@@ -95,15 +94,14 @@ const Page = () => {
         emptyTextClassName="!sb-text-16"
         hideHeader
       />
-      <CardWrapper>
-        <AnalyticsHeader
-          title="Payment analytics"
-          description="Total revenue for registrations"
-          queryNav={paymentQueryNav}
-        />
-        <Image src={PaymentAnalyticsImg} alt="payment analytics" />
-      </CardWrapper>
-    </DoChecks>
+
+      <PartnerAreaChart
+        title="Completed tasks"
+        rangeData={completedTasks || []}
+        isLoading={completedTasksRes.isLoading}
+        errMsg={completedTasksRes.error?.message as string}
+      />
+    </div>
   );
 };
 

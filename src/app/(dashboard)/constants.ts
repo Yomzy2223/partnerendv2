@@ -81,7 +81,7 @@ export const useTableInfo = () => {
   // Services table header
   const tableHeaders = ["S/N", "BUSINESS NAME", "SERVICE TYPE", "STATUS"];
 
-  const tableBody = acceptedTasks?.map((task, i) => {
+  const tableBody = acceptedTasks?.slice(0, 5)?.map((task, i) => {
     const originalCountry = Object.keys(countries)
       .map((el: string) => countries[el as TCountryCode].name)
       .find((el) => el.toLowerCase() === task.productCountry?.toLowerCase());
