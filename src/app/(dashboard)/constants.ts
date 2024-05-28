@@ -122,3 +122,24 @@ export const serviceTableNav = [
     value: "tax",
   },
 ];
+export const tableHeaders = ["S/N", "SERVICE NAME", "PRODUCT NAME", "COUNTRY", "ASSIGNED"];
+
+// Dashboard navigation routes
+export const navRoutes = [
+  {
+    name: "Home",
+    to: "/",
+  },
+  {
+    name: "Tasks",
+    to: "/tasks",
+  },
+  {
+    name: "Payments",
+    to: "/payments",
+  },
+  {
+    name: "Settings",
+    to: "/settings",
+  },
+];

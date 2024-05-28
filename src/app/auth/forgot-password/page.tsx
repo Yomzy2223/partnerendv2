@@ -18,8 +18,8 @@ const ForgotPassword = () => {
   const { setQuery } = useGlobalFunctions();
   const { mutate, isSuccess, isPending } = useForgotPasswordMutation();
 
-  const { get } = useSearchParams();
-  const email = get("verification") || "";
+  const searchParams = useSearchParams();
+  const email = searchParams.get("verification") || "";
 
   useEffect(() => {
     if (isSuccess && formValue.email) setQuery("verification", formValue.email);
@@ -38,7 +38,7 @@ const ForgotPassword = () => {
 
   const emailSnip = email ? email.slice(0, 4) + "......." + email.slice(email.indexOf("@")) : "";
 
-  const description = get("verification")
+  const description = searchParams.get("verification")
     ? `A password reset link has been sent to your email address ${emailSnip}`
     : "No worries, recovery is seamless 😋";
 

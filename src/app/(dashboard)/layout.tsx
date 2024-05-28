@@ -1,6 +1,9 @@
+"use client";
+
 import { Header } from "@/components/header/mainHeader";
 import { Navigation } from "@/components/navigation";
 import React, { ReactNode } from "react";
+import { navRoutes } from "./constants";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -16,23 +19,3 @@ const Layout = ({ children }: { children: ReactNode }) => {
 };
 
 export default Layout;
-
-// Dashboard navigation routes
-const navRoutes = [
-  {
-    name: "Home",
-    to: "/",
-  },
-  {
-    name: "Tasks",
-    to: "/tasks",
-  },
-  {
-    name: "Payments",
-    to: "/payments",
-  },
-  {
-    name: "Settings",
-    to: "/settings",
-  },
-];
