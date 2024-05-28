@@ -1,11 +1,9 @@
-import { IRowInfo, ITableBody } from "@/components/tables/generalTable/constants";
+import { IRowInfo } from "@/components/tables/generalTable/constants";
 import { useGlobalFunctions } from "@/hooks/globalFunctions";
-import { cn } from "@/lib/utils";
 import { useGetAcceptedTasks } from "@/services/tasks";
 import { countries, TCountryCode } from "countries-list";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
 import { MouseEvent } from "react";
 
 export const serviceQueryNav = [
@@ -61,8 +59,6 @@ const cellClassName =
   "[&_span]:bg-success [&_span]:text-success-foreground [&_span]:px-[10px] [&_span]:py-[2px] [&_span]:rounded-md";
 
 export const useTableInfo = () => {
-  const router = useRouter();
-  const pathname = usePathname();
   const { setQueriesWithPath } = useGlobalFunctions();
 
   const session = useSession();
