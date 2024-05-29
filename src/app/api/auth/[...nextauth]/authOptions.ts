@@ -30,8 +30,8 @@ export const authOptions: AuthOptions = {
               email,
               picture,
               googleId: sub,
-              isPartner: false,
-              isStaff: true,
+              isPartner: true,
+              isStaff: false,
             };
             const response = await client.post("/users/google", payload);
             return { id: sub, ...response.data };
