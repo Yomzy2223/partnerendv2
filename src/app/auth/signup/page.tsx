@@ -37,11 +37,11 @@ const SignUp = () => {
     const response = await signIn("signUp", {
       redirect: false,
       fullName: values.name,
-      organization: values.organization,
-      address: values.address,
+      // organization: values.organization,
+      // address: values.address,
       email: values.email,
       password: values.password,
-      referral: values.referral,
+      country: values.country,
       isPartner: false,
       isStaff: false,
     });
@@ -72,14 +72,14 @@ const SignUp = () => {
         placeholder: "Enter your name",
       },
     },
-    {
-      name: "organization",
-      label: "Registered Organization Name",
-      type: "text",
-      textInputProp: {
-        placeholder: "Enter your organization name",
-      },
-    },
+    // {
+    //   name: "organization",
+    //   label: "Registered Organization Name",
+    //   type: "text",
+    //   textInputProp: {
+    //     placeholder: "Enter your organization name",
+    //   },
+    // },
     {
       name: "email",
       label: "Enter Email Address",
@@ -96,20 +96,20 @@ const SignUp = () => {
         placeholder: "Enter a password",
       },
     },
+    // {
+    //   name: "address",
+    //   label: "Enter Home Address",
+    //   type: "text",
+    //   textInputProp: {
+    //     placeholder: "Home Address",
+    //   },
+    // },
     {
-      name: "address",
-      label: "Enter Home Address",
-      type: "text",
-      textInputProp: {
-        placeholder: "Home Address",
-      },
-    },
-    {
-      name: "referral",
+      name: "country",
       label: "Select Country",
       type: "select",
       selectProp: {
-        placeholder: "Select a referral",
+        placeholder: "Select a country",
       },
       options: originalCountries || [],
     },
@@ -168,20 +168,20 @@ export default SignUp;
 
 const signUpSchema = z.object({
   name: z.string().min(1, { message: "Enter your first name" }),
-  organization: z.string().min(1, { message: "Enter your organization name" }),
+  // organization: z.string().min(1, { message: "Enter your organization name" }),
   email: z.string().email("Enter a valid email").min(1, { message: "Enter your email address" }),
   password: z.string().min(6, "Password must be 6 or more characters"),
-  referral: z.string().min(1, { message: "Select a Country" }),
-  address: z.string().min(1, { message: "Enter your home address" }),
+  country: z.string().min(1, { message: "Select a Country" }),
+  // address: z.string().min(1, { message: "Enter your home address" }),
 });
 
 type signUpType = z.infer<typeof signUpSchema>;
 
 const defaultValues = {
   name: "",
-  organization: "",
+  // organization: "",
   email: "",
   password: "",
-  referral: "",
-  address: "",
+  country: "",
+  // address: "",
 };

@@ -41,7 +41,7 @@ const RequirementForm = ({
     >
       <DoChecks
         items={forms}
-        emptyText="Sorry, we currently do not support your country"
+        emptyText="Sorry, activation form is currently unavailable"
         textClassName="!sb-text-16"
       >
         <div className="flex flex-col gap-2 max-w-[600px] w-full">

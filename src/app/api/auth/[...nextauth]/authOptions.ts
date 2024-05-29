@@ -49,7 +49,7 @@ export const authOptions: AuthOptions = {
         fullName: { label: "Full Name" },
         email: { label: "Email" },
         password: { label: "Password" },
-        referral: { label: "Referral" },
+        country: { label: "Country" },
         isStaff: { label: "isStaff" },
         isPartner: { label: "isPartner" },
       },
@@ -59,16 +59,16 @@ export const authOptions: AuthOptions = {
             credentials?.fullName &&
             credentials?.email &&
             credentials?.password &&
-            credentials?.referral &&
+            credentials?.country &&
             credentials?.isStaff
           ) {
             const client = await Client();
-            const { fullName, email, password, referral, isStaff, isPartner } = credentials;
+            const { fullName, email, password, country, isStaff, isPartner } = credentials;
             const payload = {
               fullName,
               email,
               password,
-              referral,
+              country,
               isStaff: isStaff === "true" ? true : false,
               isPartner: isPartner === "true" ? true : false,
             };
